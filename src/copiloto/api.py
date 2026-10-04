@@ -1,5 +1,6 @@
 """API web con FastAPI: una ruta por cada función del copiloto."""
 
+import json
 import logging
 import time
 from collections import defaultdict, deque
@@ -21,6 +22,7 @@ logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(title="Copiloto del vendedor de vehículos de ocasión")
 WEB = Path("web/index.html")  # rutas relativas a la raíz del proyecto
+METRICAS = Path("modelos/metricas.json")  # las genera scripts/entrenar_precio.py
 LIMITE_POR_HORA = 20  # peticiones que usan el LLM, por IP y hora
 _peticiones: dict[str, deque] = defaultdict(deque)
 log = logging.getLogger("copiloto.api")
@@ -138,6 +140,14 @@ def ver_stock():
 @app.get("/precio/{id_}")
 def precio(id_: str):
     return precio_recomendado(modelo_precio(), vehiculo(id_))
+
+
+@app.get("/modelo")
+def metricas_modelo():
+    """Cómo de bien estima el precio el modelo, medido con coches que no vio al entrenar."""
+    if not METRICAS.exists():
+        raise HTTPException(404, "Aún no hay métricas: ejecuta scripts/entrenar_precio.py.")
+    return json.loads(METRICAS.read_text(encoding="utf-8"))
 
 
 @app.get("/alertas")

@@ -18,6 +18,11 @@ y financiación. **La IA redacta; el código comprueba.**
 | Coste por motor | Consumo WLTP de la ficha + precios oficiales (Ministerio y Red Eléctrica) + punto de equilibrio |
 | Recomendador de stock | LLM entiende al cliente (con citas) + puntuación por reglas explicables |
 | Financiación | Sistema francés y TAE por bisección |
+| Simulador de precio y margen | Mueve el precio y ve al momento el rango, el veredicto y tu margen bruto (sin volver a llamar al servidor) |
+| Comparador cara a cara | Hasta 3 coches en columnas; la mejor cifra de cada fila, marcada |
+| Ficha para el cliente y cartel | Hojas A4 y A5 listas para imprimir o guardar en PDF, con cuota mensual calculada |
+| Historial de IA | Lo generado por la IA se guarda en el navegador: volver a verlo no gasta |
+| Métricas del modelo | Error frente al baseline, cobertura del rango y gráfico real frente a estimado (`GET /modelo`, generado por `scripts/entrenar_precio.py`) |
 
 Principio de diseño: **el LLM entiende y redacta; el ML estima; el código calcula y verifica.**
 Funciona con Claude o con Gemini cambiando una variable (`PROVEEDOR`).

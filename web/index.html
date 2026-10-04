@@ -65,7 +65,7 @@
   nav { display:flex; flex-direction:column; gap:2px; padding:8px 0 14px; flex:1; }
   nav .grupo { font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#77715f; padding:14px 10px 6px; }
   nav button { display:flex; align-items:center; gap:12px; width:100%; text-align:left; background:none; border:0; border-radius:6px;
-               padding:8px 10px; font:inherit; font-size:.97rem; font-weight:500; color:#c9c2b3; cursor:pointer; white-space:nowrap; transition:background .15s, color .15s; }
+               padding:6px 10px; font:inherit; font-size:.95rem; font-weight:500; color:#c9c2b3; cursor:pointer; white-space:nowrap; transition:background .15s, color .15s; }
   nav button .n { font-family:var(--f-titulo); font-size:.85rem; font-weight:700; color:#6f6a5e; width:20px; }
   nav button:hover { background:var(--asfalto-2); color:#fff; }
   nav button.activa { background:var(--pegatina); color:#16140f; font-weight:700; }
@@ -220,6 +220,7 @@
   .kpi.amarillo .kpi-tit, .kpi.amarillo .kpi-sub { color:#4a4122; }
   .kpi.rojo .kpi-valor { color:var(--mal); }
   .barras { display:grid; gap:4px; }
+  .barra-fila.ancha { grid-template-columns:minmax(90px, 150px) 1fr 64px; }
   .barra-fila { display:grid; grid-template-columns:minmax(90px, 150px) 1fr 40px; gap:12px; align-items:center; padding:5px 0; font-size:.95rem; }
   .pista { height:10px; background:var(--papel-2); border-radius:999px; overflow:hidden; position:relative; }
   .relleno { height:100%; background:var(--tinta); border-radius:999px; transform-origin:left; animation:crece .8s cubic-bezier(.2,.7,.2,1) both; }
@@ -385,10 +386,104 @@
   .cartel-sello-peq { font-weight:700; font-size:.86rem; border:1.5px solid #16140f; border-radius:999px; padding:4px 11px; }
   .cartel-letra { font-size:.62rem; color:#6d6658; margin:10px 0 0; line-height:1.35; }
 
+
+  /* ---------- Precio: simulador y margen ---------- */
+  .simulador { margin-top:18px; padding-top:16px; border-top:1px dashed var(--linea); }
+  .simulador .fila { margin:8px 0 0; align-items:center; }
+  .sim-valor { font-family:var(--f-titulo); font-weight:800; font-size:1.9rem; line-height:1; }
+  .sim-dif { font-weight:600; }
+  .sim-dif.baja { background:none; color:var(--bien); } .sim-dif.alta { background:none; color:var(--mal); }
+  .margenes td.negativo { color:var(--mal); }
+
+  /* ---------- Guardado en el historial ---------- */
+  .guardado { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:18px 0 0; padding:10px 14px; border-radius:6px; background:var(--papel-2); font-size:.9rem; }
+  .guardado::before { content:"↺"; font-weight:900; }
+  .historial-fila { display:grid; grid-template-columns:auto 1fr auto auto; gap:12px; align-items:center; padding:12px 0; border-bottom:1px dashed var(--linea); }
+  .historial-fila:last-child { border-bottom:0; }
+  .historial-fila p { margin:2px 0 0; }
+  .tipo { text-transform:uppercase; font-size:.66rem; font-weight:800; letter-spacing:.08em; margin:0; }
+
+  /* ---------- Comparador ---------- */
+  .cmp th, .cmp td { vertical-align:top; }
+  .cmp thead th { text-transform:none; letter-spacing:0; font-size:.95rem; color:var(--tinta); white-space:normal; min-width:180px; }
+  .cmp thead th:first-child { min-width:150px; }
+  .cmp tbody th { font-size:.7rem; }
+  .cmp td.mejor { color:var(--bien); font-weight:700; }
+  .cmp td.mejor::before { content:"✓ "; }
+  .cmp-cab { display:grid; gap:6px; }
+  .cmp-cab .card-precio { font-size:1.6rem; margin:0; }
+
+  /* ---------- Ficha para el cliente (A4) ---------- */
+  .escena-papel { background:repeating-linear-gradient(45deg, var(--papel-2) 0 14px, var(--papel) 14px 28px); border-radius:12px; padding:32px 16px; display:grid; place-items:center; margin-top:18px; overflow-x:auto; }
+  .folleto { width:min(760px, 100%); background:#fffdf6; color:#16140f; border-radius:4px; box-shadow:0 30px 50px -25px rgba(0,0,0,.5), 0 0 0 1px rgba(0,0,0,.06);
+             padding:34px 40px 28px; font-family:var(--f-texto); display:flex; flex-direction:column; gap:18px; }
+  .fo-cab { display:flex; justify-content:space-between; align-items:center; gap:12px; border-bottom:5px solid #ffcc00; padding-bottom:12px; }
+  .fo-casa { font-family:var(--f-titulo); font-weight:800; font-size:1.5rem; text-transform:uppercase; line-height:1; }
+  .fo-marca { margin:0; font-size:.86rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#6d6658; }
+  .fo-modelo { margin:2px 0 0; font-family:var(--f-titulo); font-weight:800; font-size:3.4rem; line-height:.9; text-transform:uppercase; }
+  .fo-version { margin:6px 0 0; font-size:1.1rem; font-weight:600; color:#3d3a33; }
+  .fo-hero { display:grid; grid-template-columns:1fr auto; gap:18px; align-items:end; background:#f4efe4; border-radius:8px; padding:18px 20px; }
+  .fo-precio { font-family:var(--f-titulo); font-weight:900; font-size:4rem; line-height:.9; margin:0; }
+  .fo-cuota { margin:6px 0 0; font-size:1.05rem; }
+  .fo-cuota b { background:linear-gradient(transparent 58%, #ffcc00 58%); padding:0 2px; }
+  .fo-claves { display:flex; flex-wrap:wrap; gap:6px; justify-content:flex-end; align-items:center; max-width:330px; }
+  .fo-claves span:not(.etiqueta) { border:1.5px solid #16140f; border-radius:999px; padding:3px 10px; font-weight:700; font-size:.85rem; }
+  .folleto .etiqueta { min-width:42px; height:42px; padding:0; border-radius:50%; font-size:.8rem; }
+  .folleto h3 { color:#16140f; margin:0 0 8px; }
+  .fo-datos { display:grid; grid-template-columns:repeat(3, 1fr); border-top:1px solid #d6cdbc; border-left:1px solid #d6cdbc; margin:0; }
+  .fo-datos div { border-right:1px solid #d6cdbc; border-bottom:1px solid #d6cdbc; padding:8px 11px; }
+  .fo-datos dt { color:#6d6658; }
+  .fo-extras { list-style:none; padding:0; margin:0; columns:2; column-gap:24px; }
+  .fo-extras li { margin:0 0 4px; break-inside:avoid; }
+  .fo-extras li::before { content:"✓  "; font-weight:900; }
+  .fo-sellos { display:flex; flex-wrap:wrap; gap:8px; }
+  .fo-sellos span { background:#16140f; color:#fffdf6; border-radius:999px; padding:5px 12px; font-weight:700; font-size:.88rem; }
+  .fo-pie { margin-top:auto; border-top:2px solid #16140f; padding-top:10px; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; font-size:.8rem; color:#3d3a33; }
+  .fo-letra { font-size:.66rem; color:#6d6658; margin:0; line-height:1.4; }
+  .cartel-contacto { margin:8px 0 0; font-size:.8rem; font-weight:700; }
+
+  /* ---------- Modelo de precios ---------- */
+  .grafico { position:relative; }
+  .grafico svg { display:block; width:100%; height:auto; overflow:visible; }
+  .grafico .eje { stroke:var(--linea); stroke-width:1; }
+  .grafico .texto-eje { fill:var(--suave); font-size:12px; font-family:var(--f-texto); }
+  .grafico .diagonal { stroke:var(--suave); stroke-width:1.5; opacity:.6; }
+  .grafico .p-dentro { fill:var(--tinta); fill-opacity:.7; stroke:var(--hoja); stroke-width:2; }
+  .grafico .p-fuera { fill:var(--hoja); stroke:var(--mal); stroke-width:2.2; }
+  .grafico .p-activo { stroke:var(--pegatina); stroke-width:4; fill-opacity:1; }
+  .tooltip { position:absolute; pointer-events:none; background:var(--asfalto); color:#f3efe6; border-radius:8px; padding:9px 12px; font-size:.84rem; line-height:1.35;
+             box-shadow:0 10px 30px -10px rgba(0,0,0,.5); transform:translate(-50%, calc(-100% - 14px)); white-space:nowrap; z-index:3; }
+  .tooltip b { display:block; font-size:1rem; }
+  .tooltip span { color:#bdb5a6; }
+  .leyenda .l-dentro { background:var(--tinta); border-radius:50%; opacity:.7; }
+  .leyenda .l-fuera { background:transparent; border:2px solid var(--mal); border-radius:50%; }
+
+  /* ---------- Cómo funciona ---------- */
+  .principios { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap:14px; }
+  .principio { background:var(--hoja); border:1px solid var(--linea); border-radius:10px; padding:18px 20px; }
+  .principio b { display:block; font-family:var(--f-titulo); font-weight:800; font-size:1.6rem; line-height:1; text-transform:uppercase; }
+  .principio p { margin:8px 0 0; color:var(--suave); }
+  .principio .n { display:inline-grid; place-items:center; width:30px; height:30px; border-radius:50%; background:var(--pegatina); color:#16140f; font-family:var(--f-titulo); font-weight:900; margin-bottom:10px; }
+  .flujo { display:grid; grid-template-columns:1fr 1fr 1.2fr 1fr; gap:14px; align-items:center; margin:18px 0 6px; }
+  .flujo-col { display:grid; gap:10px; }
+  .nodo { position:relative; border:2px solid var(--linea); background:var(--hoja); border-radius:10px; padding:12px 14px; transition:border-color .25s, background .25s, transform .25s, opacity .25s; }
+  .nodo b { display:block; font-size:.98rem; }
+  .nodo code { font-size:.76rem; color:var(--suave); }
+  .flujo.en-marcha .nodo { opacity:.45; }
+  .flujo.en-marcha .nodo.activo { opacity:1; border-color:var(--tinta); background:var(--pegatina-2); transform:scale(1.03); box-shadow:4px 4px 0 var(--pegatina); }
+  .flujo-col:not(:last-child) .nodo::after { content:"→"; position:absolute; right:-14px; top:50%; transform:translate(50%, -50%); color:var(--suave); font-weight:900; }
+  .paso-texto { min-height:84px; background:var(--papel); border-radius:8px; padding:14px 16px; margin:10px 0 12px; }
+  .paso-texto b { font-family:var(--f-titulo); font-weight:800; font-size:1.3rem; text-transform:uppercase; margin-right:8px; }
+  code { font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size:.86em; background:var(--papel-2); padding:1px 5px; border-radius:4px; }
+  .stack { display:flex; flex-wrap:wrap; gap:6px; }
+
+  .boton:disabled { opacity:.45; cursor:default; }
+
   .pie-movil { display:none; color:var(--suave); font-size:.78rem; padding:0 16px 32px; }
+  .solo-movil { display:none; }
 
   /* ---------- Móvil ---------- */
-  @media (max-width: 860px) {
+  @media screen and (max-width: 860px) {
     .marco { grid-template-columns:minmax(0, 1fr); align-content:start; }
     .lateral { height:auto; padding:14px 0 0; overflow:visible; }
     .marca { padding:0 16px 10px; }
@@ -407,22 +502,38 @@
     .kpi-valor { font-size:2.2rem; }
     .cartel-modelo { font-size:2.6rem; }
     .cartel-precio { font-size:4rem; }
+    .flujo { grid-template-columns:minmax(0, 1fr); }
+    .flujo-col:not(:last-child) .nodo::after { content:"↓"; right:50%; top:auto; bottom:-12px; transform:translate(50%, 50%); }
+    .historial-fila { grid-template-columns:1fr auto; }
+    .historial-fila > :first-child { grid-column:1 / -1; justify-self:start; }
+    .folleto { padding:22px 18px; }
+    .fo-hero { grid-template-columns:minmax(0, 1fr); }
+    .fo-claves { justify-content:flex-start; }
+    .fo-datos { grid-template-columns:repeat(2, 1fr); }
+    .fo-modelo { font-size:2.6rem; }
+    .fo-precio { font-size:3rem; }
+    .solo-movil { display:block; }
+    .cmp thead th { min-width:150px; }
+    .cmp thead th:first-child, .cmp tbody th { min-width:96px; white-space:normal; }
   }
 
   /* ---------- Impresión del cartel ---------- */
+
   @media print {
-    @page { size:A5 portrait; margin:0; }
+    @page a5 { size:A5 portrait; margin:0; }
+    @page a4 { size:A4 portrait; margin:0; }
     * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     body { background:#fff; }
     .lateral, .pie-movil, #toasts, .velo, .cajon, .paleta { display:none !important; }
     .marco { display:block; }
     main { padding:0; max-width:none; }
-    main > section:not(#cartel) { display:none !important; }
-    #cartel { display:block !important; animation:none; }
-    #cartel > :not(.cartel-escena) { display:none !important; }
-    .cartel-escena { background:none; padding:0; margin:0; display:block; }
-    .cartel { width:148mm; height:210mm; min-height:0; transform:none; box-shadow:none; border-radius:0; padding:10mm 11mm 8mm; }
+    main > section:not(.activa) { display:none !important; }
+    main > section.activa { animation:none; }
+    main > section.activa:has(.cartel-escena, .escena-papel) > :not(.cartel-escena):not(.escena-papel) { display:none !important; }
+    .cartel-escena, .escena-papel { background:none; padding:0; margin:0; display:block; overflow:visible; }
+    .cartel { page:a5; width:148mm; height:210mm; min-height:0; transform:none; box-shadow:none; border-radius:0; padding:10mm 11mm 8mm; }
     .cartel-cab { margin:-10mm -11mm 7mm; padding:5mm 11mm; }
+    .folleto { page:a4; width:210mm; height:296mm; min-height:0; overflow:hidden; box-shadow:none; border-radius:0; padding:14mm 15mm 12mm; }
   }
 </style>
 </head>
@@ -458,6 +569,8 @@
       <button class="acceso" type="button" data-ir="recomendar"><b>Recomendar coches</b><span>Cuéntale lo que busca el cliente y elige por ti.</span></button>
       <button class="acceso" type="button" data-ir="financiacion"><b>Simular financiación</b><span>Cuota al momento, plazos y entrada necesaria.</span></button>
       <button class="acceso" type="button" data-ir="tasacion"><b>Tasar su coche</b><span>De tus notas a una oferta con su desglose.</span></button>
+      <button class="acceso" type="button" data-ir="comparador"><b>Comparar coches</b><span>Hasta 3 en columnas, con la mejor cifra marcada.</span></button>
+      <button class="acceso" type="button" data-ir="folleto"><b>Ficha en PDF</b><span>Todos los datos en una hoja A4 para el cliente.</span></button>
     </div>
     <p class="muted truco">Truco: <kbd>Ctrl</kbd> + <kbd>K</kbd> busca cualquier coche, <kbd>/</kbd> te lleva al stock y las teclas <kbd>1</kbd> a <kbd>0</kbd> cambian de sección.</p>
   </section>
@@ -478,11 +591,20 @@
   </section>
 
   <section id="precio">
-    <h2>Precio recomendado</h2>
-    <p class="sub">Rango de mercado estimado por el modelo de machine learning, y dónde cae tu precio dentro de él.</p>
+    <h2>Precio y margen</h2>
+    <p class="sub">Rango de mercado estimado por el modelo de machine learning, dónde cae tu precio y cuánto ganas con él.</p>
     <p class="elegido" data-elegido></p>
     <div><button class="principal" id="btnPrecio">Calcular precio</button></div>
     <div id="resPrecio"></div>
+    <div class="tarjeta">
+      <h3>Calculadora de margen</h3>
+      <p class="muted">Lo que te costó este coche y lo que has gastado en dejarlo listo. Se guarda en este navegador para cada coche.</p>
+      <div class="fila">
+        <label>Te costó (€) <input id="mCompra" type="number" min="0" step="100" placeholder="por ejemplo, 18000"></label>
+        <label>Puesta a punto (€) <input id="mPreparacion" type="number" min="0" step="50" placeholder="0"></label>
+      </div>
+      <div id="resMargen"></div>
+    </div>
   </section>
 
   <section id="anuncio">
@@ -596,6 +718,97 @@
     <label>Notas de la revisión <textarea id="tNotas" placeholder="Neumáticos a 2 mm, rayón en la puerta y en la aleta, olor a tabaco, solo una llave."></textarea></label>
     <div class="fila"><button class="principal" id="btnTasar">Tasar</button></div>
     <div id="resTasar"></div>
+  </section>
+  <section id="folleto">
+    <h2>Ficha para el cliente</h2>
+    <p class="sub">Todos los datos del coche en una hoja A4. Pulsa «Imprimir o guardar PDF» y elige «Guardar como PDF» para mandarla por WhatsApp o por email. La cuota usa la entrada, el plazo y el TIN del cartel.</p>
+    <p class="elegido" data-elegido></p>
+    <div class="fila">
+      <label>Concesionario <input id="foNombre" placeholder="Nombre de tu concesionario"></label>
+      <label>Contacto <input id="foContacto" placeholder="Teléfono, web o dirección"></label>
+      <label class="casilla"><input type="checkbox" id="foCuota" checked> Cuota mensual</label>
+      <button class="principal" id="btnFolleto">Imprimir o guardar PDF</button>
+    </div>
+    <div class="escena-papel"><div class="folleto" id="folletoHoja"></div></div>
+  </section>
+
+  <section id="comparador">
+    <h2>Comparador cara a cara</h2>
+    <p class="sub">Hasta 3 coches en columnas para enseñárselos al cliente. La mejor cifra de cada fila sale en verde con ✓.</p>
+    <div class="fila" id="selectoresComparador"></div>
+    <div id="resComparador"></div>
+  </section>
+
+  <section id="historial">
+    <h2>Historial de IA</h2>
+    <p class="sub">Todo lo que ha escrito la IA, guardado en este navegador. Volver a verlo no gasta nada.</p>
+    <div class="herramientas"><div class="chips-filtro" id="filtroHistorial" role="group" aria-label="Filtrar el historial"></div><button class="boton" id="borrarHistorial" type="button">Borrar historial</button></div>
+    <p class="muted" id="resumenHistorial"></p>
+    <div class="tarjeta" id="listaHistorial"></div>
+    <div id="verHistorial"></div>
+  </section>
+
+  <section id="modelo">
+    <h2>Modelo de precios</h2>
+    <p class="sub">Cómo de bien acierta el precio el modelo de machine learning, medido con coches de segunda mano que no vio al entrenar.</p>
+    <div id="resModelo"><p class="muted cargando">Cargando las métricas…</p></div>
+  </section>
+
+  <section id="como">
+    <h2>Cómo funciona</h2>
+    <p class="sub">Tres piezas, cada una con su trabajo. Ninguna cifra llega al cliente sin pasar por el código.</p>
+    <div class="principios">
+      <div class="principio"><span class="n">1</span><b>La IA entiende y redacta</b><p>Escribe anuncios y respuestas, lee tus notas de tasación y entiende lo que pide el cliente. Siempre con datos de la ficha.</p></div>
+      <div class="principio"><span class="n">2</span><b>El machine learning estima</b><p>Un modelo entrenado con coches reales calcula el precio de mercado y un rango calibrado para acertar al menos 8 de cada 10 veces.</p></div>
+      <div class="principio"><span class="n">3</span><b>El código calcula y comprueba</b><p>Revisa cada cifra y cada promesa de la IA, calcula cuotas, costes y ofertas, y descarga los precios oficiales de la energía.</p></div>
+    </div>
+
+    <div class="tarjeta">
+      <div class="bloque-cab" style="margin-top:0"><h3 style="margin:0">El viaje de un pedido</h3>
+        <div class="chips-filtro" id="flujosComo" role="group" aria-label="Elegir un ejemplo"></div></div>
+      <div class="flujo" id="flujo">
+        <div class="flujo-col"><div class="nodo" data-nodo="web"><b>Tu navegador</b><code>web/index.html</code></div></div>
+        <div class="flujo-col"><div class="nodo" data-nodo="api"><b>El servidor</b><code>api.py</code></div></div>
+        <div class="flujo-col">
+          <div class="nodo" data-nodo="ml"><b>Modelo de precios</b><code>precio.py</code></div>
+          <div class="nodo" data-nodo="ia"><b>IA: Claude o Gemini</b><code>llm.py</code></div>
+          <div class="nodo" data-nodo="datos"><b>Datos oficiales</b><code>carburantes.py · electricidad.py</code></div>
+          <div class="nodo" data-nodo="calc"><b>Cálculos</b><code>coste_anual.py · financiacion.py</code></div>
+        </div>
+        <div class="flujo-col"><div class="nodo" data-nodo="control"><b>Control de calidad</b><code>verificacion.py</code></div></div>
+      </div>
+      <p class="paso-texto" id="pasoTexto" aria-live="polite"></p>
+      <div class="fila" style="margin:0">
+        <button class="boton" id="pasoAnterior" type="button">← Anterior</button>
+        <button class="boton" id="pasoSiguiente" type="button">Siguiente →</button>
+        <button class="principal" id="pasoPlay" type="button">Reproducir</button>
+      </div>
+    </div>
+
+    <div class="rejilla-2">
+      <div class="tarjeta"><h3>Como en un restaurante</h3>
+        <table><tbody>
+          <tr><th>Tú en la mesa</th><td>El vendedor que usa la web</td></tr>
+          <tr><th>El camarero</th><td>El JavaScript que lleva tu pedido y te trae el plato</td></tr>
+          <tr><th>El jefe de cocina</th><td><code>api.py</code>: reparte cada pedido</td></tr>
+          <tr><th>Los cocineros</th><td>Los ficheros de <code>src/copiloto</code></td></tr>
+          <tr><th>El chef creativo</th><td>La IA: escribe muy bien, pero hay que vigilarla</td></tr>
+          <tr><th>El jefe de calidad</th><td><code>verificacion.py</code>: tira lo que no está en la ficha</td></tr>
+        </tbody></table>
+      </div>
+      <div class="tarjeta"><h3>Qué comprueba el código</h3>
+        <ul>
+          <li><b>Cifras:</b> cada número que escribe la IA tiene que estar en la ficha del coche.</li>
+          <li><b>Promesas:</b> si habla de garantía, libro de revisiones, propietarios, ITV o autonomía, la ficha tiene que respaldarlo.</li>
+          <li><b>Citas:</b> cuando la IA saca un dato de un texto (tus notas, lo que cuenta el cliente), tiene que copiar la frase literal. Si no aparece, el dato se descarta.</li>
+          <li><b>Privacidad:</b> teléfonos y emails se borran antes de mandar nada a la IA.</li>
+          <li><b>Gasto:</b> máximo 20 usos de IA por persona y hora.</li>
+        </ul>
+        <h3>Hecho con</h3>
+        <div class="stack"><span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">Pydantic</span><span class="chip">scikit-learn</span><span class="chip">MLflow</span><span class="chip">Claude / Gemini</span><span class="chip">JavaScript sin frameworks</span><span class="chip">Docker</span><span class="chip">Render</span></div>
+        <p><a class="boton" href="https://github.com/JuanEliasLaraSoto/COPILOTO-VENDEDOR-OCASION" target="_blank" rel="noopener">Ver el código en GitHub</a></p>
+      </div>
+    </div>
   </section>
 </main>
 </div>
@@ -732,16 +945,17 @@ const maxDias = () => Math.max(1, ...STOCK.map((v) => v.dias_en_stock));
 // ---------- Navegación ----------
 const GRUPOS = [
   ["Tu stock", [["inicio", "Panel"], ["stock", "Stock"]]],
-  ["Vender un coche", [["precio", "Precio"], ["anuncio", "Anuncio"], ["cliente", "Cliente pregunta"], ["cartel", "Cartel"]]],
-  ["Asesorar al cliente", [["recomendar", "Recomendar"], ["coste", "Coste por motor"], ["financiacion", "Financiación"], ["tasacion", "Tasación"]]],
+  ["Vender un coche", [["precio", "Precio y margen"], ["anuncio", "Anuncio"], ["cliente", "Cliente pregunta"], ["cartel", "Cartel"], ["folleto", "Ficha para el cliente"]]],
+  ["Asesorar al cliente", [["comparador", "Comparador"], ["recomendar", "Recomendar"], ["coste", "Coste por motor"], ["financiacion", "Financiación"], ["tasacion", "Tasación"]]],
+  ["Más", [["historial", "Historial de IA"], ["modelo", "Modelo de precios"], ["como", "Cómo funciona"]]],
 ];
 const PESTANAS = GRUPOS.flatMap(([, p]) => p);
 let n = 0;
 GRUPOS.forEach(([grupo, pestanas]) => {
   $("pestanas").append(h("div", "grupo", grupo));
   pestanas.forEach(([id, nom]) => {
-    const numero = String(++n % 10);
-    $("pestanas").append(h("button", { type: "button", "data-id": id, title: `Tecla ${numero}`, onclick: () => ir(id) }, h("span", "n", String(n).padStart(2, "0")), h("span", null, nom)));
+    n++;
+    $("pestanas").append(h("button", { type: "button", "data-id": id, title: n <= 10 ? `Tecla ${n % 10}` : null, onclick: () => ir(id) }, h("span", "n", String(n).padStart(2, "0")), h("span", null, nom)));
     $(id).prepend(h("div", "ceja", `${String(n).padStart(2, "0")} — ${nom}`));
   });
 });
@@ -759,6 +973,13 @@ function mostrar(id) {
   if (id === "inicio") pintarPanel();
   if (id === "cartel") pintarCartel();
   if (id === "financiacion" && !$("resFinanciar").childElementCount) calcularFin();
+  if (id === "precio") pintarMargen();
+  if (id === "folleto") pintarFolleto();
+  if (id === "comparador") pintarComparador();
+  if (id === "recomendar") mostrarUltimaRecomendacion();
+  if (id === "historial") pintarHistorial();
+  if (id === "modelo") cargarModelo();
+  if (id !== "como") { parar(); if (pasoActual >= 0) { pasoActual = -1; pintarFlujo(); } }
 }
 function ir(id) { if (location.hash === `#${id}`) mostrar(id); else location.hash = id; }
 window.addEventListener("hashchange", () => mostrar(location.hash.slice(1)));
@@ -789,8 +1010,14 @@ function elegir(v) {
   mini.hidden = false;
   mini.replaceChildren(h("span", "mini-tit", "Coche elegido"), h("span", "placa", v.id), h("b", null, `${v.marca} ${v.modelo}`), h("span", null, euros(v.precio)));
   document.querySelectorAll("[data-id-coche]").forEach((x) => x.classList.toggle("sel", x.dataset.idCoche === v.id));
-  if (cambia) ["resPrecio", "resAnuncio", "resRespuesta"].forEach((r) => $(r).replaceChildren());
+  if (cambia) {
+    $("resPrecio").replaceChildren();
+    precioSimulado = null;
+    mostrarGuardados();
+    pintarMargen();
+  }
   if (actual === "cartel") pintarCartel();
+  if (actual === "folleto") pintarFolleto();
 }
 $("miniElegido").addEventListener("click", () => elegido && abrirFicha(elegido));
 
@@ -827,8 +1054,10 @@ async function cargar() {
   POR_ID = Object.fromEntries(STOCK.map((v) => [v.id, v]));
   [FAV, COMPARAR].forEach((s) => [...s].forEach((id) => { if (!POR_ID[id]) s.delete(id); }));
   elegir(POR_ID[guardado.leer("vo-elegido", "")] || STOCK[0]);
+  prepararCara();
   prepararFiltros();
   pintarStock(); pintarListaCoste(); rellenarListas(); pintarPanel();
+  if (actual === "comparador") pintarComparador();
   try { ALERTAS = await api("/alertas"); } catch { ALERTAS = []; }
   alertasListas = true;
   ALERTA_POR_ID = Object.fromEntries(ALERTAS.map((a) => [a.id, a]));
@@ -979,16 +1208,9 @@ function accion(titulo, sub, alPulsar_) {
 function abrirFicha(v) {
   elegir(v);
   const a = ALERTA_POR_ID[v.id];
-  const datos = [
-    ["Año", v.anio], ["Kilómetros", `${num(v.km)} km`], ["Motor", MOTOR[v.combustible]], ["Cambio", CAMBIO[v.cambio]],
-    ["Potencia", v.potencia_cv && `${v.potencia_cv} CV`], ["Plazas", v.plazas], ["Carrocería", v.carroceria], ["Color", v.color],
-    ["Etiqueta DGT", v.etiqueta_dgt], ["Consumo", v.consumo_l_100km && `${dec(v.consumo_l_100km, 1)} L/100 km`],
-    ["Consumo eléctrico", v.consumo_kwh_100km && `${dec(v.consumo_kwh_100km, 1)} kWh/100 km`],
-    ["Autonomía eléctrica", v.autonomia_electrica_km && `${v.autonomia_electrica_km} km`], ["Propietarios", v.propietarios],
-    ["Libro de revisiones", v.libro_revisiones === null ? null : v.libro_revisiones ? "sí" : "no"],
-    ["Garantía", v.garantia_meses && `${v.garantia_meses} meses`], ["ITV hasta", v.itv_hasta],
-  ].filter(([, x]) => x !== null && x !== undefined && x !== "" && x !== 0);
-  const enComparar = () => (COMPARAR.has(v.id) ? "Quitar de la comparación" : "Añadir a la comparación");
+  const datos = datosDe(v);
+  const margen = margenDe(v, v.precio);
+  const enComparar = () => (COMPARAR.has(v.id) ? "Quitar de coste por motor" : "Añadir a coste por motor");
   const botonComparar = accion(enComparar(), `${COMPARAR.size} de 4 coches elegidos`, () => {
     alternarComparar(v.id);
     botonComparar.replaceChildren(h("b", null, enComparar()), h("span", null, `${COMPARAR.size} de 4 coches elegidos`));
@@ -998,6 +1220,7 @@ function abrirFicha(v) {
     h("h2", null, `${v.marca} ${v.modelo}`),
     h("p", "sub", [v.version, v.carroceria, v.color].filter(Boolean).join(" · ")),
     h("p", "grande", euros(v.precio)),
+    margen && h("p", "muted", `Tu margen con este precio: ${textoMargen(margen)}`),
     a && h("div", { class: `aviso-ficha ${a.prioridad}` }, h("b", null, `Alerta ${a.prioridad}: `), `${a.motivo}. ${a.accion}.`),
     barraDias(v, maxDias()),
     h("dl", "specs", datos.map(([k, x]) => h("div", null, h("dt", null, k), h("dd", null, x)))),
@@ -1009,6 +1232,8 @@ function abrirFicha(v) {
       accion("Escribir anuncio", "Web, portales e inglés", () => ir("anuncio")),
       accion("Responder a un cliente", "Solo con datos de la ficha", () => { ir("cliente"); setTimeout(() => $("mensaje").focus(), 60); }),
       accion("Imprimir cartel", "Pegatina para el parabrisas", () => ir("cartel")),
+      accion("Ficha para el cliente", "Hoja A4 lista para PDF", () => ir("folleto")),
+      accion("Comparar cara a cara", "Hasta 3 coches en columnas", () => { anadirACara(v.id); ir("comparador"); }),
       accion("Simular financiación", "Cuota con el precio del coche", () => { usarCocheEnFin(v); ir("financiacion"); }),
       botonComparar));
   $("cajon").classList.add("abierto");
@@ -1087,36 +1312,6 @@ document.addEventListener("keydown", (e) => {
 });
 
 // ---------- Precio ----------
-function termometro(j, precio) {
-  const lo = Math.min(j.rango_min, precio) * 0.94, hi = Math.max(j.rango_max, precio) * 1.06;
-  const pct = (x) => ((x - lo) / (hi - lo)) * 100;
-  return h("div", "gauge",
-    h("div", "gauge-pista"),
-    h("div", { class: "gauge-rango", style: `left:${pct(j.rango_min)}%;width:${pct(j.rango_max) - pct(j.rango_min)}%` }),
-    h("div", { class: "gauge-marca", style: `left:${pct(j.precio_estimado)}%` }, h("span", null, `Central ${euros(j.precio_estimado)}`)),
-    h("div", { class: "gauge-pin", style: `left:${pct(precio)}%` }, h("span", null, `Tu precio ${euros(precio)}`)));
-}
-$("btnPrecio").addEventListener("click", () => {
-  const v = elegido;
-  llamar("btnPrecio", "resPrecio", `/precio/${v.id}`, undefined, (j) => {
-    const clase = j.veredicto.includes("encima") ? "alta" : j.veredicto.includes("debajo") ? "media" : "baja";
-    const consejo = v.precio > j.rango_max
-      ? `Está caro para el mercado: bájalo al menos ${euros(v.precio - j.rango_max)} (hasta ${euros(j.rango_max)}) para entrar en el rango.`
-      : v.precio < j.rango_min
-        ? `Estás dejando margen sobre la mesa: podrías subirlo ${euros(j.rango_min - v.precio)} y seguiría en la parte baja del rango.`
-        : `Bien colocado. Hasta el techo del rango (${euros(j.rango_max)}) te quedan ${euros(j.rango_max - v.precio)}.`;
-    return h("div", "tarjeta",
-      h("p", "muted", "Rango de mercado"),
-      h("p", "grande", `${euros(j.rango_min)} – ${euros(j.rango_max)}`),
-      termometro(j, v.precio),
-      h("p", null, h("span", { class: `chip ${clase}` }, j.veredicto), "  ",
-        `Tu precio (${euros(v.precio)}) está un ${j.desviacion_pct > 0 ? "+" : ""}${dec(j.desviacion_pct, 1)} % frente al precio central estimado (${euros(j.precio_estimado)}).`),
-      h("p", "consejo", consejo),
-      h("div", "fila",
-        h("button", { class: "boton", type: "button", onclick: () => ir("cartel") }, "Hacer el cartel"),
-        h("button", { class: "boton", type: "button", onclick: () => { usarCocheEnFin(v); ir("financiacion"); } }, "Simular financiación")));
-  }, "Consultando el modelo de precios…");
-});
 
 // ---------- Anuncio ----------
 function bloque(titulo, texto, extra) {
@@ -1124,7 +1319,7 @@ function bloque(titulo, texto, extra) {
     h("div", "bloque-cab", h("span", "muted", titulo), h("span", "bloque-acc", extra, botonCopiar(texto))),
     h("div", "texto", texto));
 }
-$("btnAnuncio").addEventListener("click", () => llamar("btnAnuncio", "resAnuncio", "/anuncio", { id: elegido.id }, (j) => {
+function pintarAnuncio(j) {
   const a = j.anuncio;
   const avisos = Object.entries(j.avisos).flatMap(([k, v]) => v.map((x) => `${k}: ${x}`));
   const todo = [a.titulo, "", a.texto_web, "", ...a.destacados.map((d) => `• ${d}`)].join("\n");
@@ -1138,7 +1333,14 @@ $("btnAnuncio").addEventListener("click", () => llamar("btnAnuncio", "resAnuncio
     a.destacados.length ? h("div", null, h("h3", null, "Destacados"), a.destacados.map((d) => h("span", "chip chip-ok", `✓ ${d}`))) : null,
     lista("Destacados descartados por no tener respaldo en la ficha", j.destacados_descartados),
     uso(j.uso));
-}, "La IA está escribiendo el anuncio…"));
+}
+$("btnAnuncio").addEventListener("click", () => {
+  const v = elegido;
+  llamar("btnAnuncio", "resAnuncio", "/anuncio", { id: v.id }, (j) => {
+    guardarEnHistorial("anuncio", v, j);
+    return pintarAnuncio(j);
+  }, "La IA está escribiendo el anuncio…");
+});
 
 // ---------- Cliente pregunta ----------
 const PREGUNTAS = ["¿Tiene libro de revisiones?", "¿Cuántos dueños ha tenido?", "¿Qué garantía tiene?", "¿Cuándo le toca la ITV?",
@@ -1150,21 +1352,25 @@ $("preguntas").append(...PREGUNTAS.map((p) => h("button", { class: "chip-rapido"
   contarMensaje(); m.focus();
 } }, p)));
 $("mensaje").addEventListener("input", contarMensaje);
+function pintarRespuesta(j, v) {
+  const texto = j.respuesta;
+  return h("div", "tarjeta",
+    semaforo(j.avisos, "Comprobado: no hay cifras ni promesas fuera de la ficha."),
+    h("div", "texto", texto),
+    h("div", "fila",
+      botonCopiar(texto, "Copiar respuesta"),
+      h("a", { class: "boton", href: `https://wa.me/?text=${encodeURIComponent(texto)}`, target: "_blank", rel: "noopener" }, "Enviar por WhatsApp"),
+      h("a", { class: "boton", href: `mailto:?subject=${encodeURIComponent(nombre(v))}&body=${encodeURIComponent(texto)}` }, "Enviar por email")),
+    j.pendiente_de_consultar.length ? h("div", null, h("h3", null, "Pendiente de consultar (no está en la ficha)"),
+      j.pendiente_de_consultar.map((p) => h("label", "casilla tarea", h("input", { type: "checkbox" }), h("span", null, p)))) : null,
+    j.campos_usados.length ? h("p", "muted", "Datos usados: ", j.campos_usados.map((x) => h("span", "chip", x))) : null,
+    uso(j.uso));
+}
 $("btnRespuesta").addEventListener("click", () => {
-  const v = elegido;
-  llamar("btnRespuesta", "resRespuesta", "/respuesta", { id: v.id, mensaje: $("mensaje").value }, (j) => {
-    const texto = j.respuesta;
-    return h("div", "tarjeta",
-      semaforo(j.avisos, "Comprobado: no hay cifras ni promesas fuera de la ficha."),
-      h("div", "texto", texto),
-      h("div", "fila",
-        botonCopiar(texto, "Copiar respuesta"),
-        h("a", { class: "boton", href: `https://wa.me/?text=${encodeURIComponent(texto)}`, target: "_blank", rel: "noopener" }, "Enviar por WhatsApp"),
-        h("a", { class: "boton", href: `mailto:?subject=${encodeURIComponent(nombre(v))}&body=${encodeURIComponent(texto)}` }, "Enviar por email")),
-      j.pendiente_de_consultar.length ? h("div", null, h("h3", null, "Pendiente de consultar (no está en la ficha)"),
-        j.pendiente_de_consultar.map((p) => h("label", "casilla tarea", h("input", { type: "checkbox" }), h("span", null, p)))) : null,
-      j.campos_usados.length ? h("p", "muted", "Datos usados: ", j.campos_usados.map((x) => h("span", "chip", x))) : null,
-      uso(j.uso));
+  const v = elegido, mensaje = $("mensaje").value;
+  llamar("btnRespuesta", "resRespuesta", "/respuesta", { id: v.id, mensaje }, (j) => {
+    guardarEnHistorial("respuesta", v, j, { mensaje });
+    return pintarRespuesta(j, v);
   }, "La IA está preparando la respuesta…");
 });
 
@@ -1174,7 +1380,6 @@ async function pintarCartel() {
   const v = elegido;
   if (!v) return;
   const verCuota = $("kCuota").checked, verExtras = $("kExtras").checked, verSellos = $("kSellos").checked;
-  const entrada = Math.round((v.precio * (Number($("kEntrada").value) || 0)) / 100 / 100) * 100;
   const cuota = h("b", null, "…");
   const letra = h("p", "cartel-letra");
   const sellos = verSellos ? [
@@ -1191,23 +1396,13 @@ async function pintarCartel() {
     h("p", "cartel-precio", euros(v.precio)),
     verCuota ? h("p", "cartel-cuota", "o desde ", cuota, " al mes*") : null,
     h("div", "cartel-pie", etiqueta(v.etiqueta_dgt), sellos.map((s) => h("span", "cartel-sello-peq", s))),
+    CASA.nombre || CASA.contacto ? h("p", "cartel-contacto", [CASA.nombre, CASA.contacto].filter(Boolean).join(" · ")) : null,
     verCuota ? letra : null);
-  if (!verCuota) return;
-  const t = ++cartelToken;
-  try {
-    const tin = Number($("kTin").value) || 0;
-    const j = await api("/financiacion", { precio: v.precio, entrada, meses: Number($("kMeses").value) || 60, tin, comision_apertura_pct: 0 });
-    if (t !== cartelToken) return;
-    cuota.textContent = `${dec2(j.cuota)} €`;
-    letra.textContent = `*Precio al contado ${euros(v.precio)}. Entrada ${euros(entrada)}, importe financiado ${euros(j.importe)}, ${j.meses} cuotas de ${dec2(j.cuota)} €. ` +
-      `TIN ${dec(tin, 2)} %, TAE ${dec(j.tae, 2)} %. Importe total adeudado ${euros(j.total_pagado)}. Simulación orientativa sujeta a la aprobación de la entidad financiera.`;
-  } catch (e) {
-    if (t !== cartelToken) return;
-    cuota.textContent = "—";
-    letra.textContent = `No se ha podido calcular la cuota: ${e.message}`;
-  }
+  if (verCuota) { const t = ++cartelToken; rellenarCuota(v, cuota, letra, () => t === cartelToken); }
 }
 ["kCuota", "kExtras", "kSellos", "kEntrada", "kMeses", "kTin"].forEach((id) => $(id).addEventListener("input", pintarCartel));
+// Los datos del concesionario también salen en el cartel.
+["foNombre", "foContacto"].forEach((id) => $(id).addEventListener("input", () => { if (actual === "cartel") pintarCartel(); }));
 $("btnImprimir").addEventListener("click", () => window.print());
 
 // ---------- Recomendar ----------
@@ -1217,7 +1412,7 @@ const EJEMPLOS = [
   ["SUV automático", "Quiero un SUV automático, somos cinco, unos 15.000 km al año mezclando ciudad y carretera, hasta 30.000 €."],
 ];
 $("ejemplos").append(...EJEMPLOS.map(([t, texto]) => h("button", { class: "chip-rapido", type: "button", onclick: () => { $("necesidades").value = texto; } }, t)));
-$("btnRecomendar").addEventListener("click", () => llamar("btnRecomendar", "resRecomendar", "/recomendar", { texto: $("necesidades").value, provincia: $("rProv").value }, (j) => {
+function pintarRecomendacion(j) {
   const entendido = Object.entries(j.necesidades).filter(([, v]) => v !== null);
   const recos = j.recomendaciones;
   const maxP = Math.max(1, ...recos.map((r) => r.puntos));
@@ -1246,7 +1441,14 @@ $("btnRecomendar").addEventListener("click", () => llamar("btnRecomendar", "resR
         h("a", { class: "boton", href: `https://wa.me/?text=${encodeURIComponent(j.mensaje_cliente)}`, target: "_blank", rel: "noopener" }, "Enviar por WhatsApp")),
     ],
     uso(j.uso));
-}, "La IA está leyendo lo que busca el cliente…"));
+}
+$("btnRecomendar").addEventListener("click", () => {
+  const texto = $("necesidades").value;
+  llamar("btnRecomendar", "resRecomendar", "/recomendar", { texto, provincia: $("rProv").value }, (j) => {
+    guardarEnHistorial("recomendacion", null, j, { texto });
+    return pintarRecomendacion(j);
+  }, "La IA está leyendo lo que busca el cliente…");
+});
 
 // ---------- Coste por motor ----------
 function alternarComparar(id) {
@@ -1423,6 +1625,542 @@ $("btnTasar").addEventListener("click", () => {
     lista("Descartados por no aparecer en las notas", j.descartados_sin_cita),
     uso(j.uso)), $("tNotas").value.trim() ? "La IA está leyendo tus notas…" : "Calculando…");
 });
+
+// ---------- Utilidades nuevas ----------
+const fechaCorta = (iso) => new Date(iso).toLocaleString("es-ES", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+const recortar = (t, n) => (t.length > n ? `${t.slice(0, n - 1)}…` : t);
+const capitalizar = (t) => String(t).replace(/(^|[\s-])\p{L}/gu, (l) => l.toUpperCase());
+const vacio = (x) => x === null || x === undefined || x === "";
+const aTexto = (x) => (x instanceof Node ? x.textContent : Array.isArray(x) ? x.map(aTexto).join(", ") : String(x));
+
+// Datos de la ficha que puede ver el cliente (sin notas internas ni días en stock).
+function datosDe(v) {
+  return [
+    ["Año", v.anio], ["Kilómetros", `${num(v.km)} km`], ["Motor", MOTOR[v.combustible]], ["Cambio", CAMBIO[v.cambio]],
+    ["Potencia", v.potencia_cv && `${v.potencia_cv} CV`], ["Plazas", v.plazas], ["Carrocería", v.carroceria], ["Color", v.color],
+    ["Etiqueta DGT", v.etiqueta_dgt], ["Consumo", v.consumo_l_100km && `${dec(v.consumo_l_100km, 1)} L/100 km`],
+    ["Consumo eléctrico", v.consumo_kwh_100km && `${dec(v.consumo_kwh_100km, 1)} kWh/100 km`],
+    ["Autonomía eléctrica", v.autonomia_electrica_km && `${v.autonomia_electrica_km} km`], ["Propietarios", v.propietarios],
+    ["Libro de revisiones", v.libro_revisiones === null ? null : v.libro_revisiones ? "sí" : "no"],
+    ["Garantía", v.garantia_meses && `${v.garantia_meses} meses`], ["ITV hasta", v.itv_hasta],
+  ].filter(([, x]) => !vacio(x) && x !== 0);
+}
+
+// ---------- Precio: simulador y margen ----------
+let ultimoPrecio = null; // { id, j }: la última valoración calculada
+let precioSimulado = null; // { id, precio }
+const MARGENES = guardado.leer("vo-margenes", {});
+
+function veredictoDe(j, p) {
+  if (p > j.rango_max) return ["por encima del rango", "alta"];
+  if (p < j.rango_min) return ["por debajo del rango", "media"];
+  return ["dentro del rango normal", "baja"];
+}
+function consejoDe(j, p) {
+  if (p > j.rango_max) return `Está caro para el mercado: bájalo al menos ${euros(p - j.rango_max)} (hasta ${euros(j.rango_max)}) para entrar en el rango.`;
+  if (p < j.rango_min) return `Estás dejando margen sobre la mesa: podrías subirlo ${euros(j.rango_min - p)} y seguiría en la parte baja del rango.`;
+  return `Bien colocado. Hasta el techo del rango (${euros(j.rango_max)}) quedan ${euros(j.rango_max - p)}.`;
+}
+function pintarPrecio(j, v) {
+  const paso = 100;
+  const min = Math.floor((Math.min(j.rango_min, v.precio) * 0.9) / paso) * paso;
+  const max = Math.ceil((Math.max(j.rango_max, v.precio) * 1.1) / paso) * paso;
+  const pct = (x) => ((x - min) / (max - min)) * 100;
+  const etiquetaPin = h("span");
+  const pin = h("div", { class: "gauge-pin", style: `left:${pct(v.precio)}%` }, etiquetaPin);
+  const chip = h("span"), frase = h("span"), consejo = h("p", "consejo");
+  const valor = h("span", "sim-valor"), dif = h("span", "sim-dif");
+  const barra = h("input", { type: "range", min, max, step: paso, value: v.precio, "aria-label": "Simular otro precio" });
+  function actualizar(p) {
+    const [ver, clase] = veredictoDe(j, p);
+    const desv = ((p - j.precio_estimado) / j.precio_estimado) * 100;
+    const mio = p === v.precio;
+    chip.className = `chip ${clase}`; chip.textContent = ver;
+    frase.textContent = `  ${mio ? "Tu precio" : "Este precio"} (${euros(p)}) está un ${desv > 0 ? "+" : ""}${dec(desv, 1)} % frente al precio central estimado (${euros(j.precio_estimado)}).`;
+    consejo.textContent = consejoDe(j, p);
+    pin.style.left = `${pct(p)}%`;
+    etiquetaPin.textContent = `${mio ? "Tu precio" : "Simulado"} ${euros(p)}`;
+    valor.textContent = euros(p);
+    dif.textContent = mio ? "es tu precio actual" : `${p > v.precio ? "+" : "−"}${euros(Math.abs(p - v.precio))} frente a tu precio`;
+    precioSimulado = mio ? null : { id: v.id, precio: p };
+    pintarMargen();
+  }
+  const fijar = (p) => { barra.value = p; pin.style.animation = "none"; actualizar(Number(barra.value)); };
+  barra.addEventListener("input", () => { pin.style.animation = "none"; actualizar(Number(barra.value)); });
+  actualizar(v.precio);
+  const a = ALERTA_POR_ID[v.id];
+  const sugerido = a && a.accion.startsWith("Bajar") ? Math.round(a.precio_mercado / paso) * paso : null;
+  const central = Math.round(j.precio_estimado / paso) * paso;
+  return h("div", "tarjeta",
+    h("p", "muted", "Rango de mercado"),
+    h("p", "grande", `${euros(j.rango_min)} – ${euros(j.rango_max)}`),
+    h("div", "gauge", h("div", "gauge-pista"),
+      h("div", { class: "gauge-rango", style: `left:${pct(j.rango_min)}%;width:${pct(j.rango_max) - pct(j.rango_min)}%` }),
+      h("div", { class: "gauge-marca", style: `left:${pct(j.precio_estimado)}%` }, h("span", null, `Central ${euros(j.precio_estimado)}`)), pin),
+    h("p", null, chip, frase),
+    consejo,
+    h("div", "simulador",
+      h("h3", null, "Simula otro precio"),
+      h("p", "muted", "Mueve la barra y mira cómo quedaría en el rango y en tu margen. Es solo una simulación: no cambia el precio del stock."),
+      h("div", "fila", valor, dif),
+      barra,
+      h("div", "fila",
+        sugerido && h("button", { class: "mini", type: "button", onclick: () => fijar(sugerido) }, `Probar el precio de la alerta (${euros(sugerido)})`),
+        h("button", { class: "mini", type: "button", onclick: () => fijar(central) }, `Probar el precio central (${euros(central)})`),
+        h("button", { class: "mini", type: "button", onclick: () => fijar(v.precio) }, "Volver a mi precio"))),
+    h("div", "fila",
+      h("button", { class: "boton", type: "button", onclick: () => ir("cartel") }, "Hacer el cartel"),
+      h("button", { class: "boton", type: "button", onclick: () => ir("folleto") }, "Ficha para el cliente"),
+      h("button", { class: "boton", type: "button", onclick: () => { usarCocheEnFin(v); ir("financiacion"); } }, "Simular financiación")));
+}
+$("btnPrecio").addEventListener("click", () => {
+  const v = elegido;
+  llamar("btnPrecio", "resPrecio", `/precio/${v.id}`, undefined, (j) => {
+    ultimoPrecio = { id: v.id, j };
+    precioSimulado = null;
+    pintarMargen();
+    return pintarPrecio(j, v);
+  }, "Consultando el modelo de precios…");
+});
+
+function margenDe(v, p) {
+  const m = MARGENES[v.id];
+  if (!m || !(m.compra > 0)) return null;
+  const margen = p - m.compra - (m.preparacion || 0);
+  return { margen, pct: (margen / p) * 100, coste: m.compra + (m.preparacion || 0) };
+}
+const conSigno = (n, fmt) => `${n < 0 ? "−" : ""}${fmt(Math.abs(n))}`; // signo menos de verdad, no guion
+const textoMargen = (x) => `${conSigno(x.margen, euros)} (${conSigno(x.pct, (n) => dec(n, 1))} % sobre la venta)`;
+function pintarMargen() {
+  const v = elegido;
+  if (!v) return;
+  const m = MARGENES[v.id] || {};
+  if (document.activeElement !== $("mCompra")) $("mCompra").value = m.compra || "";
+  if (document.activeElement !== $("mPreparacion")) $("mPreparacion").value = m.preparacion || "";
+  const res = $("resMargen");
+  if (!(m.compra > 0)) {
+    res.replaceChildren(h("p", "muted", "Escribe lo que te costó y verás tu margen con tu precio, con el simulado y con el del mercado."));
+    return;
+  }
+  const filas = [["Con tu precio", v.precio]];
+  if (precioSimulado?.id === v.id) filas.push(["Con el precio simulado", precioSimulado.precio]);
+  if (ultimoPrecio?.id === v.id) filas.push(["Con el precio central del mercado", Math.round(ultimoPrecio.j.precio_estimado)]);
+  res.replaceChildren(
+    h("div", "tabla", h("table", "margenes",
+      h("thead", null, h("tr", null, h("th", null, ""), h("th", "num", "Precio de venta"), h("th", "num", "Margen"), h("th", "num", "% sobre la venta"))),
+      h("tbody", null, filas.map(([t, p]) => {
+        const x = margenDe(v, p), rojo = x.margen < 0 ? " negativo" : "";
+        return h("tr", null, h("td", null, t), h("td", "num", euros(p)),
+          h("td", `num${rojo}`, conSigno(x.margen, euros)), h("td", `num${rojo}`, `${conSigno(x.pct, (n) => dec(n, 1))} %`));
+      })))),
+    h("p", "muted", `Coste total del coche: ${euros(margenDe(v, v.precio).coste)}. Es el margen bruto: antes de impuestos y gastos generales.`));
+}
+["mCompra", "mPreparacion"].forEach((id) => $(id).addEventListener("input", () => {
+  if (!elegido) return;
+  const compra = Number($("mCompra").value) || 0, preparacion = Number($("mPreparacion").value) || 0;
+  if (compra || preparacion) MARGENES[elegido.id] = { compra, preparacion }; else delete MARGENES[elegido.id];
+  guardado.escribir("vo-margenes", MARGENES);
+  pintarMargen();
+}));
+
+// ---------- Historial de IA ----------
+let HISTORIAL = guardado.leer("vo-historial", []);
+const TIPOS = { anuncio: "Anuncio", respuesta: "Respuesta", recomendacion: "Recomendación" };
+let filtroHist = "";
+function guardarEnHistorial(tipo, v, datos, extra = {}) {
+  HISTORIAL.unshift({ tipo, id: v?.id ?? null, nombre: v ? nombre(v) : null, fecha: new Date().toISOString(), datos, ...extra });
+  HISTORIAL = HISTORIAL.slice(0, 40);
+  guardado.escribir("vo-historial", HISTORIAL);
+}
+const ultimoGuardado = (tipo, id) => HISTORIAL.find((e) => e.tipo === tipo && e.id === id);
+const avisoGuardado = (e, ...extra) => h("p", "guardado", `Guardado el ${fechaCorta(e.fecha)}: volver a verlo no gasta IA.`, ...extra);
+function pintarEntrada(e) {
+  if (e.tipo === "anuncio") return pintarAnuncio(e.datos);
+  if (e.tipo === "respuesta") return pintarRespuesta(e.datos, POR_ID[e.id] || { marca: e.nombre ?? "", modelo: "" });
+  return pintarRecomendacion(e.datos);
+}
+function mostrarGuardados() {
+  const v = elegido;
+  const a = ultimoGuardado("anuncio", v.id);
+  $("resAnuncio").replaceChildren(...(a ? [avisoGuardado(a), pintarAnuncio(a.datos)] : []));
+  const r = ultimoGuardado("respuesta", v.id);
+  $("resRespuesta").replaceChildren(...(r ? [avisoGuardado(r, h("span", "muted", `Mensaje: «${recortar(r.mensaje ?? "", 90)}»`)), pintarRespuesta(r.datos, v)] : []));
+}
+function mostrarUltimaRecomendacion() {
+  if ($("resRecomendar").childElementCount) return;
+  const e = HISTORIAL.find((x) => x.tipo === "recomendacion");
+  if (!e) return;
+  if (!$("necesidades").value.trim()) $("necesidades").value = e.texto ?? "";
+  $("resRecomendar").replaceChildren(avisoGuardado(e), pintarRecomendacion(e.datos));
+}
+function pintarHistorial() {
+  $("filtroHistorial").replaceChildren(...[["", "Todo"], ...Object.entries(TIPOS)].map(([k, t]) => h("button", {
+    type: "button", "aria-pressed": String(filtroHist === k), onclick: () => { filtroHist = k; pintarHistorial(); } }, t)));
+  const gasto = HISTORIAL.reduce((s, e) => s + (e.datos?.uso?.coste_usd || 0), 0);
+  $("resumenHistorial").textContent = HISTORIAL.length
+    ? `${HISTORIAL.length} ${HISTORIAL.length === 1 ? "guardado" : "guardados"} (máximo 40). Lo que costaron en total: ${dec(gasto * 100, 2)} céntimos de dólar.` : "";
+  const lista_ = HISTORIAL.filter((e) => !filtroHist || e.tipo === filtroHist);
+  $("listaHistorial").replaceChildren(...(lista_.length ? lista_.map((e) => h("div", "historial-fila",
+    h("span", "chip tipo", TIPOS[e.tipo]),
+    h("div", null,
+      e.id ? [h("span", "placa", e.id), " ", h("b", null, e.nombre)] : h("b", null, `«${recortar(e.texto ?? "", 80)}»`),
+      h("p", "muted", fechaCorta(e.fecha) + (e.mensaje ? ` · «${recortar(e.mensaje, 70)}»` : ""))),
+    h("button", { class: "mini", type: "button", onclick: () => {
+      $("verHistorial").replaceChildren(h("h3", "titulo-bloque", `${TIPOS[e.tipo]} del ${fechaCorta(e.fecha)}`), pintarEntrada(e));
+      $("verHistorial").scrollIntoView({ behavior: "smooth", block: "start" });
+    } }, "Ver"),
+    h("button", { class: "mini", type: "button", onclick: () => {
+      HISTORIAL = HISTORIAL.filter((x) => x !== e);
+      guardado.escribir("vo-historial", HISTORIAL);
+      $("verHistorial").replaceChildren();
+      pintarHistorial();
+      toast("Borrado del historial");
+    } }, "Borrar")))
+    : [h("p", "muted", "Aún no hay nada. Cuando la IA escriba un anuncio, una respuesta o una recomendación, se guardará aquí.")]));
+}
+$("borrarHistorial").addEventListener("click", () => {
+  if (!HISTORIAL.length || !confirm("¿Borrar todo el historial de este navegador?")) return;
+  HISTORIAL = [];
+  guardado.escribir("vo-historial", HISTORIAL);
+  $("verHistorial").replaceChildren();
+  pintarHistorial();
+  toast("Historial borrado");
+});
+
+// ---------- Comparador cara a cara ----------
+let CARA = guardado.leer("vo-cara", []);
+const RANGO_ETIQUETA = { "0": 4, ECO: 3, C: 2, B: 1, "sin etiqueta": 0 };
+const FILAS_CMP = [
+  ["Precio", (v) => v.precio, euros, "menor"],
+  ["Año", (v) => v.anio, String, "mayor"],
+  ["Kilómetros", (v) => v.km, (x) => `${num(x)} km`, "menor"],
+  ["Motor", (v) => MOTOR[v.combustible]],
+  ["Cambio", (v) => CAMBIO[v.cambio]],
+  ["Potencia", (v) => v.potencia_cv, (x) => `${x} CV`, "mayor"],
+  ["Plazas", (v) => v.plazas, String, "mayor"],
+  ["Consumo", (v) => v.consumo_l_100km, (x) => `${dec(x, 1)} L/100 km`, "menor"],
+  ["Consumo eléctrico", (v) => v.consumo_kwh_100km, (x) => `${dec(x, 1)} kWh/100 km`, "menor"],
+  ["Autonomía eléctrica", (v) => v.autonomia_electrica_km, (x) => `${x} km`, "mayor"],
+  ["Etiqueta DGT", (v) => v.etiqueta_dgt, etiqueta, "etiqueta"],
+  ["Garantía", (v) => v.garantia_meses, (x) => `${x} meses`, "mayor"],
+  ["Propietarios", (v) => v.propietarios, String, "menor"],
+  ["Libro de revisiones", (v) => v.libro_revisiones, (x) => (x ? "sí" : "no"), "si"],
+  ["ITV hasta", (v) => v.itv_hasta],
+  ["Carrocería", (v) => v.carroceria],
+  ["Extras", (v) => (v.extras.length ? v.extras : null), (x) => x.map((e) => h("span", "chip", e))],
+];
+function mejorDe(vals, regla) {
+  const conDato = vals.map((x, i) => [x, i]).filter(([x]) => !vacio(x));
+  if (!regla || conDato.length < 2) return new Set();
+  const puntos = { etiqueta: (x) => RANGO_ETIQUETA[x] ?? 0, si: (x) => (x ? 1 : 0), menor: (x) => -x, mayor: (x) => x }[regla];
+  const pts = conDato.map(([x, i]) => [puntos(x), i]);
+  const tope = Math.max(...pts.map((p) => p[0]));
+  if (pts.every((p) => p[0] === tope)) return new Set(); // empate: nadie gana
+  return new Set(pts.filter((p) => p[0] === tope).map((p) => p[1]));
+}
+function guardarCara() {
+  CARA = [0, 1, 2].map((i) => (POR_ID[CARA[i]] ? CARA[i] : null));
+  guardado.escribir("vo-cara", CARA);
+}
+function prepararCara() {
+  if (CARA.some((id) => POR_ID[id])) { guardarCara(); return; }
+  const usados = new Set([elegido.combustible]);
+  CARA = [elegido.id];
+  for (const v of STOCK) {
+    if (CARA.length === 3) break;
+    if (!usados.has(v.combustible)) { CARA.push(v.id); usados.add(v.combustible); }
+  }
+  guardarCara();
+}
+function anadirACara(id) {
+  if (!CARA.includes(id)) {
+    const hueco = CARA.findIndex((x) => !x);
+    CARA[hueco >= 0 ? hueco : 2] = id;
+    guardarCara();
+  }
+  toast("En el comparador");
+}
+let cmpToken = 0;
+function pintarComparador() {
+  if (!STOCK.length) return;
+  $("selectoresComparador").replaceChildren(...[0, 1, 2].map((i) => h("label", null, `Coche ${i + 1}`,
+    h("select", { onchange: (e) => { CARA[i] = e.target.value || null; guardarCara(); pintarComparador(); } },
+      h("option", { value: "" }, "— Ninguno —"),
+      STOCK.map((v) => h("option", { value: v.id, selected: CARA[i] === v.id }, `${v.id} · ${v.marca} ${v.modelo} · ${euros(v.precio)}`))))));
+  const coches = CARA.map((id) => POR_ID[id]).filter(Boolean);
+  const res = $("resComparador");
+  if (coches.length < 2) { res.replaceChildren(h("p", "muted", "Elige al menos 2 coches para compararlos.")); return; }
+  const filas = FILAS_CMP.map(([t, valor, fmt = String, regla]) => {
+    const vals = coches.map(valor);
+    if (vals.every(vacio)) return null;
+    const mejores = mejorDe(vals, regla);
+    return h("tr", null, h("th", null, t), vals.map((x, i) => h("td", mejores.has(i) ? "mejor" : null, vacio(x) ? "—" : fmt(x))));
+  });
+  const celdaCoste = () => h("th", null, "Coste de uso al año");
+  const filaCoste = h("tr", null, celdaCoste(), coches.map(() => h("td", "muted", "calculando…")));
+  res.replaceChildren(
+    h("div", "tarjeta tabla", h("table", "cmp",
+      h("thead", null, h("tr", null, h("th", null, ""), coches.map((v) => h("th", null, h("div", "cmp-cab",
+        h("span", null, h("span", "placa", v.id), " ", corazon(v.id)),
+        h("b", null, `${v.marca} ${v.modelo}`), h("span", "muted", v.version ?? ""),
+        h("p", "card-precio", euros(v.precio)),
+        h("button", { class: "mini", type: "button", onclick: () => abrirFicha(v) }, "Ver ficha")))))),
+      h("tbody", null, filas, filaCoste))),
+    h("p", "muted solo-movil", "Desliza la tabla hacia los lados para ver todos los coches."),
+    h("p", "muted", "El coste de uso usa los km al año, la provincia y la carga en casa de «Coste por motor»."),
+    h("div", "fila",
+      botonCopiar(() => textoComparativa(coches), "Copiar comparativa"),
+      h("button", { class: "boton", type: "button", onclick: () => {
+        COMPARAR.clear(); coches.forEach((v) => COMPARAR.add(v.id));
+        guardado.escribir("vo-comparar", [...COMPARAR]); pintarListaCoste();
+        ir("coste"); $("btnCoste").click();
+      } }, "Ver el coste a 5 años →")));
+  const t = ++cmpToken;
+  api("/coste-anual", { ids: coches.map((v) => v.id), km_anuales: Number($("cKm").value) || 15000, carga_en_casa: $("cCasa").checked, provincia: $("cProv").value })
+    .then((j) => {
+      if (t !== cmpToken) return;
+      const porId = Object.fromEntries(j.coches.map((c) => [c.id, c.total_anual]));
+      const vals = coches.map((v) => porId[v.id]);
+      const mejores = mejorDe(vals, "menor");
+      filaCoste.replaceChildren(celdaCoste(), ...vals.map((x, i) => h("td", mejores.has(i) ? "mejor" : null, euros(x))));
+    })
+    .catch(() => { if (t === cmpToken) filaCoste.replaceChildren(celdaCoste(), ...coches.map(() => h("td", "muted", "no disponible"))); });
+}
+function textoComparativa(coches) {
+  const lineas = [coches.map((v) => `${v.marca} ${v.modelo} (${v.id})`).join("  vs  "), ""];
+  FILAS_CMP.forEach(([t, valor, fmt = String]) => {
+    const vals = coches.map(valor);
+    if (!vals.every(vacio)) lineas.push(`${t}: ${vals.map((x) => (vacio(x) ? "—" : aTexto(fmt(x)))).join("  |  ")}`);
+  });
+  return lineas.join("\n");
+}
+
+// ---------- Ficha para el cliente ----------
+const CASA = guardado.leer("vo-concesionario", { nombre: "", contacto: "" });
+$("foNombre").value = CASA.nombre;
+$("foContacto").value = CASA.contacto;
+["foNombre", "foContacto"].forEach((id) => $(id).addEventListener("input", () => {
+  CASA.nombre = $("foNombre").value.trim();
+  CASA.contacto = $("foContacto").value.trim();
+  guardado.escribir("vo-concesionario", CASA);
+  pintarFolleto();
+}));
+$("foCuota").addEventListener("input", pintarFolleto);
+$("btnFolleto").addEventListener("click", () => window.print());
+
+// Cuota «desde» con la entrada, el plazo y el TIN del cartel. La usan el cartel y la ficha.
+async function cuotaDesde(v) {
+  const entrada = Math.round((v.precio * (Number($("kEntrada").value) || 0)) / 100 / 100) * 100;
+  const tin = Number($("kTin").value) || 0;
+  const j = await api("/financiacion", { precio: v.precio, entrada, meses: Number($("kMeses").value) || 60, tin, comision_apertura_pct: 0 });
+  return {
+    cuota: `${dec2(j.cuota)} €`,
+    letra: `*Precio al contado ${euros(v.precio)}. Entrada ${euros(entrada)}, importe financiado ${euros(j.importe)}, ${j.meses} cuotas de ${dec2(j.cuota)} €. ` +
+      `TIN ${dec(tin, 2)} %, TAE ${dec(j.tae, 2)} %. Importe total adeudado ${euros(j.total_pagado)}. Simulación orientativa sujeta a la aprobación de la entidad financiera.`,
+  };
+}
+async function rellenarCuota(v, nodoCuota, nodoLetra, token) {
+  try {
+    const c = await cuotaDesde(v);
+    if (!token()) return;
+    nodoCuota.textContent = c.cuota;
+    nodoLetra.textContent = c.letra;
+  } catch (e) {
+    if (!token()) return;
+    nodoCuota.textContent = "—";
+    nodoLetra.textContent = `No se ha podido calcular la cuota: ${e.message}`;
+  }
+}
+let folletoToken = 0;
+function pintarFolleto() {
+  const v = elegido;
+  if (!v) return;
+  const verCuota = $("foCuota").checked;
+  const cuota = h("b", null, "…"), letra = h("p", "fo-letra");
+  const sellos = [
+    v.garantia_meses && `${v.garantia_meses} meses de garantía`,
+    v.propietarios === 1 && "Un solo propietario",
+    v.libro_revisiones === true && "Libro de revisiones",
+    v.itv_hasta && `ITV hasta ${v.itv_hasta}`,
+  ].filter(Boolean);
+  const detalle = [v.version, v.carroceria, v.color].filter(Boolean).join(" · ");
+  $("folletoHoja").replaceChildren(
+    h("div", "fo-cab", h("span", "fo-casa", CASA.nombre || "Ficha del vehículo"), h("span", "placa", v.id)),
+    h("div", null, h("p", "fo-marca", v.marca), h("p", "fo-modelo", v.modelo), detalle && h("p", "fo-version", detalle)),
+    h("div", "fo-hero",
+      h("div", null, h("p", "fo-precio", euros(v.precio)), verCuota ? h("p", "fo-cuota", "o desde ", cuota, " al mes*") : null),
+      h("div", "fo-claves", h("span", null, v.anio), h("span", null, `${num(v.km)} km`), h("span", null, MOTOR[v.combustible]),
+        h("span", null, CAMBIO[v.cambio]), v.potencia_cv && h("span", null, `${v.potencia_cv} CV`), etiqueta(v.etiqueta_dgt))),
+    h("div", null, h("h3", null, "Datos técnicos"), h("dl", "fo-datos", datosDe(v).map(([k, x]) => h("div", null, h("dt", null, k), h("dd", null, x))))),
+    v.extras.length ? h("div", null, h("h3", null, "Equipamiento"), h("ul", "fo-extras", v.extras.map((e) => h("li", null, e)))) : null,
+    sellos.length ? h("div", null, h("h3", null, "Lo que te llevas"), h("div", "fo-sellos", sellos.map((s) => h("span", null, s)))) : null,
+    h("div", "fo-pie", h("span", null, CASA.contacto), h("span", null, `Ref. ${v.id} · ${new Date().toLocaleDateString("es-ES")}`)),
+    h("p", "fo-letra", "Datos orientativos. Consulta las condiciones en el concesionario."),
+    verCuota ? letra : null);
+  if (verCuota) { const t = ++folletoToken; rellenarCuota(v, cuota, letra, () => t === folletoToken); }
+}
+
+// ---------- Modelo de precios ----------
+const NS = "http://www.w3.org/2000/svg";
+function s(tag, attrs = {}, ...hijos) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) if (!vacio(v)) e.setAttribute(k, v);
+  for (const c of hijos.flat(Infinity)) if (!vacio(c)) e.append(c instanceof Node ? c : String(c));
+  return e;
+}
+let modeloCargado = false;
+async function cargarModelo() {
+  if (modeloCargado) return;
+  try {
+    const d = await api("/modelo");
+    modeloCargado = true;
+    $("resModelo").replaceChildren(pintarModelo(d));
+  } catch (e) {
+    $("resModelo").replaceChildren(h("p", "error", `Error: ${e.message}`));
+  }
+}
+function dispersion(muestra) {
+  const W = 900, H = 440, m = { izq: 70, der: 20, arr: 14, aba: 48 };
+  const tope = Math.ceil((Math.max(...muestra.flatMap((p) => [p.real, p.estimado])) * 1.04) / 5000) * 5000;
+  const paso = tope > 40000 ? 10000 : 5000;
+  const x = (v) => m.izq + (v / tope) * (W - m.izq - m.der);
+  const y = (v) => H - m.aba - (v / tope) * (H - m.arr - m.aba);
+  const dentro = (p) => p.real >= p.rango_min && p.real <= p.rango_max;
+  const marcas = [];
+  for (let v = 0; v <= tope; v += paso) marcas.push(v);
+  const puntos = muestra.map((p) => ({ p, cx: x(p.real), cy: y(p.estimado), c: s("circle", { cx: x(p.real), cy: y(p.estimado), r: 4.5, class: dentro(p) ? "p-dentro" : "p-fuera" }) }));
+  const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Precio real frente a precio estimado de cada coche de prueba" },
+    marcas.map((v) => [
+      s("line", { x1: m.izq, x2: W - m.der, y1: y(v), y2: y(v), class: "eje", "stroke-opacity": v ? 0.55 : 1 }),
+      s("text", { x: m.izq - 8, y: y(v) + 4, "text-anchor": "end", class: "texto-eje" }, num(v)),
+      s("text", { x: x(v), y: H - m.aba + 18, "text-anchor": "middle", class: "texto-eje" }, num(v)),
+    ]),
+    s("line", { x1: m.izq, x2: m.izq, y1: m.arr, y2: H - m.aba, class: "eje" }),
+    s("line", { x1: x(0), y1: y(0), x2: x(tope), y2: y(tope), class: "diagonal" }),
+    s("text", { x: x(tope) - 6, y: y(tope) + 16, "text-anchor": "end", class: "texto-eje" }, "acierto perfecto"),
+    s("text", { x: (m.izq + W - m.der) / 2, y: H - 6, "text-anchor": "middle", class: "texto-eje" }, "Precio real (€)"),
+    s("text", { x: 14, y: (m.arr + H - m.aba) / 2, "text-anchor": "middle", class: "texto-eje", transform: `rotate(-90 14 ${(m.arr + H - m.aba) / 2})` }, "Precio estimado (€)"),
+    puntos.map((q) => q.c));
+  const caja = h("div", "grafico", svg);
+  const tip = h("div", { class: "tooltip", hidden: true });
+  caja.append(tip);
+  let activo = null;
+  svg.addEventListener("pointermove", (e) => {
+    const r = svg.getBoundingClientRect();
+    const px = ((e.clientX - r.left) * W) / r.width, py = ((e.clientY - r.top) * H) / r.height;
+    let mejor = null, dist = Infinity;
+    for (const q of puntos) { const d = (q.cx - px) ** 2 + (q.cy - py) ** 2; if (d < dist) { dist = d; mejor = q; } }
+    if (!mejor || dist > 40 ** 2) { svg.dispatchEvent(new Event("pointerleave")); return; }
+    if (activo !== mejor) {
+      activo?.c.classList.remove("p-activo");
+      activo = mejor;
+      activo.c.classList.add("p-activo");
+      svg.append(activo.c); // encima de los demás
+      const p = activo.p;
+      tip.replaceChildren(h("b", null, `${euros(p.real)} reales`),
+        h("span", null, `Estimado ${euros(p.estimado)} · rango ${euros(p.rango_min)} – ${euros(p.rango_max)}`), h("br"),
+        h("span", null, `${capitalizar(p.marca)} ${capitalizar(p.modelo)} · ${p.anio} · ${num(p.km)} km · ${dentro(p) ? "dentro del rango" : "fuera del rango"}`));
+    }
+    tip.hidden = false;
+    tip.style.left = `${(activo.cx * r.width) / W}px`;
+    tip.style.top = `${(activo.cy * r.height) / H}px`;
+  });
+  svg.addEventListener("pointerleave", () => { tip.hidden = true; activo?.c.classList.remove("p-activo"); activo = null; });
+  return caja;
+}
+function pintarModelo(d) {
+  const mejora = (1 - d.gb_mae / d.baseline_mae) * 100;
+  const maxErr = Math.max(...d.error_por_combustible.map((c) => c.error_pct));
+  const pocos = d.error_por_combustible.filter((c) => c.coches < 10);
+  const dentro = d.muestra.filter((p) => p.real >= p.rango_min && p.real <= p.rango_max).length;
+  const ordenados = [...d.muestra].sort((a, b) => Math.abs(b.estimado - b.real) / b.real - Math.abs(a.estimado - a.real) / a.real);
+  return h("div", null,
+    h("div", "kpis",
+      kpi("Error medio", d.gb_mae, euros, `un ${dec(d.gb_mape, 1)} % del precio, de media`, "amarillo"),
+      kpi("Mejor que el método simple", mejora, (x) => `${dec(x, 0)} %`, `el simple se equivoca ${euros(d.baseline_mae)} (${dec(d.baseline_mape, 1)} %)`),
+      kpi("El rango acierta", d.cobertura_rango_pct, (x) => `${dec(x, 1)} %`, `de los coches; objetivo: ${d.cobertura_objetivo_pct} %`),
+      kpi("Coches de prueba", d.filas_test, num, `el modelo aprendió con ${num(d.filas_train)}`)),
+    h("div", "tarjeta",
+        h("h3", null, "Precio real frente a estimado"),
+        h("p", "muted", "Cada punto es un coche de prueba. Cuanto más cerca de la diagonal, mejor acierta. Pasa el ratón por encima para ver cada uno."),
+        h("p", "leyenda", h("i", "l-dentro"), `Dentro del rango (${dentro})`, h("i", "l-fuera"), `Fuera del rango (${d.muestra.length - dentro})`),
+        dispersion(d.muestra),
+        h("details", null, h("summary", null, "Ver los datos en una tabla"),
+          h("div", "tabla", h("table", null,
+            h("thead", null, h("tr", null, h("th", null, "Coche"), h("th", "num", "Real"), h("th", "num", "Estimado"), h("th", "num", "Error"), h("th", null, "¿En el rango?"))),
+            h("tbody", null, ordenados.map((p) => h("tr", null,
+              h("td", null, `${capitalizar(p.marca)} ${capitalizar(p.modelo)} · ${p.anio}`), h("td", "num", euros(p.real)), h("td", "num", euros(p.estimado)),
+              h("td", "num", `${dec((Math.abs(p.estimado - p.real) / p.real) * 100, 1)} %`),
+              h("td", null, p.real >= p.rango_min && p.real <= p.rango_max ? "sí" : "no")))))))),
+    h("div", "rejilla-2",
+        h("div", "tarjeta",
+          h("h3", null, "Error medio por tipo de motor"),
+          d.error_por_combustible.map((c) => h("div", "barra-fila ancha",
+            h("span", null, MOTOR[c.combustible] ?? c.combustible, h("br"),
+              h("small", "muted", `${c.coches} ${c.coches === 1 ? "coche" : "coches"}${c.coches < 10 ? " · pocos datos" : ""}`)),
+            h("div", "pista", h("div", { class: "relleno", style: `width:${(c.error_pct / maxErr) * 100}%` })),
+            h("span", "num", `${dec(c.error_pct, 1)} %`))),
+          pocos.length ? h("p", "consejo", `Ojo: en los datos de prueba solo hay ${pocos.map((c) => `${c.coches} ${MOTOR[c.combustible] ?? c.combustible}`).join(" y ")}. ` +
+            "Para esos motores el modelo ha visto muy pocos ejemplos: toma su precio con más cautela.") : null),
+        h("div", "tarjeta",
+          h("h3", null, "Cómo se mide"),
+          h("ul", null,
+            h("li", null, "Antes de entrenar se aparta 1 de cada 5 coches. El modelo no los ve; con ellos se mide el error."),
+            h("li", null, h("b", null, "Error medio: "), "cuántos euros se equivoca de media al estimar el precio."),
+            h("li", null, h("b", null, "Método simple: "), "el precio mediano de coches de la misma marca, modelo y año. Si el modelo no le gana, no sirve."),
+            h("li", null, h("b", null, "El rango: "), "el mínimo y el máximo que enseña la web. Está calibrado para que el precio real caiga dentro 8 de cada 10 veces.")),
+          h("p", "muted", `Medido el ${new Date(d.fecha).toLocaleDateString("es-ES")}. Se recalcula al entrenar con `, h("code", null, "scripts/entrenar_precio.py"), "."))));
+}
+
+// ---------- Cómo funciona ----------
+const FLUJOS = {
+  anuncio: ["Escribir un anuncio", [
+    ["web", "Pides", "Pulsas «Escribir anuncio». El navegador manda POST /anuncio con la referencia del coche."],
+    ["api", "Vigila el gasto", "api.py comprueba que no pases de 20 usos de IA por hora y prepara la ficha sin datos internos."],
+    ["ia", "Redacta", "La IA escribe el título, los textos y los destacados con una regla: solo datos de la ficha."],
+    ["control", "Comprueba", "verificacion.py revisa cada cifra y cada promesa, y tira los destacados que no tienen respaldo."],
+    ["web", "Lo ves", "Caja verde si todo cuadra o roja con los fallos. El anuncio queda guardado en el historial."],
+  ]],
+  precio: ["Calcular precio", [
+    ["web", "Pides", "Pulsas «Calcular precio». El navegador manda GET /precio/VO-001 al servidor."],
+    ["api", "Reparte", "api.py recibe la petición y busca el coche en stock/stock.csv."],
+    ["ml", "Estima", "precio.py pasa marca, modelo, año, km, motor y CV por el modelo entrenado. Sale el precio central y su rango."],
+    ["api", "Empaqueta", "api.py devuelve el resultado en JSON, el formato en que viajan los datos."],
+    ["web", "Lo ves", "La web dibuja el termómetro y el consejo. Simular otro precio ya no necesita volver a preguntar."],
+  ]],
+  coste: ["Coste por motor", [
+    ["web", "Pides", "Eliges coches y pulsas «Comparar». El navegador manda POST /coste-anual."],
+    ["api", "Reparte", "api.py prepara el perfil del cliente: km al año, provincia y si carga en casa."],
+    ["datos", "Consulta", "Descarga el precio de hoy de la gasolina (Ministerio) y de la luz (Red Eléctrica). Si no responden, usa un precio de reserva y lo avisa."],
+    ["calc", "Calcula", "coste_anual.py suma energía, mantenimiento, seguro e impuesto, y cuántos años tarda en compensar el más caro."],
+    ["web", "Lo ves", "Barras con el coste a 5 años y la tabla con todo el detalle."],
+  ]],
+};
+let flujoActual = "anuncio", pasoActual = -1, temporizador = null;
+function parar() { clearInterval(temporizador); temporizador = null; }
+function pintarFlujo() {
+  const pasos = FLUJOS[flujoActual][1];
+  const p = pasos[pasoActual];
+  $("flujosComo").replaceChildren(...Object.entries(FLUJOS).map(([k, [t]]) => h("button", {
+    type: "button", "aria-pressed": String(k === flujoActual), onclick: () => { parar(); flujoActual = k; pasoActual = -1; pintarFlujo(); } }, t)));
+  $("flujo").classList.toggle("en-marcha", !!p);
+  document.querySelectorAll("#flujo .nodo").forEach((x) => x.classList.toggle("activo", !!p && x.dataset.nodo === p[0]));
+  $("pasoTexto").replaceChildren(...(p ? [h("b", null, `${pasoActual + 1}. ${p[1]}`), p[2]] : ["Elige un ejemplo y pulsa «Reproducir» o «Siguiente» para seguir el viaje paso a paso."]));
+  $("pasoAnterior").disabled = pasoActual <= 0;
+  $("pasoSiguiente").disabled = pasoActual >= pasos.length - 1;
+  $("pasoPlay").textContent = temporizador ? "Pausa" : pasoActual >= pasos.length - 1 ? "Otra vez" : "Reproducir";
+}
+$("pasoSiguiente").addEventListener("click", () => { parar(); pasoActual++; pintarFlujo(); });
+$("pasoAnterior").addEventListener("click", () => { parar(); pasoActual--; pintarFlujo(); });
+$("pasoPlay").addEventListener("click", () => {
+  if (temporizador) { parar(); pintarFlujo(); return; }
+  const total = FLUJOS[flujoActual][1].length;
+  if (pasoActual >= total - 1) pasoActual = -1;
+  const avanzar = () => { pasoActual++; if (pasoActual >= total - 1) parar(); pintarFlujo(); };
+  temporizador = setInterval(avanzar, 2400);
+  avanzar();
+});
+pintarFlujo();
 
 // ---------- Arranque ----------
 contarMensaje();

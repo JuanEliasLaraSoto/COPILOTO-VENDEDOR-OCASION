@@ -1,0 +1,1625 @@
+{
+ "fecha": "2026-10-04",
+ "filas_train": 632,
+ "filas_test": 159,
+ "cobertura_objetivo_pct": 80,
+ "baseline_mae": 3254.1,
+ "baseline_mape": 21.39,
+ "gb_mae": 2662.0,
+ "gb_mape": 15.47,
+ "cobertura_rango_pct": 85.5,
+ "error_por_combustible": [
+  {
+   "combustible": "gasolina",
+   "error_pct": 12.5,
+   "coches": 75
+  },
+  {
+   "combustible": "diesel",
+   "error_pct": 18.0,
+   "coches": 80
+  },
+  {
+   "combustible": "hibrido",
+   "error_pct": 18.9,
+   "coches": 3
+  },
+  {
+   "combustible": "electrico",
+   "error_pct": 28.2,
+   "coches": 1
+  }
+ ],
+ "muestra": [
+  {
+   "marca": "renault",
+   "modelo": "captur",
+   "anio": 2020,
+   "km": 3300,
+   "real": 21990,
+   "estimado": 17476,
+   "rango_min": 13363,
+   "rango_max": 22855
+  },
+  {
+   "marca": "volkswagen",
+   "modelo": "transporter",
+   "anio": 2015,
+   "km": 122500,
+   "real": 17990,
+   "estimado": 13431,
+   "rango_min": 10270,
+   "rango_max": 17565
+  },
+  {
+   "marca": "hyundai",
+   "modelo": "tucson",
+   "anio": 2018,
+   "km": 43390,
+   "real": 16990,
+   "estimado": 16854,
+   "rango_min": 12887,
+   "rango_max": 22041
+  },
+  {
+   "marca": "seat",
+   "modelo": "ibiza",
+   "anio": 2018,
+   "km": 60000,
+   "real": 12990,
+   "estimado": 10783,
+   "rango_min": 8245,
+   "rango_max": 14102
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c1",
+   "anio": 2018,
+   "km": 16000,
+   "real": 9490,
+   "estimado": 12275,
+   "rango_min": 9386,
+   "rango_max": 16052
+  },
+  {
+   "marca": "mercedes",
+   "modelo": "benz clase b",
+   "anio": 2017,
+   "km": 114000,
+   "real": 18490,
+   "estimado": 31384,
+   "rango_min": 23998,
+   "rango_max": 41043
+  },
+  {
+   "marca": "seat",
+   "modelo": "ateca",
+   "anio": 2017,
+   "km": 15000,
+   "real": 20990,
+   "estimado": 22828,
+   "rango_min": 17456,
+   "rango_max": 29854
+  },
+  {
+   "marca": "kia",
+   "modelo": "sportage",
+   "anio": 2011,
+   "km": 101000,
+   "real": 9990,
+   "estimado": 8600,
+   "rango_min": 6576,
+   "rango_max": 11247
+  },
+  {
+   "marca": "audi",
+   "modelo": "a3",
+   "anio": 2016,
+   "km": 113800,
+   "real": 17490,
+   "estimado": 14744,
+   "rango_min": 11274,
+   "rango_max": 19282
+  },
+  {
+   "marca": "peugeot",
+   "modelo": "208",
+   "anio": 2020,
+   "km": 22577,
+   "real": 17990,
+   "estimado": 15259,
+   "rango_min": 11668,
+   "rango_max": 19956
+  },
+  {
+   "marca": "seat",
+   "modelo": "leon",
+   "anio": 2020,
+   "km": 9870,
+   "real": 28990,
+   "estimado": 26875,
+   "rango_min": 20550,
+   "rango_max": 35146
+  },
+  {
+   "marca": "mazda",
+   "modelo": "mazda6",
+   "anio": 2015,
+   "km": 91930,
+   "real": 14990,
+   "estimado": 14073,
+   "rango_min": 10761,
+   "rango_max": 18404
+  },
+  {
+   "marca": "seat",
+   "modelo": "ibiza",
+   "anio": 2016,
+   "km": 80600,
+   "real": 15490,
+   "estimado": 12844,
+   "rango_min": 9821,
+   "rango_max": 16797
+  },
+  {
+   "marca": "bmw",
+   "modelo": "serie 5",
+   "anio": 2017,
+   "km": 178000,
+   "real": 20990,
+   "estimado": 25092,
+   "rango_min": 19187,
+   "rango_max": 32815
+  },
+  {
+   "marca": "porsche",
+   "modelo": "cayenne",
+   "anio": 2017,
+   "km": 162573,
+   "real": 38490,
+   "estimado": 18146,
+   "rango_min": 13876,
+   "rango_max": 23731
+  },
+  {
+   "marca": "ford",
+   "modelo": "s-max",
+   "anio": 2012,
+   "km": 100500,
+   "real": 9990,
+   "estimado": 14878,
+   "rango_min": 11377,
+   "rango_max": 19457
+  },
+  {
+   "marca": "seat",
+   "modelo": "leon",
+   "anio": 2018,
+   "km": 71520,
+   "real": 19990,
+   "estimado": 20525,
+   "rango_min": 15695,
+   "rango_max": 26842
+  },
+  {
+   "marca": "seat",
+   "modelo": "leon",
+   "anio": 2019,
+   "km": 50500,
+   "real": 16710,
+   "estimado": 17950,
+   "rango_min": 13726,
+   "rango_max": 23475
+  },
+  {
+   "marca": "volvo",
+   "modelo": "xc40",
+   "anio": 2018,
+   "km": 128000,
+   "real": 28490,
+   "estimado": 21088,
+   "rango_min": 16125,
+   "rango_max": 27578
+  },
+  {
+   "marca": "volkswagen",
+   "modelo": "t-roc",
+   "anio": 2018,
+   "km": 64181,
+   "real": 19590,
+   "estimado": 18340,
+   "rango_min": 14024,
+   "rango_max": 23985
+  },
+  {
+   "marca": "ford",
+   "modelo": "kuga",
+   "anio": 2017,
+   "km": 69000,
+   "real": 14990,
+   "estimado": 15063,
+   "rango_min": 11518,
+   "rango_max": 19699
+  },
+  {
+   "marca": "volkswagen",
+   "modelo": "tiguan",
+   "anio": 2014,
+   "km": 162895,
+   "real": 14990,
+   "estimado": 17264,
+   "rango_min": 13201,
+   "rango_max": 22577
+  },
+  {
+   "marca": "audi",
+   "modelo": "s5",
+   "anio": 2011,
+   "km": 156230,
+   "real": 19990,
+   "estimado": 15142,
+   "rango_min": 11578,
+   "rango_max": 19802
+  },
+  {
+   "marca": "ford",
+   "modelo": "fiesta",
+   "anio": 2016,
+   "km": 91321,
+   "real": 9990,
+   "estimado": 9818,
+   "rango_min": 7508,
+   "rango_max": 12840
+  },
+  {
+   "marca": "dacia",
+   "modelo": "duster",
+   "anio": 2018,
+   "km": 44503,
+   "real": 12880,
+   "estimado": 14864,
+   "rango_min": 11366,
+   "rango_max": 19439
+  },
+  {
+   "marca": "ford",
+   "modelo": "focus",
+   "anio": 2019,
+   "km": 58520,
+   "real": 16490,
+   "estimado": 16017,
+   "rango_min": 12247,
+   "rango_max": 20946
+  },
+  {
+   "marca": "ford",
+   "modelo": "focus",
+   "anio": 2017,
+   "km": 102000,
+   "real": 12490,
+   "estimado": 11921,
+   "rango_min": 9116,
+   "rango_max": 15590
+  },
+  {
+   "marca": "volkswagen",
+   "modelo": "golf",
+   "anio": 2016,
+   "km": 84040,
+   "real": 13990,
+   "estimado": 17631,
+   "rango_min": 13482,
+   "rango_max": 23058
+  },
+  {
+   "marca": "mazda",
+   "modelo": "cx-3",
+   "anio": 2018,
+   "km": 42875,
+   "real": 16990,
+   "estimado": 19840,
+   "rango_min": 15171,
+   "rango_max": 25946
+  },
+  {
+   "marca": "peugeot",
+   "modelo": "2008",
+   "anio": 2017,
+   "km": 59283,
+   "real": 13470,
+   "estimado": 12568,
+   "rango_min": 9611,
+   "rango_max": 16437
+  },
+  {
+   "marca": "audi",
+   "modelo": "a4",
+   "anio": 2017,
+   "km": 132853,
+   "real": 17850,
+   "estimado": 21220,
+   "rango_min": 16226,
+   "rango_max": 27751
+  },
+  {
+   "marca": "seat",
+   "modelo": "leon",
+   "anio": 2019,
+   "km": 49200,
+   "real": 18990,
+   "estimado": 19574,
+   "rango_min": 14967,
+   "rango_max": 25598
+  },
+  {
+   "marca": "volkswagen",
+   "modelo": "tiguan",
+   "anio": 2016,
+   "km": 141350,
+   "real": 22490,
+   "estimado": 17722,
+   "rango_min": 13551,
+   "rango_max": 23176
+  },
+  {
+   "marca": "audi",
+   "modelo": "a1",
+   "anio": 2019,
+   "km": 40457,
+   "real": 20990,
+   "estimado": 19591,
+   "rango_min": 14980,
+   "rango_max": 25620
+  },
+  {
+   "marca": "dacia",
+   "modelo": "dokker",
+   "anio": 2014,
+   "km": 105948,
+   "real": 8490,
+   "estimado": 9408,
+   "rango_min": 7194,
+   "rango_max": 12303
+  },
+  {
+   "marca": "mercedes",
+   "modelo": "benz clase cla",
+   "anio": 2014,
+   "km": 144000,
+   "real": 16980,
+   "estimado": 15932,
+   "rango_min": 12183,
+   "rango_max": 20835
+  },
+  {
+   "marca": "kia",
+   "modelo": "rio",
+   "anio": 2014,
+   "km": 75830,
+   "real": 7990,
+   "estimado": 8480,
+   "rango_min": 6484,
+   "rango_max": 11089
+  },
+  {
+   "marca": "mini",
+   "modelo": "mini",
+   "anio": 2015,
+   "km": 136800,
+   "real": 13990,
+   "estimado": 15427,
+   "rango_min": 11797,
+   "rango_max": 20175
+  },
+  {
+   "marca": "jaguar",
+   "modelo": "f-pace",
+   "anio": 2018,
+   "km": 32920,
+   "real": 34990,
+   "estimado": 22184,
+   "rango_min": 16963,
+   "rango_max": 29011
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c-elysee",
+   "anio": 2019,
+   "km": 47196,
+   "real": 11990,
+   "estimado": 14173,
+   "rango_min": 10838,
+   "rango_max": 18535
+  },
+  {
+   "marca": "hyundai",
+   "modelo": "tucson",
+   "anio": 2015,
+   "km": 57000,
+   "real": 15990,
+   "estimado": 10160,
+   "rango_min": 7769,
+   "rango_max": 13287
+  },
+  {
+   "marca": "toyota",
+   "modelo": "yaris",
+   "anio": 2017,
+   "km": 95200,
+   "real": 9990,
+   "estimado": 10188,
+   "rango_min": 7790,
+   "rango_max": 13324
+  },
+  {
+   "marca": "audi",
+   "modelo": "a3",
+   "anio": 2014,
+   "km": 97000,
+   "real": 11430,
+   "estimado": 12402,
+   "rango_min": 9483,
+   "rango_max": 16219
+  },
+  {
+   "marca": "kia",
+   "modelo": "stonic",
+   "anio": 2018,
+   "km": 91388,
+   "real": 13490,
+   "estimado": 15348,
+   "rango_min": 11736,
+   "rango_max": 20072
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c4",
+   "anio": 2014,
+   "km": 160500,
+   "real": 6990,
+   "estimado": 8852,
+   "rango_min": 6769,
+   "rango_max": 11577
+  },
+  {
+   "marca": "jaguar",
+   "modelo": "xe",
+   "anio": 2019,
+   "km": 51080,
+   "real": 22990,
+   "estimado": 20216,
+   "rango_min": 15458,
+   "rango_max": 26438
+  },
+  {
+   "marca": "peugeot",
+   "modelo": "208",
+   "anio": 2017,
+   "km": 78000,
+   "real": 11490,
+   "estimado": 12342,
+   "rango_min": 9437,
+   "rango_max": 16140
+  },
+  {
+   "marca": "jeep",
+   "modelo": "wrangler",
+   "anio": 2008,
+   "km": 142020,
+   "real": 37990,
+   "estimado": 14620,
+   "rango_min": 11179,
+   "rango_max": 19119
+  },
+  {
+   "marca": "volvo",
+   "modelo": "v40",
+   "anio": 2014,
+   "km": 61987,
+   "real": 13490,
+   "estimado": 11783,
+   "rango_min": 9010,
+   "rango_max": 15409
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c4",
+   "anio": 2012,
+   "km": 199990,
+   "real": 5990,
+   "estimado": 7021,
+   "rango_min": 5369,
+   "rango_max": 9182
+  },
+  {
+   "marca": "seat",
+   "modelo": "ibiza",
+   "anio": 2018,
+   "km": 82477,
+   "real": 13990,
+   "estimado": 13669,
+   "rango_min": 10452,
+   "rango_max": 17876
+  },
+  {
+   "marca": "ford",
+   "modelo": "focus",
+   "anio": 2018,
+   "km": 21404,
+   "real": 15990,
+   "estimado": 16052,
+   "rango_min": 12275,
+   "rango_max": 20993
+  },
+  {
+   "marca": "nissan",
+   "modelo": "qashqai",
+   "anio": 2011,
+   "km": 138550,
+   "real": 10990,
+   "estimado": 9259,
+   "rango_min": 7080,
+   "rango_max": 12108
+  },
+  {
+   "marca": "opel",
+   "modelo": "crossland x",
+   "anio": 2019,
+   "km": 67100,
+   "real": 15490,
+   "estimado": 16671,
+   "rango_min": 12748,
+   "rango_max": 21802
+  },
+  {
+   "marca": "nissan",
+   "modelo": "qashqai",
+   "anio": 2014,
+   "km": 54956,
+   "real": 13990,
+   "estimado": 9629,
+   "rango_min": 7363,
+   "rango_max": 12592
+  },
+  {
+   "marca": "citroen",
+   "modelo": "berlingo",
+   "anio": 2019,
+   "km": 35050,
+   "real": 19990,
+   "estimado": 15876,
+   "rango_min": 12140,
+   "rango_max": 20763
+  },
+  {
+   "marca": "hyundai",
+   "modelo": "ix35",
+   "anio": 2014,
+   "km": 56800,
+   "real": 12990,
+   "estimado": 10751,
+   "rango_min": 8221,
+   "rango_max": 14059
+  },
+  {
+   "marca": "toyota",
+   "modelo": "yaris",
+   "anio": 2020,
+   "km": 19700,
+   "real": 15990,
+   "estimado": 16538,
+   "rango_min": 12646,
+   "rango_max": 21628
+  },
+  {
+   "marca": "bmw",
+   "modelo": "serie 1",
+   "anio": 2017,
+   "km": 98600,
+   "real": 15990,
+   "estimado": 14573,
+   "rango_min": 11143,
+   "rango_max": 19058
+  },
+  {
+   "marca": "ford",
+   "modelo": "focus",
+   "anio": 2019,
+   "km": 30058,
+   "real": 15990,
+   "estimado": 16071,
+   "rango_min": 12289,
+   "rango_max": 21017
+  },
+  {
+   "marca": "hyundai",
+   "modelo": "tucson",
+   "anio": 2017,
+   "km": 83000,
+   "real": 15490,
+   "estimado": 13358,
+   "rango_min": 10214,
+   "rango_max": 17469
+  },
+  {
+   "marca": "audi",
+   "modelo": "a1",
+   "anio": 2018,
+   "km": 54900,
+   "real": 17990,
+   "estimado": 20468,
+   "rango_min": 15651,
+   "rango_max": 26767
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c3",
+   "anio": 2021,
+   "km": 2546,
+   "real": 13490,
+   "estimado": 13962,
+   "rango_min": 10676,
+   "rango_max": 18259
+  },
+  {
+   "marca": "seat",
+   "modelo": "exeo",
+   "anio": 2013,
+   "km": 112200,
+   "real": 9990,
+   "estimado": 10539,
+   "rango_min": 8059,
+   "rango_max": 13783
+  },
+  {
+   "marca": "ford",
+   "modelo": "tourneo courier",
+   "anio": 2016,
+   "km": 96652,
+   "real": 12990,
+   "estimado": 10673,
+   "rango_min": 8161,
+   "rango_max": 13958
+  },
+  {
+   "marca": "toyota",
+   "modelo": "verso",
+   "anio": 2016,
+   "km": 178807,
+   "real": 10490,
+   "estimado": 16798,
+   "rango_min": 12844,
+   "rango_max": 21967
+  },
+  {
+   "marca": "mercedes",
+   "modelo": "benz clase c",
+   "anio": 2015,
+   "km": 144100,
+   "real": 23990,
+   "estimado": 19610,
+   "rango_min": 14995,
+   "rango_max": 25646
+  },
+  {
+   "marca": "seat",
+   "modelo": "ibiza",
+   "anio": 2015,
+   "km": 122800,
+   "real": 9290,
+   "estimado": 9667,
+   "rango_min": 7392,
+   "rango_max": 12643
+  },
+  {
+   "marca": "seat",
+   "modelo": "leon",
+   "anio": 2015,
+   "km": 122631,
+   "real": 14990,
+   "estimado": 13516,
+   "rango_min": 10335,
+   "rango_max": 17676
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c3",
+   "anio": 2019,
+   "km": 44200,
+   "real": 11990,
+   "estimado": 18496,
+   "rango_min": 14143,
+   "rango_max": 24189
+  },
+  {
+   "marca": "nissan",
+   "modelo": "juke",
+   "anio": 2013,
+   "km": 95142,
+   "real": 9990,
+   "estimado": 9661,
+   "rango_min": 7388,
+   "rango_max": 12635
+  },
+  {
+   "marca": "bmw",
+   "modelo": "serie 1",
+   "anio": 2017,
+   "km": 75600,
+   "real": 16540,
+   "estimado": 22201,
+   "rango_min": 16976,
+   "rango_max": 29034
+  },
+  {
+   "marca": "nissan",
+   "modelo": "juke",
+   "anio": 2013,
+   "km": 123500,
+   "real": 9990,
+   "estimado": 10515,
+   "rango_min": 8041,
+   "rango_max": 13752
+  },
+  {
+   "marca": "opel",
+   "modelo": "mokka x",
+   "anio": 2017,
+   "km": 87000,
+   "real": 12990,
+   "estimado": 15817,
+   "rango_min": 12095,
+   "rango_max": 20685
+  },
+  {
+   "marca": "renault",
+   "modelo": "clio",
+   "anio": 2016,
+   "km": 130300,
+   "real": 9490,
+   "estimado": 9545,
+   "rango_min": 7299,
+   "rango_max": 12483
+  },
+  {
+   "marca": "volkswagen",
+   "modelo": "scirocco",
+   "anio": 2017,
+   "km": 73153,
+   "real": 16990,
+   "estimado": 16412,
+   "rango_min": 12550,
+   "rango_max": 21463
+  },
+  {
+   "marca": "mitsubishi",
+   "modelo": "outlander",
+   "anio": 2014,
+   "km": 154300,
+   "real": 10990,
+   "estimado": 14481,
+   "rango_min": 11073,
+   "rango_max": 18938
+  },
+  {
+   "marca": "volkswagen",
+   "modelo": "tiguan",
+   "anio": 2015,
+   "km": 146500,
+   "real": 15990,
+   "estimado": 16254,
+   "rango_min": 12429,
+   "rango_max": 21256
+  },
+  {
+   "marca": "bmw",
+   "modelo": "serie 1",
+   "anio": 2013,
+   "km": 158000,
+   "real": 11990,
+   "estimado": 10997,
+   "rango_min": 8409,
+   "rango_max": 14381
+  },
+  {
+   "marca": "ssangyong",
+   "modelo": "rexton",
+   "anio": 2013,
+   "km": 92311,
+   "real": 12990,
+   "estimado": 12099,
+   "rango_min": 9251,
+   "rango_max": 15822
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c4 picasso",
+   "anio": 2013,
+   "km": 114000,
+   "real": 7990,
+   "estimado": 12933,
+   "rango_min": 9890,
+   "rango_max": 16914
+  },
+  {
+   "marca": "peugeot",
+   "modelo": "3008",
+   "anio": 2018,
+   "km": 93380,
+   "real": 21490,
+   "estimado": 17290,
+   "rango_min": 13221,
+   "rango_max": 22611
+  },
+  {
+   "marca": "bmw",
+   "modelo": "serie 2 active tourer",
+   "anio": 2016,
+   "km": 160000,
+   "real": 14970,
+   "estimado": 18565,
+   "rango_min": 14196,
+   "rango_max": 24279
+  },
+  {
+   "marca": "audi",
+   "modelo": "a3",
+   "anio": 2012,
+   "km": 125000,
+   "real": 11990,
+   "estimado": 11351,
+   "rango_min": 8680,
+   "rango_max": 14845
+  },
+  {
+   "marca": "land",
+   "modelo": "rover range rover evoque",
+   "anio": 2019,
+   "km": 33703,
+   "real": 48990,
+   "estimado": 28346,
+   "rango_min": 21675,
+   "rango_max": 37070
+  },
+  {
+   "marca": "mini",
+   "modelo": "countryman",
+   "anio": 2013,
+   "km": 121196,
+   "real": 13990,
+   "estimado": 16823,
+   "rango_min": 12864,
+   "rango_max": 22000
+  },
+  {
+   "marca": "mazda",
+   "modelo": "mx-5",
+   "anio": 2017,
+   "km": 106000,
+   "real": 16990,
+   "estimado": 14696,
+   "rango_min": 11237,
+   "rango_max": 19219
+  },
+  {
+   "marca": "volvo",
+   "modelo": "v40",
+   "anio": 2018,
+   "km": 76086,
+   "real": 15990,
+   "estimado": 17075,
+   "rango_min": 13056,
+   "rango_max": 22330
+  },
+  {
+   "marca": "seat",
+   "modelo": "leon",
+   "anio": 2016,
+   "km": 63910,
+   "real": 16490,
+   "estimado": 12105,
+   "rango_min": 9256,
+   "rango_max": 15830
+  },
+  {
+   "marca": "seat",
+   "modelo": "ibiza",
+   "anio": 2016,
+   "km": 146891,
+   "real": 12490,
+   "estimado": 11498,
+   "rango_min": 8792,
+   "rango_max": 15037
+  },
+  {
+   "marca": "peugeot",
+   "modelo": "3008",
+   "anio": 2018,
+   "km": 114000,
+   "real": 19990,
+   "estimado": 16098,
+   "rango_min": 12310,
+   "rango_max": 21053
+  },
+  {
+   "marca": "kia",
+   "modelo": "stonic",
+   "anio": 2019,
+   "km": 64000,
+   "real": 15990,
+   "estimado": 15180,
+   "rango_min": 11607,
+   "rango_max": 19852
+  },
+  {
+   "marca": "ford",
+   "modelo": "focus",
+   "anio": 2019,
+   "km": 42800,
+   "real": 17990,
+   "estimado": 15912,
+   "rango_min": 12167,
+   "rango_max": 20809
+  },
+  {
+   "marca": "nissan",
+   "modelo": "micra",
+   "anio": 2019,
+   "km": 44990,
+   "real": 12220,
+   "estimado": 12056,
+   "rango_min": 9219,
+   "rango_max": 15766
+  },
+  {
+   "marca": "kia",
+   "modelo": "sportage",
+   "anio": 2018,
+   "km": 23400,
+   "real": 21990,
+   "estimado": 20417,
+   "rango_min": 15612,
+   "rango_max": 26701
+  },
+  {
+   "marca": "nissan",
+   "modelo": "micra",
+   "anio": 2017,
+   "km": 73633,
+   "real": 9990,
+   "estimado": 12781,
+   "rango_min": 9773,
+   "rango_max": 16714
+  },
+  {
+   "marca": "seat",
+   "modelo": "ibiza",
+   "anio": 2015,
+   "km": 67600,
+   "real": 9990,
+   "estimado": 10162,
+   "rango_min": 7770,
+   "rango_max": 13289
+  },
+  {
+   "marca": "nissan",
+   "modelo": "qashqai",
+   "anio": 2019,
+   "km": 109575,
+   "real": 18490,
+   "estimado": 17653,
+   "rango_min": 13499,
+   "rango_max": 23087
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c3",
+   "anio": 2018,
+   "km": 34000,
+   "real": 10990,
+   "estimado": 12284,
+   "rango_min": 9393,
+   "rango_max": 16065
+  },
+  {
+   "marca": "toyota",
+   "modelo": "avensis",
+   "anio": 2018,
+   "km": 119000,
+   "real": 14990,
+   "estimado": 16280,
+   "rango_min": 12449,
+   "rango_max": 21290
+  },
+  {
+   "marca": "peugeot",
+   "modelo": "5008",
+   "anio": 2018,
+   "km": 80995,
+   "real": 24990,
+   "estimado": 20762,
+   "rango_min": 15876,
+   "rango_max": 27152
+  },
+  {
+   "marca": "dacia",
+   "modelo": "lodgy",
+   "anio": 2017,
+   "km": 84000,
+   "real": 9990,
+   "estimado": 11991,
+   "rango_min": 9169,
+   "rango_max": 15681
+  },
+  {
+   "marca": "renault",
+   "modelo": "clio",
+   "anio": 2019,
+   "km": 24506,
+   "real": 12990,
+   "estimado": 13140,
+   "rango_min": 10048,
+   "rango_max": 17184
+  },
+  {
+   "marca": "bmw",
+   "modelo": "serie 4",
+   "anio": 2016,
+   "km": 100192,
+   "real": 25490,
+   "estimado": 28006,
+   "rango_min": 21415,
+   "rango_max": 36626
+  },
+  {
+   "marca": "mitsubishi",
+   "modelo": "asx",
+   "anio": 2011,
+   "km": 98814,
+   "real": 9990,
+   "estimado": 8952,
+   "rango_min": 6845,
+   "rango_max": 11707
+  },
+  {
+   "marca": "seat",
+   "modelo": "toledo",
+   "anio": 2018,
+   "km": 20253,
+   "real": 12990,
+   "estimado": 20034,
+   "rango_min": 15319,
+   "rango_max": 26199
+  },
+  {
+   "marca": "toyota",
+   "modelo": "auris",
+   "anio": 2018,
+   "km": 60000,
+   "real": 14990,
+   "estimado": 16662,
+   "rango_min": 12741,
+   "rango_max": 21790
+  },
+  {
+   "marca": "renault",
+   "modelo": "espace",
+   "anio": 2015,
+   "km": 130165,
+   "real": 14990,
+   "estimado": 13903,
+   "rango_min": 10631,
+   "rango_max": 18182
+  },
+  {
+   "marca": "porsche",
+   "modelo": "cayenne",
+   "anio": 2013,
+   "km": 122000,
+   "real": 28380,
+   "estimado": 18114,
+   "rango_min": 13851,
+   "rango_max": 23689
+  },
+  {
+   "marca": "seat",
+   "modelo": "leon",
+   "anio": 2017,
+   "km": 64100,
+   "real": 22990,
+   "estimado": 22718,
+   "rango_min": 17372,
+   "rango_max": 29710
+  },
+  {
+   "marca": "mitsubishi",
+   "modelo": "asx",
+   "anio": 2015,
+   "km": 74000,
+   "real": 12990,
+   "estimado": 12655,
+   "rango_min": 9677,
+   "rango_max": 16550
+  },
+  {
+   "marca": "seat",
+   "modelo": "tarraco",
+   "anio": 2019,
+   "km": 65833,
+   "real": 24990,
+   "estimado": 23861,
+   "rango_min": 18246,
+   "rango_max": 31205
+  },
+  {
+   "marca": "bmw",
+   "modelo": "i3",
+   "anio": 2018,
+   "km": 90680,
+   "real": 20490,
+   "estimado": 26266,
+   "rango_min": 20085,
+   "rango_max": 34350
+  },
+  {
+   "marca": "peugeot",
+   "modelo": "308",
+   "anio": 2017,
+   "km": 88300,
+   "real": 14990,
+   "estimado": 20930,
+   "rango_min": 16005,
+   "rango_max": 27372
+  },
+  {
+   "marca": "peugeot",
+   "modelo": "5008",
+   "anio": 2010,
+   "km": 107108,
+   "real": 7490,
+   "estimado": 7339,
+   "rango_min": 5612,
+   "rango_max": 9598
+  },
+  {
+   "marca": "seat",
+   "modelo": "ateca",
+   "anio": 2021,
+   "km": 4600,
+   "real": 24980,
+   "estimado": 27169,
+   "rango_min": 20775,
+   "rango_max": 35531
+  },
+  {
+   "marca": "jeep",
+   "modelo": "renegade",
+   "anio": 2019,
+   "km": 38500,
+   "real": 17990,
+   "estimado": 18597,
+   "rango_min": 14220,
+   "rango_max": 24321
+  },
+  {
+   "marca": "ford",
+   "modelo": "fiesta",
+   "anio": 2019,
+   "km": 38950,
+   "real": 13490,
+   "estimado": 17590,
+   "rango_min": 13451,
+   "rango_max": 23004
+  },
+  {
+   "marca": "fiat",
+   "modelo": "500x",
+   "anio": 2019,
+   "km": 68300,
+   "real": 13990,
+   "estimado": 12084,
+   "rango_min": 9240,
+   "rango_max": 15803
+  },
+  {
+   "marca": "kia",
+   "modelo": "sportage",
+   "anio": 2018,
+   "km": 17228,
+   "real": 21990,
+   "estimado": 26270,
+   "rango_min": 20088,
+   "rango_max": 34355
+  },
+  {
+   "marca": "bmw",
+   "modelo": "x4",
+   "anio": 2016,
+   "km": 126119,
+   "real": 24490,
+   "estimado": 24559,
+   "rango_min": 18779,
+   "rango_max": 32118
+  },
+  {
+   "marca": "bmw",
+   "modelo": "serie 3",
+   "anio": 2017,
+   "km": 126000,
+   "real": 18990,
+   "estimado": 23864,
+   "rango_min": 18248,
+   "rango_max": 31208
+  },
+  {
+   "marca": "volkswagen",
+   "modelo": "scirocco",
+   "anio": 2013,
+   "km": 125000,
+   "real": 13990,
+   "estimado": 17172,
+   "rango_min": 13131,
+   "rango_max": 22458
+  },
+  {
+   "marca": "opel",
+   "modelo": "combo",
+   "anio": 2016,
+   "km": 99769,
+   "real": 8990,
+   "estimado": 12126,
+   "rango_min": 9272,
+   "rango_max": 15858
+  },
+  {
+   "marca": "seat",
+   "modelo": "arona",
+   "anio": 2018,
+   "km": 44979,
+   "real": 13990,
+   "estimado": 15632,
+   "rango_min": 11953,
+   "rango_max": 20443
+  },
+  {
+   "marca": "ford",
+   "modelo": "ecosport",
+   "anio": 2019,
+   "km": 25000,
+   "real": 15490,
+   "estimado": 17806,
+   "rango_min": 13615,
+   "rango_max": 23286
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c3",
+   "anio": 2018,
+   "km": 29513,
+   "real": 11990,
+   "estimado": 12771,
+   "rango_min": 9766,
+   "rango_max": 16702
+  },
+  {
+   "marca": "bmw",
+   "modelo": "x2",
+   "anio": 2018,
+   "km": 99990,
+   "real": 25990,
+   "estimado": 29303,
+   "rango_min": 22407,
+   "rango_max": 38322
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c1",
+   "anio": 2018,
+   "km": 20674,
+   "real": 10490,
+   "estimado": 12744,
+   "rango_min": 9745,
+   "rango_max": 16667
+  },
+  {
+   "marca": "opel",
+   "modelo": "adam",
+   "anio": 2016,
+   "km": 32806,
+   "real": 9990,
+   "estimado": 11601,
+   "rango_min": 8871,
+   "rango_max": 15171
+  },
+  {
+   "marca": "renault",
+   "modelo": "clio",
+   "anio": 2013,
+   "km": 161540,
+   "real": 6990,
+   "estimado": 8289,
+   "rango_min": 6339,
+   "rango_max": 10841
+  },
+  {
+   "marca": "audi",
+   "modelo": "tt",
+   "anio": 2015,
+   "km": 155223,
+   "real": 23990,
+   "estimado": 29503,
+   "rango_min": 22560,
+   "rango_max": 38583
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c3",
+   "anio": 2017,
+   "km": 49200,
+   "real": 11490,
+   "estimado": 10953,
+   "rango_min": 8375,
+   "rango_max": 14323
+  },
+  {
+   "marca": "suzuki",
+   "modelo": "baleno",
+   "anio": 2017,
+   "km": 56000,
+   "real": 10990,
+   "estimado": 13408,
+   "rango_min": 10252,
+   "rango_max": 17534
+  },
+  {
+   "marca": "mazda",
+   "modelo": "mazda3",
+   "anio": 2016,
+   "km": 101300,
+   "real": 12990,
+   "estimado": 13975,
+   "rango_min": 10686,
+   "rango_max": 18276
+  },
+  {
+   "marca": "kia",
+   "modelo": "sportage",
+   "anio": 2017,
+   "km": 81999,
+   "real": 14990,
+   "estimado": 16254,
+   "rango_min": 12429,
+   "rango_max": 21257
+  },
+  {
+   "marca": "nissan",
+   "modelo": "x-trail",
+   "anio": 2018,
+   "km": 55250,
+   "real": 19970,
+   "estimado": 18869,
+   "rango_min": 14428,
+   "rango_max": 24676
+  },
+  {
+   "marca": "seat",
+   "modelo": "ibiza",
+   "anio": 2013,
+   "km": 94500,
+   "real": 9490,
+   "estimado": 8887,
+   "rango_min": 6796,
+   "rango_max": 11623
+  },
+  {
+   "marca": "abarth",
+   "modelo": "500",
+   "anio": 2019,
+   "km": 28830,
+   "real": 17990,
+   "estimado": 22382,
+   "rango_min": 17115,
+   "rango_max": 29270
+  },
+  {
+   "marca": "seat",
+   "modelo": "leon",
+   "anio": 2014,
+   "km": 143065,
+   "real": 15990,
+   "estimado": 14029,
+   "rango_min": 10728,
+   "rango_max": 18347
+  },
+  {
+   "marca": "porsche",
+   "modelo": "cayenne",
+   "anio": 2012,
+   "km": 220000,
+   "real": 20990,
+   "estimado": 14020,
+   "rango_min": 10721,
+   "rango_max": 18335
+  },
+  {
+   "marca": "bmw",
+   "modelo": "serie 5",
+   "anio": 2011,
+   "km": 137566,
+   "real": 13490,
+   "estimado": 14212,
+   "rango_min": 10867,
+   "rango_max": 18586
+  },
+  {
+   "marca": "ford",
+   "modelo": "kuga",
+   "anio": 2014,
+   "km": 69429,
+   "real": 13990,
+   "estimado": 10604,
+   "rango_min": 8108,
+   "rango_max": 13868
+  },
+  {
+   "marca": "audi",
+   "modelo": "a5",
+   "anio": 2016,
+   "km": 102000,
+   "real": 20970,
+   "estimado": 23160,
+   "rango_min": 17710,
+   "rango_max": 30288
+  },
+  {
+   "marca": "mini",
+   "modelo": "mini",
+   "anio": 2017,
+   "km": 56819,
+   "real": 19490,
+   "estimado": 15752,
+   "rango_min": 12045,
+   "rango_max": 20600
+  },
+  {
+   "marca": "nissan",
+   "modelo": "micra",
+   "anio": 2019,
+   "km": 21017,
+   "real": 11990,
+   "estimado": 13310,
+   "rango_min": 10178,
+   "rango_max": 17407
+  },
+  {
+   "marca": "nissan",
+   "modelo": "qashqai",
+   "anio": 2017,
+   "km": 131000,
+   "real": 14990,
+   "estimado": 12579,
+   "rango_min": 9619,
+   "rango_max": 16451
+  },
+  {
+   "marca": "audi",
+   "modelo": "a3",
+   "anio": 2016,
+   "km": 132252,
+   "real": 15490,
+   "estimado": 14409,
+   "rango_min": 11018,
+   "rango_max": 18844
+  },
+  {
+   "marca": "abarth",
+   "modelo": "500",
+   "anio": 2015,
+   "km": 43000,
+   "real": 13990,
+   "estimado": 14233,
+   "rango_min": 10883,
+   "rango_max": 18613
+  },
+  {
+   "marca": "bmw",
+   "modelo": "serie 2 gran tourer",
+   "anio": 2017,
+   "km": 97570,
+   "real": 17490,
+   "estimado": 19397,
+   "rango_min": 14832,
+   "rango_max": 25366
+  },
+  {
+   "marca": "mazda",
+   "modelo": "cx-3",
+   "anio": 2018,
+   "km": 78600,
+   "real": 16490,
+   "estimado": 14779,
+   "rango_min": 11301,
+   "rango_max": 19328
+  },
+  {
+   "marca": "volkswagen",
+   "modelo": "golf",
+   "anio": 2009,
+   "km": 143843,
+   "real": 8860,
+   "estimado": 9982,
+   "rango_min": 7633,
+   "rango_max": 13054
+  },
+  {
+   "marca": "fiat",
+   "modelo": "500",
+   "anio": 2019,
+   "km": 40000,
+   "real": 11490,
+   "estimado": 11580,
+   "rango_min": 8855,
+   "rango_max": 15144
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c4",
+   "anio": 2012,
+   "km": 133744,
+   "real": 7490,
+   "estimado": 6835,
+   "rango_min": 5226,
+   "rango_max": 8938
+  },
+  {
+   "marca": "renault",
+   "modelo": "captur",
+   "anio": 2019,
+   "km": 23500,
+   "real": 14790,
+   "estimado": 13344,
+   "rango_min": 10204,
+   "rango_max": 17451
+  },
+  {
+   "marca": "kia",
+   "modelo": "sportage",
+   "anio": 2018,
+   "km": 55600,
+   "real": 16490,
+   "estimado": 19426,
+   "rango_min": 14855,
+   "rango_max": 25405
+  },
+  {
+   "marca": "peugeot",
+   "modelo": "308",
+   "anio": 2016,
+   "km": 112000,
+   "real": 16280,
+   "estimado": 15220,
+   "rango_min": 11638,
+   "rango_max": 19904
+  },
+  {
+   "marca": "audi",
+   "modelo": "a1",
+   "anio": 2017,
+   "km": 53000,
+   "real": 15990,
+   "estimado": 18016,
+   "rango_min": 13776,
+   "rango_max": 23561
+  },
+  {
+   "marca": "citroen",
+   "modelo": "c4 picasso",
+   "anio": 2014,
+   "km": 86007,
+   "real": 10990,
+   "estimado": 10333,
+   "rango_min": 7901,
+   "rango_max": 13514
+  }
+ ]
+}

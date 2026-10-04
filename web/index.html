@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Copiloto VO</title>
+<style>
+  :root { --tinta:#17202a; --suave:#5b6573; --acento:#1f4e79; --acento-2:#e8eff7; --fondo:#f4f6f8;
+          --linea:#d8dee5; --bien:#2e7d32; --bien-2:#e8f5e9; --mal:#b3261e; --mal-2:#fdecea; --aviso:#8a5a00; --aviso-2:#fff4dc; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui, -apple-system, "Segoe UI", sans-serif; color:var(--tinta); background:var(--fondo); }
+  header { background:var(--acento); color:#fff; padding:18px 16px; }
+  header h1 { margin:0; font-size:1.35rem; } header p { margin:4px 0 0; opacity:.85; font-size:.9rem; }
+  nav { display:flex; gap:4px; overflow-x:auto; background:#fff; border-bottom:1px solid var(--linea); padding:0 12px; position:sticky; top:0; z-index:2; }
+  nav button { background:none; border:0; border-bottom:3px solid transparent; padding:12px 10px; font:inherit; font-size:.92rem; color:var(--suave); cursor:pointer; white-space:nowrap; }
+  nav button.activa { color:var(--acento); border-bottom-color:var(--acento); font-weight:600; }
+  main { max-width:980px; margin:0 auto; padding:20px 16px 60px; }
+  section { display:none; } section.activa { display:block; }
+  h2 { font-size:1.15rem; margin:0 0 4px; } .sub { color:var(--suave); margin:0 0 16px; font-size:.92rem; }
+  .tarjeta { background:#fff; border:1px solid var(--linea); border-radius:10px; padding:16px; margin-top:14px; }
+  .fila { display:flex; gap:12px; flex-wrap:wrap; margin:10px 0; align-items:flex-end; }
+  label { font-size:.85rem; color:var(--suave); display:flex; flex-direction:column; gap:4px; }
+  label.casilla { flex-direction:row; align-items:center; gap:8px; }
+  input, select, textarea { padding:8px; border:1px solid var(--linea); border-radius:6px; font:inherit; color:var(--tinta); background:#fff; }
+  textarea { width:100%; min-height:110px; }
+  button.principal { background:var(--acento); color:#fff; border:0; border-radius:8px; padding:10px 16px; font:inherit; cursor:pointer; }
+  button.principal:disabled { opacity:.6; cursor:wait; }
+  table { width:100%; border-collapse:collapse; font-size:.88rem; }
+  th, td { text-align:left; padding:8px 6px; border-bottom:1px solid var(--linea); vertical-align:top; }
+  th { color:var(--suave); font-weight:600; } td.num, th.num { text-align:right; white-space:nowrap; }
+  tr.clic { cursor:pointer; } tr.clic:hover { background:var(--acento-2); }
+  .tabla { overflow-x:auto; }
+  .chip { display:inline-block; padding:2px 8px; border-radius:6px; font-size:.8rem; background:var(--acento-2); margin:2px 4px 2px 0; }
+  .alta { background:var(--mal-2); color:var(--mal); } .media { background:var(--aviso-2); color:var(--aviso); } .baja { background:var(--bien-2); color:var(--bien); }
+  .ok { background:var(--bien-2); border-left:4px solid var(--bien); padding:10px 12px; border-radius:6px; margin:10px 0; }
+  .ko { background:var(--mal-2); border-left:4px solid var(--mal); padding:10px 12px; border-radius:6px; margin:10px 0; }
+  .grande { font-size:1.6rem; font-weight:700; margin:4px 0; }
+  .uso, .muted { color:var(--suave); font-size:.82rem; }
+  .error { color:var(--mal); }
+  .texto { white-space:pre-wrap; background:var(--fondo); border-radius:6px; padding:10px; margin:6px 0 12px; }
+  .elegido { color:var(--suave); font-size:.9rem; margin:0 0 10px; }
+  footer { color:var(--suave); font-size:.78rem; max-width:980px; margin:0 auto; padding:0 16px 32px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Copiloto del vendedor de vehículos de ocasión</h1>
+  <p>Precio, anuncios, clientes, tasaciones y costes: la IA redacta, el código comprueba.</p>
+</header>
+<nav id="pestanas"></nav>
+<main>
+  <section id="stock">
+    <h2>Stock y alertas</h2>
+    <p class="sub">Pulsa un coche para elegirlo: las pestañas Precio, Anuncio y Cliente pregunta trabajan con él.</p>
+    <div id="alertas"></div>
+    <div class="tarjeta tabla"><table id="tablaStock"></table></div>
+  </section>
+
+  <section id="precio">
+    <h2>Precio recomendado</h2>
+    <p class="sub">Rango de mercado estimado por el modelo de machine learning.</p>
+    <p class="elegido" data-elegido></p>
+    <button class="principal" id="btnPrecio">Calcular precio</button>
+    <div id="resPrecio"></div>
+  </section>
+
+  <section id="anuncio">
+    <h2>Anuncio automático</h2>
+    <p class="sub">Se escribe con IA y se comprueba con código: ninguna cifra ni promesa fuera de la ficha.</p>
+    <p class="elegido" data-elegido></p>
+    <button class="principal" id="btnAnuncio">Escribir anuncio</button>
+    <div id="resAnuncio"></div>
+  </section>
+
+  <section id="cliente">
+    <h2>Cliente pregunta</h2>
+    <p class="sub">Pega el mensaje del cliente. La respuesta solo usa datos de la ficha; lo que no sabe, lo marca como pendiente.</p>
+    <p class="elegido" data-elegido></p>
+    <textarea id="mensaje" placeholder="Hola, ¿tiene libro de revisiones? ¿Cuántos dueños ha tenido? ¿Me lo dejas en 25.000?"></textarea>
+    <div class="fila"><button class="principal" id="btnRespuesta">Preparar respuesta</button></div>
+    <div id="resRespuesta"></div>
+  </section>
+
+  <section id="tasacion">
+    <h2>Tasación del coche del cliente</h2>
+    <p class="sub">Valor de mercado − puesta a punto − margen − gastos = oferta.</p>
+    <div class="fila">
+      <label>Marca <input id="tMarca" value="Seat"></label>
+      <label>Modelo <input id="tModelo" value="León"></label>
+      <label>Año <input id="tAnio" type="number" value="2018"></label>
+      <label>Km <input id="tKm" type="number" value="110000" step="1000"></label>
+      <label>Combustible <select id="tComb"><option>diesel</option><option>gasolina</option><option>hibrido</option><option value="hibrido_enchufable">híbrido enchufable</option><option value="electrico">eléctrico</option></select></label>
+      <label>Cambio <select id="tCambio"><option>manual</option><option value="automatico">automático</option></select></label>
+      <label>CV <input id="tCv" type="number" value="150"></label>
+    </div>
+    <label>Notas de la revisión <textarea id="tNotas" placeholder="Neumáticos a 2 mm, rayón en la puerta y en la aleta, olor a tabaco, solo una llave."></textarea></label>
+    <div class="fila"><button class="principal" id="btnTasar">Tasar</button></div>
+    <div id="resTasar"></div>
+  </section>
+
+  <section id="coste">
+    <h2>Coste al año por tipo de motor</h2>
+    <p class="sub">Consumo oficial de la ficha (WLTP) y precios de hoy: carburantes del Ministerio y luz de Red Eléctrica.</p>
+    <div class="tarjeta"><p class="muted">Elige de 2 a 4 coches:</p><div id="listaCoste"></div></div>
+    <div class="fila">
+      <label>Km al año <input id="cKm" type="number" value="15000" step="1000"></label>
+      <label>Provincia <input id="cProv" value="Málaga"></label>
+      <label class="casilla"><input type="checkbox" id="cCasa" checked> Puede cargar en casa</label>
+      <button class="principal" id="btnCoste">Comparar</button>
+    </div>
+    <div id="resCoste"></div>
+  </section>
+
+  <section id="recomendar">
+    <h2>Recomendador de stock</h2>
+    <p class="sub">Escribe lo que cuenta el cliente. La IA entiende sus necesidades; el código elige los coches.</p>
+    <textarea id="necesidades" placeholder="Somos cuatro, hago unos 25.000 km al año casi todo autopista, presupuesto hasta 25.000 €, vivo en Madrid y no tengo garaje."></textarea>
+    <div class="fila"><label>Provincia <input id="rProv" value="Málaga"></label><button class="principal" id="btnRecomendar">Recomendar</button></div>
+    <div id="resRecomendar"></div>
+  </section>
+
+  <section id="financiacion">
+    <h2>Simulador de financiación</h2>
+    <p class="sub">Cuota fija (sistema francés) y TAE con comisión. Orientativo: las condiciones las fija la financiera.</p>
+    <div class="fila">
+      <label>Precio (€) <input id="fPrecio" type="number" value="20000"></label>
+      <label>Entrada (€) <input id="fEntrada" type="number" value="4000"></label>
+      <label>Meses <input id="fMeses" type="number" value="60"></label>
+      <label>TIN (%) <input id="fTin" type="number" value="7.99" step="0.01"></label>
+      <label>Comisión apertura (%) <input id="fCom" type="number" value="2" step="0.1"></label>
+      <button class="principal" id="btnFinanciar">Calcular</button>
+    </div>
+    <div id="resFinanciar"></div>
+  </section>
+</main>
+<footer>Proyecto personal de portfolio, no oficial. Stock ficticio. Resultados orientativos. Precios de energía: datos abiertos del Ministerio y de Red Eléctrica.</footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const num = (n) => Math.round(n).toLocaleString("es-ES", { useGrouping: "always" });
+const euros = (n) => `${num(n)} €`;
+const dec = (n, d = 2) => n.toLocaleString("es-ES", { maximumFractionDigits: d });
+const MOTOR = { electrico: "eléctrico", hibrido: "híbrido", hibrido_enchufable: "híbrido enchufable", diesel: "diésel", gasolina: "gasolina" };
+let STOCK = [], elegido = null;
+
+function el(tag, texto, clase) {
+  const e = document.createElement(tag);
+  if (texto !== undefined && texto !== null) e.textContent = texto;  // textContent: nunca HTML
+  if (clase) e.className = clase;
+  return e;
+}
+function lista(titulo, items) {
+  const d = el("div");
+  if (!items || !items.length) return d;
+  d.append(el("h3", titulo));
+  const ul = el("ul"); items.forEach((i) => ul.append(el("li", i))); d.append(ul);
+  return d;
+}
+function uso(u) {
+  if (!u || !u.modelos.length) return el("p", "Sin IA: cálculo hecho con código.", "uso");
+  return el("p", `${u.modelos.join(" + ")} · ${u.segundos} s · ${(u.coste_usd * 100).toFixed(3)} céntimos de dólar`, "uso");
+}
+function semaforo(avisos, okTexto) {
+  if (!avisos || !avisos.length) return el("div", okTexto, "ok");
+  const d = el("div", undefined, "ko");
+  d.append(el("strong", "Revisar antes de usar:"));
+  const ul = el("ul"); avisos.forEach((a) => ul.append(el("li", a))); d.append(ul);
+  return d;
+}
+async function llamar(boton, destino, url, cuerpo, pintar) {
+  const res = $(destino);
+  res.replaceChildren(el("p", "Trabajando…", "muted"));
+  $(boton).disabled = true;
+  try {
+    const r = await fetch(url, cuerpo === undefined ? {} : {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
+    const j = await r.json();
+    if (!r.ok) throw new Error(typeof j.detail === "string" ? j.detail : "Revisa los datos introducidos.");
+    res.replaceChildren(pintar(j));
+  } catch (e) {
+    res.replaceChildren(el("p", `Error: ${e.message}`, "error"));
+  } finally {
+    $(boton).disabled = false;
+  }
+}
+
+// ---------- Pestañas ----------
+const PESTANAS = [["stock", "Stock"], ["precio", "Precio"], ["anuncio", "Anuncio"], ["cliente", "Cliente pregunta"],
+  ["tasacion", "Tasación"], ["coste", "Coste por motor"], ["recomendar", "Recomendar"], ["financiacion", "Financiación"]];
+function abrir(id) {
+  document.querySelectorAll("section").forEach((s) => s.classList.toggle("activa", s.id === id));
+  document.querySelectorAll("nav button").forEach((b) => b.classList.toggle("activa", b.dataset.id === id));
+}
+PESTANAS.forEach(([id, nombre]) => {
+  const b = el("button", nombre); b.dataset.id = id; b.addEventListener("click", () => abrir(id)); $("pestanas").append(b);
+});
+
+function elegir(v) {
+  elegido = v;
+  document.querySelectorAll("[data-elegido]").forEach((p) => {
+    p.textContent = `Coche elegido: ${v.id} · ${v.marca} ${v.modelo} ${v.version ?? ""} · ${v.anio} · ${num(v.km)} km · ${euros(v.precio)}`;
+  });
+}
+
+// ---------- Stock y alertas ----------
+async function cargarStock() {
+  STOCK = await (await fetch("/stock")).json();
+  const t = $("tablaStock");
+  const cab = el("tr");
+  ["Ref.", "Coche", "Año", "Km", "Motor", "Etiqueta", "Precio", "Días"].forEach((h, i) => cab.append(el("th", h, i >= 6 ? "num" : "")));
+  t.replaceChildren(cab);
+  STOCK.forEach((v) => {
+    const tr = el("tr", undefined, "clic");
+    [v.id, `${v.marca} ${v.modelo} ${v.version ?? ""}`, v.anio, num(v.km), MOTOR[v.combustible],
+     v.etiqueta_dgt].forEach((x) => tr.append(el("td", x)));
+    tr.append(el("td", euros(v.precio), "num"), el("td", v.dias_en_stock, "num"));
+    tr.addEventListener("click", () => { elegir(v); abrir("precio"); });
+    t.append(tr);
+  });
+  elegir(STOCK[0]);
+  const caja = $("listaCoste");
+  STOCK.forEach((v, i) => {
+    const l = el("label", undefined, "casilla");
+    const c = el("input"); c.type = "checkbox"; c.value = v.id; c.checked = ["VO-001", "VO-004", "VO-005", "VO-013"].includes(v.id);
+    l.append(c, document.createTextNode(`${v.id} · ${v.marca} ${v.modelo} (${MOTOR[v.combustible]}) · ${euros(v.precio)}`));
+    caja.append(l);
+  });
+  const a = await (await fetch("/alertas")).json();
+  const d = el("div", undefined, "tarjeta");
+  d.append(el("h3", a.length ? `Alertas de stock (${a.length})` : "Sin alertas: el stock está sano"));
+  a.forEach((x) => {
+    const p = el("p"); p.append(el("span", x.prioridad, `chip ${x.prioridad}`), el("strong", ` ${x.id} ${x.nombre}: `), document.createTextNode(`${x.motivo}. ${x.accion}.`));
+    d.append(p);
+  });
+  $("alertas").replaceChildren(d);
+}
+
+// ---------- Precio ----------
+$("btnPrecio").addEventListener("click", () => llamar("btnPrecio", "resPrecio", `/precio/${elegido.id}`, undefined, (j) => {
+  const t = el("div", undefined, "tarjeta");
+  t.append(el("p", "Rango de mercado", "muted"), el("p", `${euros(j.rango_min)} – ${euros(j.rango_max)}`, "grande"),
+           el("p", `Precio central estimado: ${euros(j.precio_estimado)}`),
+           el("p", `Precio actual ${euros(elegido.precio)}: ${j.veredicto} (${j.desviacion_pct > 0 ? "+" : ""}${j.desviacion_pct} %)`));
+  return t;
+}));
+
+// ---------- Anuncio ----------
+$("btnAnuncio").addEventListener("click", () => llamar("btnAnuncio", "resAnuncio", "/anuncio", { id: elegido.id }, (j) => {
+  const t = el("div", undefined, "tarjeta"), a = j.anuncio;
+  const avisos = Object.entries(j.avisos).flatMap(([k, v]) => v.map((x) => `${k}: ${x}`));
+  t.append(semaforo(avisos, "Comprobado: todas las cifras y promesas están en la ficha."));
+  t.append(el("h3", a.titulo), el("p", "Texto para la web", "muted"), el("div", a.texto_web, "texto"),
+           el("p", "Texto corto para portales", "muted"), el("div", a.texto_corto, "texto"),
+           el("p", "En inglés", "muted"), el("div", a.texto_ingles, "texto"), lista("Destacados", a.destacados));
+  if (j.destacados_descartados.length) t.append(lista("Destacados descartados por no tener respaldo en la ficha", j.destacados_descartados));
+  t.append(uso(j.uso));
+  return t;
+}));
+
+// ---------- Cliente pregunta ----------
+$("btnRespuesta").addEventListener("click", () => llamar("btnRespuesta", "resRespuesta", "/respuesta", { id: elegido.id, mensaje: $("mensaje").value }, (j) => {
+  const t = el("div", undefined, "tarjeta");
+  t.append(semaforo(j.avisos, "Comprobado: no hay cifras ni promesas fuera de la ficha."), el("div", j.respuesta, "texto"));
+  t.append(lista("Pendiente de consultar (no está en la ficha)", j.pendiente_de_consultar));
+  if (j.campos_usados.length) { const c = el("p", "Datos usados: ", "muted"); j.campos_usados.forEach((x) => c.append(el("span", x, "chip"))); t.append(c); }
+  t.append(uso(j.uso));
+  return t;
+}));
+
+// ---------- Tasación ----------
+$("btnTasar").addEventListener("click", () => {
+  const coche = { marca: $("tMarca").value, modelo: $("tModelo").value, anio: Number($("tAnio").value), km: Number($("tKm").value),
+                  combustible: $("tComb").value, cambio: $("tCambio").value, potencia_cv: Number($("tCv").value) || null };
+  llamar("btnTasar", "resTasar", "/tasacion", { coche, notas: $("tNotas").value }, (j) => {
+    const t = el("div", undefined, "tarjeta");
+    t.append(el("p", "Oferta al cliente", "muted"), el("p", `${euros(j.oferta_inicial)} – ${euros(j.oferta_maxima)}`, "grande"),
+             el("p", "Empieza por la cifra baja y no pases de la alta.", "muted"),
+             el("p", `Precio de venta previsto: ${euros(j.precio_venta_estimado)} (mercado ${euros(j.rango_mercado[0])} – ${euros(j.rango_mercado[1])})`),
+             el("p", `Puesta a punto: ${euros(j.puesta_a_punto)} · Margen ${j.margen_pct} % · Gastos ${euros(j.gastos_fijos)}`));
+    t.append(lista("Desglose de la puesta a punto", j.desglose));
+    t.append(lista("De dónde sale cada daño (citas de tus notas)", j.citas.map((c) => `${c.campo}: «${c.texto}»`)));
+    if (j.descartados_sin_cita.length) t.append(lista("Descartados por no aparecer en las notas", j.descartados_sin_cita));
+    t.append(uso(j.uso));
+    return t;
+  });
+});
+
+// ---------- Coste por motor ----------
+$("btnCoste").addEventListener("click", () => {
+  const ids = [...document.querySelectorAll("#listaCoste input:checked")].map((c) => c.value);
+  llamar("btnCoste", "resCoste", "/coste-anual", { ids, km_anuales: Number($("cKm").value), carga_en_casa: $("cCasa").checked, provincia: $("cProv").value }, (j) => {
+    const t = el("div", undefined, "tarjeta tabla"), tabla = el("table"), cab = el("tr");
+    ["Coche", "Precio", "Energía", "Mant.", "Seguro", "Imp.", "Total / año", `Compra + ${j.anios} años`, "Compensa en"].forEach((h, i) => cab.append(el("th", h, i ? "num" : "")));
+    tabla.append(cab);
+    j.coches.forEach((c) => {
+      const tr = el("tr");
+      tr.append(el("td", `${c.nombre} (${MOTOR[c.combustible]})`));
+      [c.precio_compra, c.energia, c.mantenimiento, c.seguro, c.impuesto, c.total_anual, c[`total_${j.anios}_anios`]].forEach((x) => tr.append(el("td", euros(x), "num")));
+      tr.append(el("td", c.anios_para_compensar === null ? "—" : `${dec(c.anios_para_compensar, 1)} años`, "num"));
+      tabla.append(tr);
+    });
+    const p = j.precios_energia;
+    t.append(tabla, el("p", `«Compensa en»: años que tarda en recuperar lo que cuesta de más frente al más barato de comprar (${j.referencia}). «—»: no lo recupera.`, "muted"),
+             el("p", `Precios usados: gasolina ${dec(p.precio_gasolina, 3)} €/L · diésel ${dec(p.precio_diesel, 3)} €/L · luz en casa ${dec(p.precio_kwh_casa, 3)} €/kWh · carga pública ${dec(p.precio_kwh_publico, 3)} €/kWh`, "muted"),
+             lista("Supuestos", j.coches[0].supuestos.slice(1)));
+    return t;
+  });
+});
+
+// ---------- Recomendar ----------
+$("btnRecomendar").addEventListener("click", () => llamar("btnRecomendar", "resRecomendar", "/recomendar", { texto: $("necesidades").value, provincia: $("rProv").value }, (j) => {
+  const t = el("div", undefined, "tarjeta");
+  const n = Object.entries(j.necesidades).filter(([, v]) => v !== null);
+  const c = el("p", "Lo que ha entendido: ", "muted"); n.forEach(([k, v]) => c.append(el("span", `${k.replaceAll("_", " ")}: ${v === true ? "sí" : v === false ? "no" : v}`, "chip"))); t.append(c);
+  if (!j.recomendaciones.length) { t.append(el("p", "Ningún coche del stock cumple esos requisitos.")); return t; }
+  j.recomendaciones.forEach((r, i) => {
+    t.append(el("h3", `${i + 1}. ${r.nombre} · ${r.anio} · ${num(r.km)} km · ${euros(r.precio)}`));
+    const ul = el("ul"); r.razones.forEach((x) => ul.append(el("li", x))); t.append(ul);
+  });
+  if (j.mensaje_cliente) t.append(semaforo(j.avisos, "Mensaje comprobado: sin cifras inventadas."), el("div", j.mensaje_cliente, "texto"));
+  t.append(uso(j.uso));
+  return t;
+}));
+
+// ---------- Financiación ----------
+$("btnFinanciar").addEventListener("click", () => llamar("btnFinanciar", "resFinanciar", "/financiacion", {
+  precio: Number($("fPrecio").value), entrada: Number($("fEntrada").value), meses: Number($("fMeses").value),
+  tin: Number($("fTin").value), comision_apertura_pct: Number($("fCom").value) }, (j) => {
+  const t = el("div", undefined, "tarjeta");
+  t.append(el("p", "Cuota mensual", "muted"), el("p", `${j.cuota.toLocaleString("es-ES", { minimumFractionDigits: 2 })} €`, "grande"),
+           el("p", `${j.meses} cuotas · Financiado ${euros(j.importe)} · Total a pagar ${euros(j.total_pagado)} · Intereses y comisión ${euros(j.intereses)} · TAE ${j.tae} %`),
+           el("p", "Simulación orientativa, sin valor contractual.", "muted"));
+  return t;
+}));
+
+abrir("stock");
+cargarStock();
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+id,marca,modelo,version,carroceria,anio,km,combustible,cambio,potencia_cv,plazas,precio,consumo_l_100km,consumo_kwh_100km,autonomia_electrica_km,etiqueta_dgt,propietarios,libro_revisiones,garantia_meses,itv_hasta,color,extras,notas,dias_en_stock
+VO-001,Mercedes-Benz,Clase A,180 Progressive,compacto,2020,48000,gasolina,automatico,136,5,23900,6.1,,,C,1,True,12,,gris,navegador|cámara trasera|asientos calefactables,2 llaves. Neumáticos delanteros nuevos.,34
+VO-002,Mercedes-Benz,Clase C,220 d Avantgarde,berlina,2019,92000,diesel,automatico,194,5,27500,4.9,,,C,2,True,12,05/2027,negro,navegador|faros LED|control de crucero adaptativo,Rayón pequeño en la puerta trasera izquierda.,71
+VO-003,Mercedes-Benz,GLA,200,suv,2021,35000,gasolina,automatico,163,5,31900,6.6,,,C,1,True,24,,blanco,navegador|portón eléctrico|cámara 360,,18
+VO-004,Mercedes-Benz,EQA,250,suv,2022,28000,electrico,automatico,190,5,33900,,17.7,426,0,1,True,24,,azul,navegador|bomba de calor|carga rápida,Cable de carga tipo 2 incluido.,95
+VO-005,Toyota,Corolla,125H Active Tech,compacto,2021,61000,hibrido,automatico,122,5,19900,4.5,,,ECO,1,True,12,,rojo,cámara trasera|Apple CarPlay,,22
+VO-006,Toyota,RAV4,220H Advance,suv,2020,84000,hibrido,automatico,218,5,27900,5.6,,,ECO,2,True,12,02/2027,gris,navegador|cámara trasera|portón eléctrico,Neumáticos al 50%.,64
+VO-007,Seat,León,1.5 TSI FR,compacto,2020,55000,gasolina,manual,130,5,17500,5.7,,,C,1,True,12,,blanco,faros LED|Apple CarPlay,,12
+VO-008,Seat,León,2.0 TDI Style,compacto,2018,118000,diesel,manual,150,5,13900,4.6,,,C,2,False,12,09/2026,gris,control de crucero|sensores de aparcamiento,"Sin libro de revisiones, facturas en papel.",88
+VO-009,Volkswagen,Golf,1.0 eTSI Life,compacto,2021,42000,gasolina,automatico,110,5,21500,5.4,,,ECO,1,True,12,,negro,navegador|Apple CarPlay,,40
+VO-010,Kia,Niro,1.6 GDi HEV Drive,suv,2020,73000,hibrido,automatico,141,5,18900,4.8,,,ECO,1,True,12,,blanco,cámara trasera|navegador,,29
+VO-011,Tesla,Model 3,Gran Autonomía,berlina,2021,64000,electrico,automatico,440,5,29900,,14.9,580,0,1,,12,,blanco,piloto automático|techo panorámico,,9
+VO-012,Renault,Clio,TCe 90 Evolution,compacto,2022,25000,gasolina,manual,90,5,14500,5.5,,,C,1,True,12,,azul,Android Auto|sensores de aparcamiento,,15
+VO-013,Peugeot,3008,Hybrid 225 Allure,suv,2021,47000,hibrido_enchufable,automatico,225,5,26900,6.8,16.5,56,0,1,True,12,,gris,navegador|cámara trasera|portón eléctrico,Cargador doméstico no incluido.,103
+VO-014,Hyundai,Tucson,1.6 TGDI 48V Tecno,suv,2021,52000,hibrido,manual,150,5,23900,6.4,,,ECO,1,True,12,,verde,cámara trasera|navegador,,37
+VO-015,Dacia,Sandero,Stepway TCe 90,compacto,2022,31000,gasolina,manual,90,5,12900,5.4,,,C,1,True,12,,naranja,Apple CarPlay,,8
+VO-016,BMW,Serie 1,118d,compacto,2019,99000,diesel,automatico,150,5,20500,4.5,,,C,2,True,12,11/2026,negro,navegador|faros LED,Golpe reparado en paragolpes trasero.,76
+VO-017,Audi,A3,Sportback 35 TFSI,compacto,2020,67000,gasolina,automatico,150,5,24500,5.9,,,ECO,1,True,12,,gris,navegador|virtual cockpit,,44
+VO-018,Nissan,Leaf,40 kWh Acenta,compacto,2020,58000,electrico,automatico,150,5,15900,,17.1,270,0,2,True,12,,blanco,cámara trasera|navegador,Batería al 91% de salud según diagnosis.,58
+VO-019,Skoda,Octavia,Combi 2.0 TDI Style,familiar,2020,104000,diesel,automatico,150,5,19900,4.7,,,C,1,True,12,08/2026,gris,navegador|portón eléctrico|control de crucero adaptativo,,31
+VO-020,Mazda,CX-5,2.0 Skyactiv-G Zenith,suv,2019,79000,gasolina,manual,165,5,21900,7.2,,,C,2,True,12,04/2027,rojo,navegador|asientos de cuero,,120
+VO-021,Volvo,XC40,Recharge T5 Inscription,suv,2021,39000,hibrido_enchufable,automatico,262,5,32900,7.0,18.6,44,0,1,True,24,,blanco,navegador|techo panorámico|cámara 360,,66
+VO-022,Fiat,500e,42 kWh Icon,compacto,2022,19000,electrico,automatico,118,4,17900,,14.0,320,0,1,True,24,,verde,Apple CarPlay|sensores de aparcamiento,,27
+VO-023,Opel,Corsa,1.2 Edition,compacto,2021,46000,gasolina,manual,75,5,11900,5.6,,,C,1,True,12,,blanco,Android Auto,,52
+VO-024,Citroën,Berlingo,BlueHDi 130 Shine XL,monovolumen,2020,87000,diesel,manual,130,7,19500,5.6,,,C,1,True,12,07/2027,gris,sensores de aparcamiento|control de crucero,Ideal familia: 7 plazas.,19

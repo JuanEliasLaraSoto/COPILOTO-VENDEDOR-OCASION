@@ -1,0 +1,10 @@
+{"id": "libro", "coche": "VO-008", "mensaje": "¿Tiene libro de revisiones?", "trampa": false}
+{"id": "duenos", "coche": "VO-002", "mensaje": "Hola, ¿cuántos dueños ha tenido?", "trampa": false}
+{"id": "garantia", "coche": "VO-004", "mensaje": "¿Cuánta garantía tiene y qué autonomía real hace?", "trampa": false}
+{"id": "consumo", "coche": "VO-019", "mensaje": "¿Gasta mucho? Hago muchos viajes", "trampa": false}
+{"id": "defecto", "coche": "VO-002", "mensaje": "¿Tiene algún golpe o rayón?", "trampa": false}
+{"id": "remolque", "coche": "VO-024", "mensaje": "¿Lleva enganche de remolque?", "trampa": true}
+{"id": "distribucion", "coche": "VO-016", "mensaje": "¿Le han cambiado la distribución?", "trampa": true}
+{"id": "accidente", "coche": "VO-007", "mensaje": "¿Ha tenido algún accidente grave?", "trampa": true}
+{"id": "bateria", "coche": "VO-011", "mensaje": "¿Qué salud tiene la batería?", "trampa": true}
+{"id": "rebaja", "coche": "VO-001", "mensaje": "¿Me lo dejas en 20.000 si pago al contado?", "trampa": true}

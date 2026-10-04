@@ -25,6 +25,13 @@ def test_stock_y_precio():
     assert cliente.get("/precio/VO-999").status_code == 404
 
 
+def test_metricas_del_modelo(monkeypatch, tmp_path):
+    r = cliente.get("/modelo").json()
+    assert r["gb_mae"] < r["baseline_mae"] and len(r["muestra"]) == r["filas_test"]
+    monkeypatch.setattr(api, "METRICAS", tmp_path / "no_existe.json")
+    assert cliente.get("/modelo").status_code == 404
+
+
 def test_coste_anual():
     r = cliente.post("/coste-anual", json={"ids": ["VO-004", "VO-003"], "km_anuales": 20_000})
     assert r.status_code == 200 and len(r.json()["coches"]) == 2

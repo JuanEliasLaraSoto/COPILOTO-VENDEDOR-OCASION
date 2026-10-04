@@ -4,120 +4,205 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Copiloto VO</title>
+<meta name="description" content="Copiloto del vendedor de vehículos de ocasión: precio, anuncios, clientes, carteles, tasaciones y financiación.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23ffcc00'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='900' font-size='14' text-anchor='middle' fill='%2316140f'%3EVO%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,300..900;1,62..125,300..900&family=Gloock&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Big+Shoulders+Display:wght@600..900&display=swap" rel="stylesheet">
+<script>try { const t = JSON.parse(localStorage.getItem("vo-tema")); if (t) document.documentElement.dataset.theme = t; } catch { /* sin preferencia */ }</script>
 <style>
   :root {
-    --papel:#efeae0; --papel-2:#e6dfd1; --hoja:#fbf8f2; --tinta:#16140f; --suave:#6d6658; --linea:#d6cdbc;
-    --pegatina:#ffcc00; --pegatina-2:#fff3b8; --asfalto:#1c1b18; --asfalto-2:#2a2824;
+    --f-titulo:"Big Shoulders Display", "Arial Narrow", sans-serif;
+    --f-texto:"Barlow", "Helvetica Neue", Arial, sans-serif;
+    --papel:#efeae0; --papel-2:#e4dccd; --hoja:#fbf8f2; --tinta:#16140f; --suave:#6d6658; --linea:#d6cdbc;
+    --pegatina:#ffcc00; --pegatina-2:#fff3b8; --marcador:#ffcc00;
+    --asfalto:#1c1b18; --asfalto-2:#2a2824; --asfalto-linea:#3a372f;
     --bien:#1f6b3a; --bien-2:#e1efdf; --mal:#b42a12; --mal-2:#f8e0d8; --aviso:#8a5800; --aviso-2:#fbeec8;
-    --ancho: "wdth" 100;
+    --corazon:#e0245e;
+    --sombra:0 1px 0 rgba(22,20,15,.04), 0 12px 28px -18px rgba(22,20,15,.25);
+    color-scheme:light;
   }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --papel:#12110e; --papel-2:#25221c; --hoja:#1b1915; --tinta:#f2ede3; --suave:#a49c8c; --linea:#36322a;
+      --pegatina-2:#3b3311; --marcador:rgba(255,204,0,.4);
+      --asfalto:#0b0a08; --asfalto-2:#1c1a16; --asfalto-linea:#2a2722;
+      --bien:#72d293; --bien-2:#17311f; --mal:#ff8f75; --mal-2:#3b1b13; --aviso:#f3c25a; --aviso-2:#382a0c;
+      --sombra:0 12px 28px -18px rgba(0,0,0,.7);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --papel:#12110e; --papel-2:#25221c; --hoja:#1b1915; --tinta:#f2ede3; --suave:#a49c8c; --linea:#36322a;
+    --pegatina-2:#3b3311; --marcador:rgba(255,204,0,.4);
+    --asfalto:#0b0a08; --asfalto-2:#1c1a16; --asfalto-linea:#2a2722;
+    --bien:#72d293; --bien-2:#17311f; --mal:#ff8f75; --mal-2:#3b1b13; --aviso:#f3c25a; --aviso-2:#382a0c;
+    --sombra:0 12px 28px -18px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }
+
   * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
   html { -webkit-text-size-adjust:100%; }
-  body { margin:0; font-family:"Archivo", "Helvetica Neue", Arial, sans-serif; font-size:15px; line-height:1.5; color:var(--tinta);
-         background:var(--papel); font-feature-settings:"tnum" 1, "ss01" 1; -webkit-font-smoothing:antialiased; }
-  ::selection { background:var(--pegatina); color:var(--tinta); }
+  body { margin:0; font-family:var(--f-texto); font-size:16px; line-height:1.5; color:var(--tinta); background:var(--papel);
+         font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased; }
+  ::selection { background:var(--pegatina); color:#16140f; }
+  kbd { font:inherit; font-size:.72rem; font-weight:700; border:1px solid var(--linea); border-bottom-width:2px; border-radius:4px; padding:0 5px; background:var(--hoja); color:var(--tinta); }
 
   /* ---------- Estructura ---------- */
-  .marco { display:grid; grid-template-columns:268px 1fr; min-height:100vh; }
+  .marco { display:grid; grid-template-columns:272px minmax(0, 1fr); min-height:100vh; }
   .lateral { background:var(--asfalto); color:#f3efe6; position:sticky; top:0; height:100vh; display:flex; flex-direction:column;
-             padding:26px 18px 22px; overflow-y:auto; }
-  .marca { padding:0 8px 26px; border-bottom:1px solid #3a372f; }
-  .marca .logo { display:flex; align-items:baseline; gap:6px; font-weight:900; font-stretch:125%; font-size:1.55rem; letter-spacing:-.01em; line-height:1; text-transform:uppercase; }
-  .marca .logo b { background:var(--pegatina); color:var(--tinta); padding:3px 7px 2px; border-radius:3px; font-size:1.1rem; transform:rotate(-4deg); display:inline-block; }
-  .marca p { margin:12px 0 0; font-size:.8rem; color:#a8a193; line-height:1.45; }
-  .marca p em { font-family:"Gloock", Georgia, serif; font-style:normal; color:#f3efe6; font-size:.92rem; }
+             padding:24px 18px 18px; overflow-y:auto; z-index:5; }
+  .marca { padding:0 8px; }
+  .logo { display:flex; align-items:center; gap:8px; font-family:var(--f-titulo); font-weight:900; font-size:2rem; line-height:1; text-transform:uppercase; letter-spacing:.01em; }
+  .logo b { background:var(--pegatina); color:#16140f; padding:2px 8px 0; border-radius:3px; transform:rotate(-4deg); display:inline-block; }
+  .marca p { margin:10px 0 0; font-size:.84rem; color:#a8a193; line-height:1.45; }
+  .buscador { display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:18px; background:var(--asfalto-2);
+              border:1px solid var(--asfalto-linea); color:#a8a193; border-radius:6px; padding:9px 12px; font:inherit; font-size:.88rem; cursor:pointer; }
+  .buscador:hover { color:#fff; border-color:#57524a; }
+  .buscador kbd { background:transparent; color:#a8a193; border-color:#57524a; }
 
-  nav { display:flex; flex-direction:column; gap:2px; padding:20px 0; flex:1; }
+  nav { display:flex; flex-direction:column; gap:2px; padding:8px 0 14px; flex:1; }
+  nav .grupo { font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#77715f; padding:14px 10px 6px; }
   nav button { display:flex; align-items:center; gap:12px; width:100%; text-align:left; background:none; border:0; border-radius:6px;
-               padding:10px 10px; font:inherit; font-size:.92rem; color:#c9c2b3; cursor:pointer; white-space:nowrap; transition:background .15s, color .15s; }
-  nav button .n { font-size:.7rem; font-weight:700; font-stretch:125%; color:#6f6a5e; width:22px; transition:color .15s; }
+               padding:8px 10px; font:inherit; font-size:.97rem; font-weight:500; color:#c9c2b3; cursor:pointer; white-space:nowrap; transition:background .15s, color .15s; }
+  nav button .n { font-family:var(--f-titulo); font-size:.85rem; font-weight:700; color:#6f6a5e; width:20px; }
   nav button:hover { background:var(--asfalto-2); color:#fff; }
-  nav button.activa { background:var(--pegatina); color:var(--tinta); font-weight:700; }
-  nav button.activa .n { color:var(--tinta); }
-  nav button:focus-visible { outline:2px solid var(--pegatina); outline-offset:2px; }
-  .lateral footer { font-size:.72rem; color:#827b6d; line-height:1.5; padding:16px 8px 0; border-top:1px solid #3a372f; }
+  nav button.activa { background:var(--pegatina); color:#16140f; font-weight:700; }
+  nav button.activa .n { color:#16140f; }
+  nav button:focus-visible, .buscador:focus-visible { outline:2px solid var(--pegatina); outline-offset:2px; }
 
-  main { padding:44px clamp(16px, 5vw, 64px) 80px; max-width:1120px; width:100%; min-width:0; }
-  section { display:none; } section.activa { display:block; animation:entra .35s ease-out; }
+  .mini-elegido { display:grid; gap:4px; text-align:left; width:100%; background:var(--asfalto-2); border:1px solid var(--asfalto-linea);
+                  border-left:4px solid var(--pegatina); border-radius:6px; padding:10px 12px; color:#f3efe6; font:inherit; font-size:.86rem; cursor:pointer; margin-bottom:12px; }
+  .mini-elegido:hover { border-color:#57524a; border-left-color:var(--pegatina); }
+  .mini-elegido .placa { justify-self:start; }
+  .mini-tit { font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:#8d8676; font-weight:700; }
+  .tema { background:none; border:1px solid var(--asfalto-linea); color:#c9c2b3; border-radius:6px; padding:7px 10px; font:inherit; font-size:.82rem; cursor:pointer; width:100%; margin-bottom:12px; }
+  .tema:hover { color:#fff; border-color:#57524a; }
+  .lateral footer { font-size:.74rem; color:#827b6d; line-height:1.5; padding:12px 8px 0; border-top:1px solid var(--asfalto-linea); }
+  .lateral footer .latido { color:var(--corazon); display:inline-block; animation:latido 1.6s ease-in-out infinite; }
+  @keyframes latido { 0%, 40%, 100% { transform:scale(1); } 20% { transform:scale(1.3); } }
+
+  main { padding:40px clamp(16px, 5vw, 64px) 80px; max-width:1180px; width:100%; min-width:0; }
+  main > section { display:none; }
+  main > section.activa { display:block; animation:entra .35s ease-out; }
   @keyframes entra { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+  @keyframes crece { from { transform:scaleX(0); } }
+  @keyframes aparece { from { opacity:0; } }
+  @keyframes sube { from { opacity:0; transform:translateY(10px); } }
 
-  /* ---------- Cabeceras de sección ---------- */
-  .ceja { display:inline-flex; align-items:center; gap:8px; font-size:.72rem; font-weight:700; font-stretch:125%; letter-spacing:.14em;
-          text-transform:uppercase; color:var(--suave); margin-bottom:10px; }
+  /* ---------- Cabeceras ---------- */
+  .ceja { display:inline-flex; align-items:center; gap:8px; font-size:.74rem; font-weight:700; letter-spacing:.16em;
+          text-transform:uppercase; color:var(--suave); margin-bottom:6px; }
   .ceja::before { content:""; width:22px; height:2px; background:var(--tinta); }
-  h2 { font-family:"Gloock", Georgia, serif; font-weight:400; font-size:clamp(2rem, 4.2vw, 3rem); line-height:1.02; letter-spacing:-.015em; margin:0 0 10px; }
-  .sub { color:var(--suave); margin:0 0 26px; font-size:1rem; max-width:62ch; }
-  h3 { font-size:.78rem; font-weight:800; font-stretch:115%; letter-spacing:.1em; text-transform:uppercase; margin:20px 0 8px; color:var(--tinta); }
+  h2 { font-family:var(--f-titulo); font-weight:800; font-size:clamp(2.4rem, 5vw, 3.6rem); line-height:.95; letter-spacing:.005em; margin:0 0 12px; text-transform:uppercase; }
+  .sub { color:var(--suave); margin:0 0 24px; font-size:1.05rem; max-width:64ch; }
+  h3 { font-size:.78rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin:20px 0 10px; color:var(--tinta); }
   .tarjeta h3:first-child { margin-top:0; }
+  h4 { margin:0; font-size:1.08rem; font-weight:700; }
+  .titulo-bloque { margin-top:34px; }
 
   /* ---------- Coche elegido ---------- */
-  .elegido { display:inline-flex; align-items:center; gap:10px; background:var(--hoja); border:1px solid var(--linea); border-left:5px solid var(--pegatina);
-             border-radius:6px; padding:10px 14px; font-size:.9rem; font-weight:500; margin:0 0 18px; }
+  .elegido { display:flex; flex-wrap:wrap; align-items:center; gap:10px; background:var(--hoja); border:1px solid var(--linea); border-left:5px solid var(--pegatina);
+             border-radius:6px; padding:10px 14px; font-size:.95rem; margin:0 0 18px; width:fit-content; max-width:100%; }
   .elegido:empty { display:none; }
 
   /* ---------- Tarjetas ---------- */
-  .tarjeta { background:var(--hoja); border:1px solid var(--linea); border-radius:10px; padding:22px; margin-top:18px;
-             box-shadow:0 1px 0 rgba(22,20,15,.04), 0 12px 28px -18px rgba(22,20,15,.25); }
+  .tarjeta { background:var(--hoja); border:1px solid var(--linea); border-radius:10px; padding:22px; margin-top:18px; box-shadow:var(--sombra); }
   .tarjeta > p { margin:6px 0; }
+  .tarjeta > p.muted:first-child { font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+  .rejilla-2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(380px, 100%), 1fr)); gap:18px; margin-top:18px; }
+  .rejilla-2 > .tarjeta { margin-top:0; }
 
   /* ---------- Formularios ---------- */
-  .fila { display:flex; gap:14px; flex-wrap:wrap; margin:14px 0; align-items:flex-end; }
-  label { font-size:.7rem; font-weight:700; font-stretch:112%; letter-spacing:.08em; text-transform:uppercase; color:var(--suave);
-          display:flex; flex-direction:column; gap:6px; }
-  label.casilla { flex-direction:row; align-items:center; gap:10px; text-transform:none; letter-spacing:0; font-stretch:100%; font-size:.9rem; font-weight:500; color:var(--tinta); }
-  input, select, textarea { padding:10px 12px; border:1px solid var(--linea); border-radius:6px; font:inherit; font-size:.95rem; font-weight:500;
+  .fila { display:flex; gap:12px; flex-wrap:wrap; margin:14px 0; align-items:flex-end; }
+  label { font-size:.74rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--suave); display:flex; flex-direction:column; gap:6px; }
+  label.casilla { flex-direction:row; align-items:center; gap:10px; text-transform:none; letter-spacing:0; font-size:.95rem; font-weight:500; color:var(--tinta); cursor:pointer; }
+  input, select, textarea { padding:10px 12px; border:1px solid var(--linea); border-radius:6px; font:inherit; font-size:1rem; font-weight:500;
                             text-transform:none; letter-spacing:0; color:var(--tinta); background:var(--hoja); transition:border-color .15s, box-shadow .15s; }
-  input:hover, select:hover, textarea:hover { border-color:#bdb3a0; }
+  input:hover, select:hover, textarea:hover { border-color:var(--suave); }
   input:focus, select:focus, textarea:focus { outline:none; border-color:var(--tinta); box-shadow:0 0 0 3px var(--pegatina); }
   input[type=number] { width:130px; }
   input[type=checkbox] { width:18px; height:18px; accent-color:var(--tinta); margin:0; }
+  input[type=range] { width:100%; padding:0; border:0; accent-color:var(--tinta); background:transparent; box-shadow:none; }
   textarea { width:100%; min-height:120px; resize:vertical; line-height:1.5; }
   label:has(textarea) { width:100%; }
 
-  button.principal { position:relative; background:var(--tinta); color:#fff; border:0; border-radius:6px; padding:12px 22px; font:inherit;
-                     font-weight:700; font-stretch:112%; letter-spacing:.04em; text-transform:uppercase; font-size:.82rem; cursor:pointer;
+  button.principal { background:var(--tinta); color:var(--papel); border:0; border-radius:6px; padding:12px 22px; font:inherit; font-weight:700;
+                     letter-spacing:.06em; text-transform:uppercase; font-size:.86rem; cursor:pointer;
                      box-shadow:4px 4px 0 var(--pegatina); transition:transform .12s, box-shadow .12s; }
   button.principal:hover { transform:translate(-1px, -1px); box-shadow:5px 5px 0 var(--pegatina); }
   button.principal:active { transform:translate(3px, 3px); box-shadow:1px 1px 0 var(--pegatina); }
-  button.principal:focus-visible { outline:2px solid var(--tinta); outline-offset:3px; }
   button.principal:disabled { opacity:.55; cursor:wait; transform:none; }
+  .boton, .mini { display:inline-flex; align-items:center; gap:6px; background:var(--hoja); color:var(--tinta); border:1px solid var(--linea); border-radius:6px;
+                  padding:9px 14px; font:inherit; font-size:.9rem; font-weight:600; cursor:pointer; text-decoration:none; transition:border-color .12s, background .12s; white-space:nowrap; }
+  .mini { padding:5px 10px; font-size:.8rem; }
+  .boton:hover, .mini:hover { border-color:var(--tinta); }
+  .boton[aria-pressed=true] { background:var(--tinta); color:var(--papel); border-color:var(--tinta); }
+  :is(button, a, [tabindex]):focus-visible { outline:2px solid var(--tinta); outline-offset:2px; }
+
+  .chips-rapidos { display:flex; flex-wrap:wrap; gap:6px; margin:0 0 10px; }
+  .chip-rapido { border:1px dashed var(--suave); background:transparent; border-radius:999px; padding:5px 12px; font:inherit; font-size:.86rem; color:var(--tinta); cursor:pointer; }
+  .chip-rapido:hover { border-style:solid; border-color:var(--tinta); background:var(--pegatina-2); }
+  .chip-rapido::before { content:"+ "; font-weight:700; color:var(--suave); }
+  .contador { font-size:.78rem; color:var(--suave); }
+  .contador.error { color:var(--mal); }
+
+  /* ---------- Herramientas del stock ---------- */
+  .herramientas { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:12px; }
+  #buscar { flex:1 1 280px; }
+  .chips-filtro { display:flex; gap:6px; flex-wrap:wrap; }
+  .chips-filtro button { border:1px solid var(--linea); background:var(--hoja); border-radius:999px; padding:6px 13px; font:inherit; font-size:.86rem; cursor:pointer; color:var(--tinta); }
+  .chips-filtro button:hover { border-color:var(--tinta); }
+  .chips-filtro button[aria-pressed=true] { background:var(--pegatina); border-color:var(--pegatina); color:#16140f; font-weight:700; }
+  .seg { display:inline-flex; border:1px solid var(--linea); border-radius:6px; overflow:hidden; }
+  .seg button { border:0; background:var(--hoja); padding:9px 13px; font:inherit; font-size:.86rem; cursor:pointer; color:var(--suave); }
+  .seg button[aria-pressed=true] { background:var(--tinta); color:var(--papel); }
 
   /* ---------- Tablas ---------- */
-  .tabla { overflow-x:auto; padding:6px 0; }
+  .tabla { overflow-x:auto; }
   .tabla.tarjeta { padding:6px 0; }
-  table { width:100%; border-collapse:collapse; font-size:.9rem; }
-  th, td { text-align:left; padding:12px 14px; border-bottom:1px solid var(--papel-2); vertical-align:middle; }
-  th { color:var(--suave); font-size:.68rem; font-weight:700; font-stretch:115%; letter-spacing:.1em; text-transform:uppercase; border-bottom:1px solid var(--linea); }
-  tr:last-child td { border-bottom:0; }
+  table { width:100%; border-collapse:collapse; font-size:.95rem; }
+  th, td { text-align:left; padding:11px 14px; border-bottom:1px solid var(--papel-2); vertical-align:middle; }
+  th { color:var(--suave); font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; border-bottom:1px solid var(--linea); white-space:nowrap; }
+  tbody tr:last-child td { border-bottom:0; }
   td.num, th.num { text-align:right; white-space:nowrap; }
   td.num { font-weight:600; }
+  th.ordenable { cursor:pointer; user-select:none; }
+  th.ordenable:hover, th.activo { color:var(--tinta); }
+  th .flecha { margin-left:4px; opacity:.35; }
+  th.activo .flecha { opacity:1; }
   tr.clic { cursor:pointer; transition:background .12s; }
   tr.clic:hover { background:var(--pegatina-2); }
   tr.sel { background:var(--pegatina-2); box-shadow:inset 4px 0 0 var(--pegatina); }
-  .placa { display:inline-block; font-weight:800; font-stretch:80%; letter-spacing:.06em; font-size:.82rem; padding:2px 7px 2px 16px; border:1.5px solid var(--tinta);
-           border-radius:4px; background:#fff linear-gradient(90deg, #1d3f94 0 10px, transparent 10px); white-space:nowrap; }
+  td.vacio { text-align:center; padding:40px; color:var(--suave); }
+  .td-fav { width:40px; padding-right:0; }
+  .td-ref { white-space:nowrap; }
   .dias-largo { color:var(--mal); }
+  .placa { display:inline-block; font-weight:700; letter-spacing:.06em; font-size:.84rem; padding:1px 7px 1px 16px; border:1.5px solid #16140f; color:#16140f;
+           border-radius:4px; background:#fff linear-gradient(90deg, #1d3f94 0 10px, transparent 10px); white-space:nowrap; line-height:1.5; }
+  .punto { display:inline-block; width:8px; height:8px; border-radius:50%; margin-left:8px; vertical-align:middle; }
+  .punto.alta { background:var(--mal); } .punto.media { background:var(--aviso); } .punto.baja { background:var(--bien); }
 
-  /* ---------- Chips y avisos ---------- */
-  .chip { display:inline-block; padding:3px 9px; border-radius:999px; font-size:.78rem; font-weight:600; background:var(--papel-2); margin:3px 6px 3px 0; }
-  .chip.alta, .chip.media, .chip.baja { text-transform:uppercase; font-size:.66rem; font-weight:800; font-stretch:115%; letter-spacing:.08em; }
+  /* ---------- Chips, etiquetas y avisos ---------- */
+  .chip { display:inline-block; padding:3px 10px; border-radius:999px; font-size:.82rem; font-weight:600; background:var(--papel-2); margin:3px 6px 3px 0; }
+  .chip.alta, .chip.media, .chip.baja { text-transform:uppercase; font-size:.68rem; font-weight:800; letter-spacing:.08em; margin:0; }
   .alta { background:var(--mal-2); color:var(--mal); } .media { background:var(--aviso-2); color:var(--aviso); } .baja { background:var(--bien-2); color:var(--bien); }
-  #alertas .tarjeta p { padding:10px 0; margin:0; border-bottom:1px dashed var(--linea); }
-  #alertas .tarjeta p:last-child { border-bottom:0; }
-  .ok { background:var(--bien-2); color:var(--bien); border-radius:6px; padding:12px 14px; margin:0 0 16px; font-weight:600; font-size:.9rem; }
+  .chip-ok { background:var(--bien-2); color:var(--bien); }
+  .etiqueta { display:inline-grid; place-items:center; min-width:32px; height:22px; padding:0 7px; border-radius:999px; font-size:.7rem; font-weight:800; color:#fff; }
+  .e-0 { background:#1f5fbf; } .e-eco { background:linear-gradient(90deg, #1f5fbf 50%, #2f9e5a 50%); } .e-c { background:#2f9e5a; } .e-b { background:#e5b30f; color:#16140f; }
+  .ok { background:var(--bien-2); color:var(--bien); border-radius:6px; padding:12px 14px; margin:0 0 16px; font-weight:600; font-size:.95rem; }
   .ok::before { content:"✓  "; font-weight:900; }
-  .ko { background:var(--mal-2); color:var(--mal); border-radius:6px; padding:12px 14px; margin:0 0 16px; font-size:.9rem; }
+  .ko { background:var(--mal-2); color:var(--mal); border-radius:6px; padding:12px 14px; margin:0 0 16px; font-size:.95rem; }
   .ko ul { margin:6px 0 0; padding-left:18px; }
+  .consejo { background:var(--pegatina-2); border-radius:6px; padding:12px 14px; font-weight:500; }
 
-  /* ---------- Cifras grandes ---------- */
-  .grande { display:inline-block; font-weight:900; font-stretch:122%; font-size:clamp(1.9rem, 4.5vw, 2.8rem); letter-spacing:-.02em; line-height:1.05; margin:4px 0 10px; -webkit-box-decoration-break:clone; box-decoration-break:clone;
-            background:linear-gradient(transparent 62%, var(--pegatina) 62%, var(--pegatina) 92%, transparent 92%); padding:0 4px; }
-  .uso, .muted { color:var(--suave); font-size:.84rem; }
-  .tarjeta > p.muted:first-child { font-size:.7rem; font-weight:700; font-stretch:115%; letter-spacing:.12em; text-transform:uppercase; }
-  .uso { margin-top:18px; padding-top:12px; border-top:1px dashed var(--linea); font-size:.76rem; }
+  /* ---------- Cifras ---------- */
+  .grande { display:inline-block; font-family:var(--f-titulo); font-weight:800; font-size:clamp(2.4rem, 5vw, 3.4rem); line-height:1; margin:6px 0 10px; letter-spacing:.01em;
+            background:linear-gradient(transparent 60%, var(--marcador) 60%, var(--marcador) 90%, transparent 90%); padding:0 4px;
+            -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+  .uso, .muted { color:var(--suave); font-size:.9rem; }
+  .uso { margin-top:18px; padding-top:12px; border-top:1px dashed var(--linea); font-size:.8rem; }
   .error { color:var(--mal); font-weight:600; }
   .cargando { display:flex; align-items:center; gap:10px; margin-top:18px; }
   .cargando::before { content:""; width:14px; height:14px; border:2px solid var(--linea); border-top-color:var(--tinta); border-radius:50%; animation:gira .7s linear infinite; }
@@ -125,30 +210,219 @@
   .texto { white-space:pre-wrap; background:var(--papel); border-radius:6px; padding:14px 16px; margin:6px 0 16px; line-height:1.6; }
   ul { padding-left:20px; margin:6px 0; } li { margin:4px 0; } li::marker { color:var(--suave); }
 
-  /* ---------- Selección de coches para comparar ---------- */
-  #listaCoste { display:grid; grid-template-columns:repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap:8px; margin-top:10px; }
-  #listaCoste label { border:1px solid var(--linea); border-radius:6px; padding:10px 12px; background:#fff; cursor:pointer; font-size:.86rem; transition:border-color .12s, background .12s; }
+  /* ---------- Panel ---------- */
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px; }
+  .kpi { background:var(--hoja); border:1px solid var(--linea); border-radius:10px; padding:18px 20px; box-shadow:var(--sombra); }
+  .kpi-tit { font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--suave); }
+  .kpi-valor { font-family:var(--f-titulo); font-weight:800; font-size:2.7rem; line-height:1; margin:10px 0 6px; }
+  .kpi-sub { color:var(--suave); font-size:.86rem; }
+  .kpi.amarillo { background:var(--pegatina); border-color:var(--pegatina); color:#16140f; }
+  .kpi.amarillo .kpi-tit, .kpi.amarillo .kpi-sub { color:#4a4122; }
+  .kpi.rojo .kpi-valor { color:var(--mal); }
+  .barras { display:grid; gap:4px; }
+  .barra-fila { display:grid; grid-template-columns:minmax(90px, 150px) 1fr 40px; gap:12px; align-items:center; padding:5px 0; font-size:.95rem; }
+  .pista { height:10px; background:var(--papel-2); border-radius:999px; overflow:hidden; position:relative; }
+  .relleno { height:100%; background:var(--tinta); border-radius:999px; transform-origin:left; animation:crece .8s cubic-bezier(.2,.7,.2,1) both; }
+  .relleno.medio { background:var(--aviso); } .relleno.alto { background:var(--mal); }
+  .dias { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; font-size:.84rem; color:var(--suave); margin-top:10px; }
+  .fila-alerta { display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:start; padding:12px 0; border-bottom:1px dashed var(--linea); }
+  .fila-alerta:last-child { border-bottom:0; }
+  .fila-alerta p { margin:2px 0 0; }
+  #panelAtencion { max-height:430px; overflow:auto; }
+  .fila-dias { display:block; width:100%; text-align:left; background:none; border:0; border-bottom:1px dashed var(--linea); padding:10px 0; font:inherit; color:inherit; cursor:pointer; }
+  .fila-dias:last-child { border-bottom:0; }
+  .fila-dias:hover b { text-decoration:underline; text-decoration-color:var(--pegatina); text-decoration-thickness:3px; }
+  .fila-dias .dias { margin-top:6px; }
+  .accesos { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:12px; }
+  .acceso { text-align:left; background:var(--hoja); border:1px solid var(--linea); border-radius:10px; padding:16px 18px; font:inherit; color:var(--tinta); cursor:pointer;
+            display:grid; gap:4px; transition:transform .15s, box-shadow .15s, border-color .15s; }
+  .acceso b { font-family:var(--f-titulo); font-size:1.35rem; font-weight:800; text-transform:uppercase; line-height:1.05; }
+  .acceso b::after { content:" →"; }
+  .acceso span { color:var(--suave); font-size:.88rem; }
+  .acceso:hover { transform:translateY(-2px); border-color:var(--tinta); box-shadow:4px 4px 0 var(--pegatina); }
+  .truco { margin-top:22px; }
+
+  /* ---------- Tarjetas de coche ---------- */
+  .tarjetas-coche { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:14px; }
+  .coche-card { background:var(--hoja); border:1px solid var(--linea); border-radius:10px; padding:16px; cursor:pointer; transition:transform .15s, box-shadow .15s, border-color .15s; }
+  .coche-card:hover { transform:translateY(-3px); border-color:var(--tinta); box-shadow:4px 4px 0 var(--pegatina); }
+  .coche-card.sel { border-color:var(--tinta); box-shadow:inset 0 5px 0 var(--pegatina); }
+  .card-cab { display:flex; justify-content:space-between; align-items:center; }
+  .coche-card h4 { margin-top:12px; }
+  .coche-card .muted { margin:0; font-size:.88rem; }
+  .card-chips { display:flex; flex-wrap:wrap; gap:4px; margin:10px 0; align-items:center; }
+  .card-chips .chip { margin:0; }
+  .card-precio { font-family:var(--f-titulo); font-weight:800; font-size:2rem; line-height:1; margin:8px 0 0; }
+
+  /* ---------- Favoritos ---------- */
+  .corazon { background:none; border:0; font-size:1.25rem; line-height:1; cursor:pointer; color:var(--suave); opacity:.45; padding:4px; transition:color .15s, transform .15s, opacity .15s; }
+  .corazon:hover { color:var(--corazon); opacity:1; transform:scale(1.15); }
+  .corazon[aria-pressed=true] { color:var(--corazon); opacity:1; }
+  .corazon.late { animation:late .45s; }
+  @keyframes late { 30% { transform:scale(1.5); } 60% { transform:scale(.9); } }
+
+  /* ---------- Ficha lateral ---------- */
+  .velo { position:fixed; inset:0; background:rgba(12,11,9,.45); backdrop-filter:blur(2px); z-index:20; animation:aparece .2s; }
+  .cajon { position:fixed; top:0; right:0; bottom:0; width:min(500px, 100%); background:var(--papel); z-index:21; overflow-y:auto; padding:20px 26px 40px;
+           transform:translateX(100%); visibility:hidden; box-shadow:-20px 0 40px -20px rgba(0,0,0,.4);
+           transition:transform .3s cubic-bezier(.2,.7,.2,1), visibility 0s linear .3s; }
+  .cajon.abierto { transform:none; visibility:visible; transition:transform .3s cubic-bezier(.2,.7,.2,1); }
+  .cajon-cab { display:flex; align-items:center; gap:8px; margin-bottom:16px; }
+  .cerrar { margin-left:auto; background:var(--hoja); border:1px solid var(--linea); border-radius:50%; width:36px; height:36px; font-size:1.3rem; line-height:1; cursor:pointer; color:var(--tinta); }
+  .cerrar:hover { border-color:var(--tinta); }
+  .cajon h2 { font-size:2.6rem; margin-bottom:6px; }
+  .cajon .sub { margin-bottom:8px; }
+  .aviso-ficha { border-radius:6px; padding:10px 12px; font-size:.92rem; margin:8px 0; }
+  .specs { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--linea); border:1px solid var(--linea); border-radius:8px; overflow:hidden; margin:18px 0 0; }
+  .specs div { background:var(--hoja); padding:9px 12px; }
+  .specs div:last-child:nth-child(odd) { grid-column:span 2; }
+  dt { font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color:var(--suave); font-weight:700; }
+  dd { margin:2px 0 0; font-weight:600; }
+  .acciones { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .accion { text-align:left; display:grid; gap:2px; background:var(--hoja); border:1px solid var(--linea); border-radius:8px; padding:11px 12px; font:inherit; color:var(--tinta); cursor:pointer; }
+  .accion b { font-size:.95rem; }
+  .accion span { font-size:.8rem; color:var(--suave); }
+  .accion:hover { border-color:var(--tinta); background:var(--pegatina-2); }
+
+  /* ---------- Buscador rápido ---------- */
+  .paleta { position:fixed; inset:0; z-index:30; background:rgba(12,11,9,.5); display:grid; place-items:start center; padding:12vh 16px 16px; animation:aparece .15s; }
+  .paleta-caja { width:min(580px, 100%); background:var(--hoja); border-radius:12px; box-shadow:0 30px 60px -20px rgba(0,0,0,.5); overflow:hidden; border:1px solid var(--linea); animation:sube .2s; }
+  #paletaInput { width:100%; border:0; border-bottom:1px solid var(--linea); border-radius:0; padding:18px 20px; font-size:1.1rem; background:transparent; }
+  #paletaInput:focus { box-shadow:none; }
+  #paletaLista { list-style:none; margin:0; padding:6px; max-height:52vh; overflow:auto; }
+  #paletaLista li { margin:0; }
+  .p-item { display:flex; align-items:center; gap:12px; width:100%; text-align:left; background:none; border:0; border-radius:8px; padding:10px 12px; font:inherit; color:var(--tinta); cursor:pointer; }
+  .p-item.activo { background:var(--pegatina-2); }
+  .p-item small { margin-left:auto; color:var(--suave); font-size:.82rem; white-space:nowrap; }
+  .p-secc { display:inline-grid; place-items:center; min-width:62px; font-size:.64rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--suave); border:1px solid var(--linea); border-radius:4px; padding:2px 0; }
+  .p-vacio { padding:16px 12px; color:var(--suave); }
+  .paleta-pie { margin:0; padding:10px 16px; font-size:.78rem; color:var(--suave); border-top:1px solid var(--linea); }
+
+  /* ---------- Avisos flotantes ---------- */
+  #toasts { position:fixed; bottom:22px; left:50%; transform:translateX(-50%); z-index:40; display:grid; gap:8px; justify-items:center; pointer-events:none; }
+  .toast { background:var(--asfalto); color:#f3efe6; padding:10px 18px; border-radius:999px; font-size:.92rem; font-weight:600; box-shadow:0 10px 30px -10px rgba(0,0,0,.5); animation:sube .25s ease-out; }
+  .toast::before { content:"●  "; color:var(--pegatina); }
+  .toast.fuera { opacity:0; transform:translateY(8px); transition:opacity .35s, transform .35s; }
+
+  /* ---------- Precio: termómetro ---------- */
+  .gauge { position:relative; height:88px; margin:16px 60px 4px; }
+  .gauge-pista { position:absolute; left:0; right:0; top:42px; height:8px; border-radius:999px; background:var(--papel-2); }
+  .gauge-rango { position:absolute; top:42px; height:8px; border-radius:999px; background:var(--bien); transform-origin:left; animation:crece .8s cubic-bezier(.2,.7,.2,1) both; }
+  .gauge-marca { position:absolute; top:34px; width:2px; height:24px; background:var(--tinta); transform:translateX(-1px); }
+  .gauge-marca span { position:absolute; top:30px; left:50%; transform:translateX(-50%); white-space:nowrap; font-size:.8rem; color:var(--suave); font-weight:600; }
+  .gauge-pin { position:absolute; top:37px; width:18px; height:18px; border-radius:50%; background:var(--pegatina); border:3px solid #16140f; transform:translateX(-50%); animation:desliza .9s cubic-bezier(.2,.7,.2,1) both; }
+  .gauge-pin span { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); background:var(--tinta); color:var(--papel); padding:3px 9px; border-radius:4px; font-size:.8rem; font-weight:700; white-space:nowrap; }
+  @keyframes desliza { from { left:0; } }
+
+  /* ---------- Anuncio ---------- */
+  .bloque-cab { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:14px; flex-wrap:wrap; }
+  .bloque-cab h3 { margin:0; font-size:1.1rem; letter-spacing:0; text-transform:none; }
+  .bloque-acc { display:flex; gap:8px; align-items:center; }
+  .tarea input:checked + span { text-decoration:line-through; color:var(--suave); }
+
+  /* ---------- Tasación: cascada ---------- */
+  .cascada { margin:16px 0; display:grid; gap:2px; }
+  .cascada-fila { display:grid; grid-template-columns:minmax(130px, 200px) 1fr 110px; gap:12px; align-items:center; padding:4px 0; font-size:.92rem; }
+  .cascada .pista { height:22px; border-radius:4px; }
+  .cascada .relleno { position:absolute; top:0; bottom:0; height:auto; border-radius:3px; }
+  .cascada .base .relleno { background:var(--tinta); }
+  .cascada .resta .relleno { background:var(--mal); opacity:.8; }
+  .cascada .total .relleno { background:var(--pegatina); }
+  .cascada .total { font-weight:800; }
+
+  /* ---------- Coste y financiación: barras apiladas ---------- */
+  .apilada-fila { display:grid; grid-template-columns:minmax(150px, 250px) 1fr 110px; gap:12px; align-items:center; padding:8px 0; font-size:.92rem; }
+  .apilada, .reparto { display:flex; height:16px; border-radius:4px; overflow:hidden; background:var(--papel-2); }
+  .reparto { height:20px; margin:16px 0 8px; }
+  .seg-compra { background:var(--tinta); transform-origin:left; animation:crece .8s cubic-bezier(.2,.7,.2,1) both; }
+  .seg-uso { background:var(--pegatina); }
+  .leyenda { font-size:.84rem; color:var(--suave); display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center; }
+  .leyenda i { display:inline-block; width:11px; height:11px; border-radius:2px; }
+  .l-compra { background:var(--tinta); } .l-uso { background:var(--pegatina); }
+
+  /* ---------- Coches para comparar ---------- */
+  #listaCoste { display:grid; grid-template-columns:repeat(auto-fill, minmax(min(270px, 100%), 1fr)); gap:8px; margin-top:10px; }
+  #listaCoste label { border:1px solid var(--linea); border-radius:6px; padding:10px 12px; background:var(--hoja); font-size:.9rem; transition:border-color .12s, background .12s; }
   #listaCoste label:hover { border-color:var(--tinta); }
   #listaCoste label:has(input:checked) { background:var(--pegatina-2); border-color:var(--tinta); }
 
-  .pie-movil { display:none; color:var(--suave); font-size:.74rem; padding:0 16px 32px; }
+  /* ---------- Recomendador ---------- */
+  .recos { display:grid; gap:14px; margin:16px 0; }
+  .reco { display:grid; grid-template-columns:48px 1fr; gap:14px; border:1px solid var(--linea); border-radius:10px; padding:16px; background:var(--papel); }
+  .reco:first-child { border-color:var(--tinta); box-shadow:4px 4px 0 var(--pegatina); }
+  .reco-rank { width:46px; height:46px; border-radius:50%; background:var(--tinta); color:var(--papel); display:grid; place-items:center; font-family:var(--f-titulo); font-weight:900; font-size:1.6rem; }
+  .reco:first-child .reco-rank { background:var(--pegatina); color:#16140f; }
+  .reco .muted { margin:2px 0 0; }
+  .puntos { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; margin:10px 0 6px; font-size:.84rem; max-width:360px; }
+
+  /* ---------- Financiación ---------- */
+  .fin-rejilla { display:grid; grid-template-columns:minmax(280px, 380px) minmax(0, 1fr); gap:18px; align-items:start; }
+  .fin-rejilla > .tarjeta, #resFinanciar > .tarjeta { margin-top:0; }
+  .deslizador { display:grid; gap:6px; margin:16px 0; }
+  .deslizador .valor { display:flex; align-items:center; gap:8px; text-transform:none; letter-spacing:0; font-size:1rem; color:var(--tinta); }
+  .deslizador input[type=number] { width:120px; }
+  .objetivo { margin-top:18px; padding-top:16px; border-top:1px dashed var(--linea); }
+  .objetivo p { text-transform:none; letter-spacing:0; font-weight:500; font-size:.95rem; color:var(--tinta); }
+
+  /* ---------- Cartel ---------- */
+  .cartel-escena { background:repeating-linear-gradient(45deg, var(--papel-2) 0 14px, var(--papel) 14px 28px); border-radius:12px; padding:40px 16px; display:grid; place-items:center; margin-top:18px; }
+  .cartel { width:min(460px, 100%); min-height:620px; background:#fffdf6; color:#16140f; border-radius:6px; box-shadow:0 30px 50px -25px rgba(0,0,0,.5), 0 0 0 1px rgba(0,0,0,.06);
+            padding:26px 28px 20px; display:flex; flex-direction:column; transform:rotate(-1.2deg); overflow:hidden; font-family:var(--f-texto); }
+  .cartel-cab { display:flex; justify-content:space-between; align-items:center; margin:-26px -28px 18px; padding:12px 28px; background:#ffcc00; }
+  .cartel-sello { font-family:var(--f-titulo); font-weight:900; text-transform:uppercase; letter-spacing:.04em; font-size:1.9rem; line-height:1; }
+  .cartel-marca { margin:0; font-size:.86rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#6d6658; }
+  .cartel-modelo { margin:2px 0 0; font-family:var(--f-titulo); font-weight:800; text-transform:uppercase; font-size:3.2rem; line-height:.92; }
+  .cartel-modelo em { display:block; font-style:normal; font-family:var(--f-texto); font-size:1.05rem; font-weight:600; text-transform:none; margin-top:6px; color:#3d3a33; }
+  .cartel-datos { margin:12px 0 0; font-size:.95rem; font-weight:600; color:#3d3a33; }
+  .cartel-extras { list-style:none; padding:0; margin:14px 0 0; display:grid; gap:2px; font-size:.95rem; }
+  .cartel-extras li { margin:0; }
+  .cartel-extras li::before { content:"✓  "; font-weight:900; }
+  .cartel-precio { margin:auto 0 0; padding-top:18px; font-family:var(--f-titulo); font-weight:900; font-size:5rem; line-height:.9; }
+  .cartel-cuota { margin:8px 0 0; font-size:1.15rem; }
+  .cartel-cuota b { background:linear-gradient(transparent 58%, #ffcc00 58%); padding:0 2px; }
+  .cartel-pie { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:14px; padding-top:12px; border-top:2px solid #16140f; }
+  .cartel .etiqueta { min-width:46px; height:46px; padding:0; border-radius:50%; font-size:.85rem; }
+  .cartel-sello-peq { font-weight:700; font-size:.86rem; border:1.5px solid #16140f; border-radius:999px; padding:4px 11px; }
+  .cartel-letra { font-size:.62rem; color:#6d6658; margin:10px 0 0; line-height:1.35; }
+
+  .pie-movil { display:none; color:var(--suave); font-size:.78rem; padding:0 16px 32px; }
 
   /* ---------- Móvil ---------- */
   @media (max-width: 860px) {
     .marco { grid-template-columns:minmax(0, 1fr); align-content:start; }
-    .grande { font-size:1.6rem; }
-    .lateral { position:sticky; height:auto; padding:14px 0 0; z-index:5; overflow:visible; }
-    .marca { padding:0 16px 12px; border:0; }
-    .marca p, .lateral footer { display:none; }
-    .marca .logo { font-size:1.2rem; }
+    .lateral { height:auto; padding:14px 0 0; overflow:visible; }
+    .marca { padding:0 16px 10px; }
+    .marca p, .buscador, nav .grupo, .mini-elegido, .tema, .lateral footer { display:none; }
+    .logo { font-size:1.6rem; }
     nav { flex-direction:row; flex:none; align-items:center; overflow-x:auto; padding:0 12px 12px; gap:4px; scrollbar-width:none; }
     nav::-webkit-scrollbar { display:none; }
-    nav button { width:auto; padding:8px 12px; }
+    nav button { width:auto; padding:7px 12px; }
     nav button .n { display:none; }
-    main { padding-top:28px; }
-    .lateral { top:0; }
-    .elegido { display:flex; flex-wrap:wrap; }
+    main { padding-top:26px; }
     .pie-movil { display:block; }
+    .fin-rejilla { grid-template-columns:minmax(0, 1fr); }
+    .barra-fila, .cascada-fila, .apilada-fila { grid-template-columns:1fr auto; gap:6px 12px; }
+    .barra-fila > .pista, .cascada-fila > .pista, .apilada-fila > .apilada { grid-column:1 / -1; grid-row:2; }
+    .gauge { margin:16px 44px 4px; }
+    .kpi-valor { font-size:2.2rem; }
+    .cartel-modelo { font-size:2.6rem; }
+    .cartel-precio { font-size:4rem; }
+  }
+
+  /* ---------- Impresión del cartel ---------- */
+  @media print {
+    @page { size:A5 portrait; margin:0; }
+    * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    body { background:#fff; }
+    .lateral, .pie-movil, #toasts, .velo, .cajon, .paleta { display:none !important; }
+    .marco { display:block; }
+    main { padding:0; max-width:none; }
+    main > section:not(#cartel) { display:none !important; }
+    #cartel { display:block !important; animation:none; }
+    #cartel > :not(.cartel-escena) { display:none !important; }
+    .cartel-escena { background:none; padding:0; margin:0; display:block; }
+    .cartel { width:148mm; height:210mm; min-height:0; transform:none; box-shadow:none; border-radius:0; padding:10mm 11mm 8mm; }
+    .cartel-cab { margin:-10mm -11mm 7mm; padding:5mm 11mm; }
   }
 </style>
 </head>
@@ -157,22 +431,55 @@
 <aside class="lateral">
   <div class="marca">
     <div class="logo">Copiloto <b>VO</b></div>
-    <p><em>La IA redacta, el código comprueba.</em><br>Precio, anuncios, clientes, tasaciones y costes para el vendedor de coches de ocasión.</p>
+    <p>La IA redacta, el código comprueba. Tu mano derecha en la campa.</p>
+    <button class="buscador" id="abrirBuscador" type="button"><span>Buscar coche o sección</span><kbd>Ctrl K</kbd></button>
   </div>
-  <nav id="pestanas"></nav>
-  <footer>Proyecto personal de portfolio, no oficial. Stock ficticio. Resultados orientativos. Precios de energía: datos abiertos del Ministerio y de Red Eléctrica.</footer>
+  <nav id="pestanas" aria-label="Secciones"></nav>
+  <button class="mini-elegido" id="miniElegido" type="button" hidden></button>
+  <button class="tema" id="tema" type="button">Modo oscuro</button>
+  <footer>Hecho con <span class="latido">♥</span> para quien vende coches de ocasión. Proyecto personal de portfolio, no oficial. Stock ficticio y resultados orientativos. Energía: datos abiertos del Ministerio y de Red Eléctrica.</footer>
 </aside>
 <main>
+  <section id="inicio">
+    <h2 id="saludo">Hola</h2>
+    <p class="sub" id="resumenHoy">Cargando tu stock…</p>
+    <div class="kpis" id="kpis"></div>
+    <div class="rejilla-2">
+      <div class="tarjeta"><h3>Lo que pide atención</h3><div id="panelAtencion"><p class="muted cargando">Calculando alertas con el modelo de precios…</p></div></div>
+      <div class="tarjeta"><h3>Los que más días llevan en stock</h3><div id="panelDias"></div></div>
+      <div class="tarjeta"><h3>Mezcla de motores</h3><div id="panelMotores"></div></div>
+      <div class="tarjeta"><h3>Etiquetas DGT</h3><div id="panelEtiquetas"></div></div>
+    </div>
+    <h3 class="titulo-bloque">Atajos</h3>
+    <div class="accesos">
+      <button class="acceso" type="button" data-ir="anuncio"><b>Escribir un anuncio</b><span>La IA lo redacta y el código revisa cada cifra.</span></button>
+      <button class="acceso" type="button" data-ir="cliente"><b>Responder a un cliente</b><span>Solo con lo que dice la ficha, lista para WhatsApp.</span></button>
+      <button class="acceso" type="button" data-ir="cartel"><b>Imprimir un cartel</b><span>La pegatina del parabrisas, con cuota mensual.</span></button>
+      <button class="acceso" type="button" data-ir="recomendar"><b>Recomendar coches</b><span>Cuéntale lo que busca el cliente y elige por ti.</span></button>
+      <button class="acceso" type="button" data-ir="financiacion"><b>Simular financiación</b><span>Cuota al momento, plazos y entrada necesaria.</span></button>
+      <button class="acceso" type="button" data-ir="tasacion"><b>Tasar su coche</b><span>De tus notas a una oferta con su desglose.</span></button>
+    </div>
+    <p class="muted truco">Truco: <kbd>Ctrl</kbd> + <kbd>K</kbd> busca cualquier coche, <kbd>/</kbd> te lleva al stock y las teclas <kbd>1</kbd> a <kbd>0</kbd> cambian de sección.</p>
+  </section>
+
   <section id="stock">
-    <h2>Stock y alertas</h2>
-    <p class="sub">Pulsa un coche para elegirlo: las pestañas Precio, Anuncio y Cliente pregunta trabajan con él.</p>
-    <div id="alertas"></div>
-    <div class="tarjeta tabla"><table id="tablaStock"></table></div>
+    <h2>Stock</h2>
+    <p class="sub">Busca, filtra y ordena pulsando en las columnas. Pulsa un coche para abrir su ficha; el corazón lo guarda en favoritos.</p>
+    <div class="herramientas">
+      <input id="buscar" type="search" placeholder="Marca, modelo, referencia, color…" aria-label="Buscar en el stock">
+      <select id="filtroEtiqueta" aria-label="Filtrar por etiqueta"><option value="">Todas las etiquetas</option></select>
+      <button class="boton" id="soloFav" type="button" aria-pressed="false">♥ Favoritos</button>
+      <div class="seg" id="vista" role="group" aria-label="Vista"><button type="button" data-vista="tabla">Tabla</button><button type="button" data-vista="tarjetas">Tarjetas</button></div>
+    </div>
+    <div class="chips-filtro" id="filtroMotor" role="group" aria-label="Filtrar por motor"></div>
+    <p class="muted" id="cuentaStock"></p>
+    <div class="tarjeta tabla" id="cajaTabla"><table id="tablaStock"><tbody><tr><td class="vacio"><span class="cargando">Cargando stock…</span></td></tr></tbody></table></div>
+    <div class="tarjetas-coche" id="cajaTarjetas" hidden></div>
   </section>
 
   <section id="precio">
     <h2>Precio recomendado</h2>
-    <p class="sub">Rango de mercado estimado por el modelo de machine learning.</p>
+    <p class="sub">Rango de mercado estimado por el modelo de machine learning, y dónde cae tu precio dentro de él.</p>
     <p class="elegido" data-elegido></p>
     <div><button class="principal" id="btnPrecio">Calcular precio</button></div>
     <div id="resPrecio"></div>
@@ -188,36 +495,52 @@
 
   <section id="cliente">
     <h2>Cliente pregunta</h2>
-    <p class="sub">Pega el mensaje del cliente. La respuesta solo usa datos de la ficha; lo que no sabe, lo marca como pendiente.</p>
+    <p class="sub">Pega el mensaje del cliente o móntalo con las preguntas típicas. La respuesta solo usa datos de la ficha; lo que no sabe, lo marca como pendiente.</p>
     <p class="elegido" data-elegido></p>
-    <textarea id="mensaje" placeholder="Hola, ¿tiene libro de revisiones? ¿Cuántos dueños ha tenido? ¿Me lo dejas en 25.000?"></textarea>
-    <div class="fila"><button class="principal" id="btnRespuesta">Preparar respuesta</button></div>
+    <div class="chips-rapidos" id="preguntas"></div>
+    <textarea id="mensaje" maxlength="2000" placeholder="Hola, ¿tiene libro de revisiones? ¿Cuántos dueños ha tenido? ¿Me lo dejas en 25.000?"></textarea>
+    <div class="fila"><button class="principal" id="btnRespuesta">Preparar respuesta</button><span class="contador" id="contMensaje">0 / 2000</span></div>
     <div id="resRespuesta"></div>
   </section>
 
-  <section id="tasacion">
-    <h2>Tasación del coche del cliente</h2>
-    <p class="sub">Valor de mercado − puesta a punto − margen − gastos = oferta.</p>
+  <section id="cartel">
+    <h2>Cartel para el parabrisas</h2>
+    <p class="sub">La pegatina de toda la vida, hecha en un segundo con los datos de la ficha. Imprímela en A5 y a la luna.</p>
+    <p class="elegido" data-elegido></p>
     <div class="fila">
-      <label>Marca <input id="tMarca" value="Seat"></label>
-      <label>Modelo <input id="tModelo" value="León"></label>
-      <label>Año <input id="tAnio" type="number" value="2018"></label>
-      <label>Km <input id="tKm" type="number" value="110000" step="1000"></label>
-      <label>Combustible <select id="tComb"><option>diesel</option><option>gasolina</option><option>hibrido</option><option value="hibrido_enchufable">híbrido enchufable</option><option value="electrico">eléctrico</option></select></label>
-      <label>Cambio <select id="tCambio"><option>manual</option><option value="automatico">automático</option></select></label>
-      <label>CV <input id="tCv" type="number" value="150"></label>
+      <label class="casilla"><input type="checkbox" id="kCuota" checked> Cuota mensual</label>
+      <label class="casilla"><input type="checkbox" id="kExtras" checked> Extras</label>
+      <label class="casilla"><input type="checkbox" id="kSellos" checked> Garantía y sellos</label>
     </div>
-    <label>Notas de la revisión <textarea id="tNotas" placeholder="Neumáticos a 2 mm, rayón en la puerta y en la aleta, olor a tabaco, solo una llave."></textarea></label>
-    <div class="fila"><button class="principal" id="btnTasar">Tasar</button></div>
-    <div id="resTasar"></div>
+    <div class="fila">
+      <label>Entrada (%) <input id="kEntrada" type="number" value="20" min="0" max="90"></label>
+      <label>Meses <input id="kMeses" type="number" value="60" min="12" max="120" step="12"></label>
+      <label>TIN (%) <input id="kTin" type="number" value="7.99" step="0.01" min="0"></label>
+      <button class="principal" id="btnImprimir">Imprimir cartel</button>
+    </div>
+    <div class="cartel-escena"><div class="cartel" id="cartelHoja"></div></div>
+  </section>
+
+  <section id="recomendar">
+    <h2>Recomendador de stock</h2>
+    <p class="sub">Escribe lo que cuenta el cliente. La IA entiende sus necesidades; el código elige los coches y explica por qué.</p>
+    <div class="chips-rapidos" id="ejemplos"></div>
+    <textarea id="necesidades" placeholder="Somos cuatro, hago unos 25.000 km al año casi todo autopista, presupuesto hasta 25.000 €, vivo en Madrid y no tengo garaje."></textarea>
+    <div class="fila"><label>Provincia <input id="rProv" value="Málaga"></label><button class="principal" id="btnRecomendar">Recomendar</button></div>
+    <div id="resRecomendar"></div>
   </section>
 
   <section id="coste">
     <h2>Coste al año por tipo de motor</h2>
     <p class="sub">Consumo oficial de la ficha (WLTP) y precios de hoy: carburantes del Ministerio y luz de Red Eléctrica.</p>
-    <div class="tarjeta"><h3>Elige de 2 a 4 coches</h3><div id="listaCoste"></div></div>
+    <div class="tarjeta">
+      <div class="bloque-cab" style="margin-top:0"><h3 style="margin:0">Elige de 2 a 4 coches <span class="contador" id="cuentaComparar"></span></h3>
+        <span class="bloque-acc"><button class="mini" id="cFav" type="button">♥ Usar mis favoritos</button><button class="mini" id="cVaciar" type="button">Vaciar</button></span></div>
+      <div id="listaCoste"></div>
+    </div>
     <div class="fila">
-      <label>Km al año <input id="cKm" type="number" value="15000" step="1000"></label>
+      <label class="deslizador" style="min-width:260px">Km al año <span class="valor"><input id="cKm" type="number" value="15000" step="1000" min="1000" max="100000"> km</span>
+        <input id="cKmR" type="range" min="5000" max="50000" step="1000" value="15000"></label>
       <label>Provincia <input id="cProv" value="Málaga"></label>
       <label class="casilla"><input type="checkbox" id="cCasa" checked> Puede cargar en casa</label>
     </div>
@@ -230,255 +553,882 @@
     <div id="resCoste"></div>
   </section>
 
-  <section id="recomendar">
-    <h2>Recomendador de stock</h2>
-    <p class="sub">Escribe lo que cuenta el cliente. La IA entiende sus necesidades; el código elige los coches.</p>
-    <textarea id="necesidades" placeholder="Somos cuatro, hago unos 25.000 km al año casi todo autopista, presupuesto hasta 25.000 €, vivo en Madrid y no tengo garaje."></textarea>
-    <div class="fila"><label>Provincia <input id="rProv" value="Málaga"></label><button class="principal" id="btnRecomendar">Recomendar</button></div>
-    <div id="resRecomendar"></div>
-  </section>
-
   <section id="financiacion">
     <h2>Simulador de financiación</h2>
-    <p class="sub">Cuota fija (sistema francés) y TAE con comisión. Orientativo: las condiciones las fija la financiera.</p>
-    <div class="fila">
-      <label>Precio (€) <input id="fPrecio" type="number" value="20000"></label>
-      <label>Entrada (€) <input id="fEntrada" type="number" value="4000"></label>
-      <label>Meses <input id="fMeses" type="number" value="60"></label>
-      <label>TIN (%) <input id="fTin" type="number" value="7.99" step="0.01"></label>
-      <label>Comisión apertura (%) <input id="fCom" type="number" value="2" step="0.1"></label>
-      <button class="principal" id="btnFinanciar">Calcular</button>
+    <p class="sub">Mueve los deslizadores y la cuota se recalcula sola. Sistema francés y TAE con comisión. Orientativo: las condiciones las fija la financiera.</p>
+    <div class="fin-rejilla">
+      <div class="tarjeta">
+        <div class="fila" style="margin-top:0">
+          <label>Precio (€) <input id="fPrecio" type="number" value="20000" step="100" min="1"></label>
+          <button class="boton" id="finUsarCoche" type="button">Usar el coche elegido</button>
+        </div>
+        <label class="deslizador">Entrada <span class="valor"><input id="fEntrada" type="number" value="4000" step="100" min="0"> €</span>
+          <input id="fEntradaR" type="range" min="0" max="20000" step="100" value="4000"></label>
+        <label class="deslizador">Plazo <span class="valor"><input id="fMeses" type="number" value="60" min="1" max="120"> meses</span>
+          <input id="fMesesR" type="range" min="12" max="120" step="12" value="60"></label>
+        <label class="deslizador">TIN <span class="valor"><input id="fTin" type="number" value="7.99" step="0.01" min="0" max="30"> %</span>
+          <input id="fTinR" type="range" min="0" max="15" step="0.01" value="7.99"></label>
+        <label>Comisión de apertura (%) <input id="fCom" type="number" value="2" step="0.1" min="0" max="10"></label>
+        <div class="fila"><button class="principal" id="btnFinanciar">Calcular</button></div>
+        <div class="objetivo">
+          <label>¿Qué cuota quiere pagar el cliente? (€/mes) <input id="fObjetivo" type="number" step="10" min="0" placeholder="por ejemplo, 250"></label>
+          <p id="resObjetivo" class="muted">Escribe la cuota que quiere pagar y te digo cuánta entrada necesita.</p>
+        </div>
+      </div>
+      <div id="resFinanciar"></div>
     </div>
-    <div id="resFinanciar"></div>
+  </section>
+
+  <section id="tasacion">
+    <h2>Tasación del coche del cliente</h2>
+    <p class="sub">Valor de mercado − margen − puesta a punto − gastos = oferta. La IA solo lee tus notas; las cuentas son del código.</p>
+    <div class="fila">
+      <label>Marca <input id="tMarca" value="Seat" list="listaMarcas"></label>
+      <label>Modelo <input id="tModelo" value="León" list="listaModelos"></label>
+      <label>Año <input id="tAnio" type="number" value="2018"></label>
+      <label>Km <input id="tKm" type="number" value="110000" step="1000"></label>
+      <label>Combustible <select id="tComb"><option value="diesel">diésel</option><option>gasolina</option><option value="hibrido">híbrido</option><option value="hibrido_enchufable">híbrido enchufable</option><option value="electrico">eléctrico</option></select></label>
+      <label>Cambio <select id="tCambio"><option>manual</option><option value="automatico">automático</option></select></label>
+      <label>CV <input id="tCv" type="number" value="150"></label>
+    </div>
+    <datalist id="listaMarcas"></datalist><datalist id="listaModelos"></datalist>
+    <div class="chips-rapidos" id="danosRapidos"></div>
+    <label>Notas de la revisión <textarea id="tNotas" placeholder="Neumáticos a 2 mm, rayón en la puerta y en la aleta, olor a tabaco, solo una llave."></textarea></label>
+    <div class="fila"><button class="principal" id="btnTasar">Tasar</button></div>
+    <div id="resTasar"></div>
   </section>
 </main>
 </div>
-<p class="pie-movil">Proyecto personal de portfolio, no oficial. Stock ficticio. Resultados orientativos. Precios de energía: datos abiertos del Ministerio y de Red Eléctrica.</p>
+<p class="pie-movil">Hecho con ♥ para quien vende coches de ocasión. Proyecto personal de portfolio, no oficial. Stock ficticio y resultados orientativos.</p>
 
+<div class="velo" id="velo" hidden></div>
+<aside class="cajon" id="cajon" role="dialog" aria-modal="true" aria-label="Ficha del coche" aria-hidden="true"></aside>
+<div class="paleta" id="paleta" hidden>
+  <div class="paleta-caja" role="dialog" aria-modal="true" aria-label="Buscador">
+    <input id="paletaInput" autocomplete="off" aria-label="Buscar">
+    <ul id="paletaLista"></ul>
+    <p class="paleta-pie"><kbd>↑</kbd> <kbd>↓</kbd> para moverte · <kbd>Enter</kbd> para abrir · <kbd>Esc</kbd> para cerrar</p>
+  </div>
+</div>
+<div id="toasts" aria-live="polite"></div>
 <script>
 const $ = (id) => document.getElementById(id);
 const num = (n) => Math.round(n).toLocaleString("es-ES", { useGrouping: "always" });
 const euros = (n) => `${num(n)} €`;
-const dec = (n, d = 2) => n.toLocaleString("es-ES", { maximumFractionDigits: d });
+const dec = (n, d = 2) => Number(n).toLocaleString("es-ES", { maximumFractionDigits: d });
+const dec2 = (n) => Number(n).toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const MOTOR = { electrico: "eléctrico", hibrido: "híbrido", hibrido_enchufable: "híbrido enchufable", diesel: "diésel", gasolina: "gasolina" };
-let STOCK = [], elegido = null;
+const CAMBIO = { manual: "manual", automatico: "automático" };
+const sinTildes = (s) => String(s ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const nombre = (v) => `${v.marca} ${v.modelo} ${v.version ?? ""}`.trim();
+const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-function el(tag, texto, clase) {
+// Preferencias de este navegador (favoritos, vista...). Si el navegador no deja guardar, la web funciona igual.
+const guardado = {
+  leer(k, def) { try { const v = localStorage.getItem(k); return v === null ? def : JSON.parse(v); } catch { return def; } },
+  escribir(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* sin almacenamiento */ } },
+};
+
+// Crea un elemento. Los textos entran siempre como texto, nunca como HTML.
+function h(tag, attrs, ...hijos) {
   const e = document.createElement(tag);
-  if (texto !== undefined && texto !== null) e.textContent = texto;  // textContent: nunca HTML
-  if (clase) e.className = clase;
+  if (typeof attrs === "string") e.className = attrs;
+  else if (attrs) {
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v === undefined || v === null || v === false) continue;
+      if (k === "class") e.className = v;
+      else if (k === "style") e.style.cssText = v;
+      else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+      else if (["value", "checked", "disabled"].includes(k)) e[k] = v;
+      else e.setAttribute(k, v === true ? "" : v);
+    }
+  }
+  for (const c of hijos.flat(Infinity)) {
+    if (c === null || c === undefined || c === false) continue;
+    e.append(c instanceof Node ? c : String(c));
+  }
   return e;
 }
+
+function toast(texto) {
+  const t = h("div", "toast", texto);
+  $("toasts").append(t);
+  setTimeout(() => t.classList.add("fuera"), 2200);
+  setTimeout(() => t.remove(), 2700);
+}
+async function copiar(texto) {
+  try { await navigator.clipboard.writeText(texto); }
+  catch {
+    const a = h("textarea", { style: "position:fixed;opacity:0" });
+    a.value = texto; document.body.append(a); a.select(); document.execCommand("copy"); a.remove();
+  }
+  toast("Copiado al portapapeles");
+}
+const botonCopiar = (texto, etiqueta = "Copiar") =>
+  h("button", { class: "mini", type: "button", onclick: () => copiar(typeof texto === "function" ? texto() : texto) }, etiqueta);
+
+// Anima un número desde `desde` hasta `valor`.
+function contar(nodo, valor, fmt = num, desde = 0) {
+  if (reducido) { nodo.textContent = fmt(valor); return; }
+  const t0 = performance.now(), dur = 700;
+  const paso = (t) => {
+    const p = Math.min(1, (t - t0) / dur), e = 1 - (1 - p) ** 3;
+    nodo.textContent = fmt(desde + (valor - desde) * e);
+    if (p < 1) requestAnimationFrame(paso);
+  };
+  nodo.textContent = fmt(desde);
+  requestAnimationFrame(paso);
+}
+
 function lista(titulo, items) {
-  const d = el("div");
-  if (!items || !items.length) return d;
-  d.append(el("h3", titulo));
-  const ul = el("ul"); items.forEach((i) => ul.append(el("li", i))); d.append(ul);
-  return d;
+  if (!items || !items.length) return null;
+  return h("div", null, h("h3", null, titulo), h("ul", null, items.map((i) => h("li", null, i))));
 }
 function uso(u) {
-  if (!u || !u.modelos.length) return el("p", "Sin IA: cálculo hecho con código.", "uso");
-  return el("p", `${u.modelos.join(" + ")} · ${u.segundos} s · ${(u.coste_usd * 100).toFixed(3)} céntimos de dólar`, "uso");
+  if (!u || !u.modelos.length) return h("p", "uso", "Sin IA: cálculo hecho con código.");
+  return h("p", "uso", `${u.modelos.join(" + ")} · ${u.segundos} s · ${(u.coste_usd * 100).toFixed(3)} céntimos de dólar`);
 }
 function semaforo(avisos, okTexto) {
-  if (!avisos || !avisos.length) return el("div", okTexto, "ok");
-  const d = el("div", undefined, "ko");
-  d.append(el("strong", "Revisar antes de usar:"));
-  const ul = el("ul"); avisos.forEach((a) => ul.append(el("li", a))); d.append(ul);
-  return d;
+  if (!avisos || !avisos.length) return h("div", "ok", okTexto);
+  return h("div", "ko", h("strong", null, "Revisar antes de usar:"), h("ul", null, avisos.map((a) => h("li", null, a))));
 }
-async function llamar(boton, destino, url, cuerpo, pintar) {
+const etiqueta = (e) => h("span", { class: `etiqueta e-${sinTildes(e)}`, title: `Etiqueta DGT ${e}` }, e);
+const nivelDias = (d) => (d >= 90 ? "alto" : d >= 60 ? "medio" : "");
+function barraDias(v, max) {
+  return h("div", "dias",
+    h("div", "pista", h("div", { class: `relleno ${nivelDias(v.dias_en_stock)}`, style: `width:${(v.dias_en_stock / max) * 100}%` })),
+    h("span", null, `${v.dias_en_stock} días en stock`));
+}
+
+async function api(url, cuerpo) {
+  const r = await fetch(url, cuerpo === undefined ? {} : {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
+  const texto = await r.text();
+  let j;
+  try { j = JSON.parse(texto); } catch { throw new Error(`el servidor ha fallado (código ${r.status}). Mira la terminal.`); }
+  if (!r.ok) throw new Error(typeof j.detail === "string" ? j.detail : "Revisa los datos introducidos.");
+  return j;
+}
+async function llamar(boton, destino, url, cuerpo, pintar, espera = "Trabajando…") {
   const res = $(destino);
-  res.replaceChildren(el("p", "Trabajando…", "muted cargando"));
+  res.replaceChildren(h("p", "muted cargando", espera));
   $(boton).disabled = true;
   try {
-    const r = await fetch(url, cuerpo === undefined ? {} : {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
-    const texto = await r.text();
-    let j;
-    try { j = JSON.parse(texto); } catch { throw new Error(`el servidor ha fallado (código ${r.status}). Mira la terminal.`); }
-    if (!r.ok) throw new Error(typeof j.detail === "string" ? j.detail : "Revisa los datos introducidos.");
-    res.replaceChildren(pintar(j));
+    res.replaceChildren(pintar(await api(url, cuerpo)));
   } catch (e) {
-    res.replaceChildren(el("p", `Error: ${e.message}`, "error"));
+    res.replaceChildren(h("p", "error", `Error: ${e.message}`));
   } finally {
     $(boton).disabled = false;
   }
 }
 
-// ---------- Pestañas ----------
-const PESTANAS = [["stock", "Stock"], ["precio", "Precio"], ["anuncio", "Anuncio"], ["cliente", "Cliente pregunta"],
-  ["tasacion", "Tasación"], ["coste", "Coste por motor"], ["recomendar", "Recomendar"], ["financiacion", "Financiación"]];
-function abrir(id) {
-  document.querySelectorAll("section").forEach((s) => s.classList.toggle("activa", s.id === id));
-  document.querySelectorAll("nav button").forEach((b) => b.classList.toggle("activa", b.dataset.id === id));
-}
-PESTANAS.forEach(([id, nombre], i) => {
-  const n = String(i + 1).padStart(2, "0");
-  const b = el("button"); b.dataset.id = id; b.append(el("span", n, "n"), el("span", nombre));
-  b.addEventListener("click", () => { abrir(id); window.scrollTo({ top: 0 }); }); $("pestanas").append(b);
-  $(id).prepend(el("div", `${n} — ${nombre}`, "ceja"));
+// ---------- Estado ----------
+let STOCK = [], POR_ID = {}, ALERTAS = [], ALERTA_POR_ID = {}, alertasListas = false;
+let elegido = null, actual = "";
+const FAV = new Set(guardado.leer("vo-favoritos", []));
+const COMPARAR = new Set(guardado.leer("vo-comparar", ["VO-001", "VO-004", "VO-005", "VO-013"]));
+const maxDias = () => Math.max(1, ...STOCK.map((v) => v.dias_en_stock));
+
+// ---------- Navegación ----------
+const GRUPOS = [
+  ["Tu stock", [["inicio", "Panel"], ["stock", "Stock"]]],
+  ["Vender un coche", [["precio", "Precio"], ["anuncio", "Anuncio"], ["cliente", "Cliente pregunta"], ["cartel", "Cartel"]]],
+  ["Asesorar al cliente", [["recomendar", "Recomendar"], ["coste", "Coste por motor"], ["financiacion", "Financiación"], ["tasacion", "Tasación"]]],
+];
+const PESTANAS = GRUPOS.flatMap(([, p]) => p);
+let n = 0;
+GRUPOS.forEach(([grupo, pestanas]) => {
+  $("pestanas").append(h("div", "grupo", grupo));
+  pestanas.forEach(([id, nom]) => {
+    const numero = String(++n % 10);
+    $("pestanas").append(h("button", { type: "button", "data-id": id, title: `Tecla ${numero}`, onclick: () => ir(id) }, h("span", "n", String(n).padStart(2, "0")), h("span", null, nom)));
+    $(id).prepend(h("div", "ceja", `${String(n).padStart(2, "0")} — ${nom}`));
+  });
 });
 
-function elegir(v) {
-  elegido = v;
-  document.querySelectorAll("[data-elegido]").forEach((p) => {
-    p.replaceChildren(el("span", v.id, "placa"), `${v.marca} ${v.modelo} ${v.version ?? ""} · ${v.anio} · ${num(v.km)} km · ${euros(v.precio)}`);
+function mostrar(id) {
+  if (!PESTANAS.some(([p]) => p === id)) id = "inicio";
+  actual = id;
+  document.querySelectorAll("main > section").forEach((s) => s.classList.toggle("activa", s.id === id));
+  document.querySelectorAll("#pestanas button").forEach((b) => {
+    b.classList.toggle("activa", b.dataset.id === id);
+    if (b.dataset.id === id) b.parentNode.scrollLeft = b.offsetLeft - (b.parentNode.clientWidth - b.offsetWidth) / 2;
   });
-  document.querySelectorAll("#tablaStock tr[data-id]").forEach((tr) => tr.classList.toggle("sel", tr.dataset.id === v.id));
+  cerrarFicha(); cerrarPaleta();
+  requestAnimationFrame(() => window.scrollTo(0, 0));  // el ancla #seccion haría saltar la página
+  if (id === "inicio") pintarPanel();
+  if (id === "cartel") pintarCartel();
+  if (id === "financiacion" && !$("resFinanciar").childElementCount) calcularFin();
+}
+function ir(id) { if (location.hash === `#${id}`) mostrar(id); else location.hash = id; }
+window.addEventListener("hashchange", () => mostrar(location.hash.slice(1)));
+document.querySelectorAll("[data-ir]").forEach((b) => b.addEventListener("click", () => ir(b.dataset.ir)));
+
+// ---------- Tema claro / oscuro ----------
+const temaActual = () => document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+const rotuloTema = () => { $("tema").textContent = temaActual() === "dark" ? "☀  Modo claro" : "☾  Modo oscuro"; };
+$("tema").addEventListener("click", () => {
+  const nuevo = temaActual() === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = nuevo;
+  guardado.escribir("vo-tema", nuevo);
+  rotuloTema();
+});
+rotuloTema();
+
+// ---------- Coche elegido ----------
+function elegir(v) {
+  if (!v) return;
+  const cambia = !elegido || elegido.id !== v.id;
+  elegido = v;
+  guardado.escribir("vo-elegido", v.id);
+  document.querySelectorAll("[data-elegido]").forEach((p) => p.replaceChildren(
+    h("span", "placa", v.id),
+    h("span", null, h("b", null, nombre(v)), ` · ${v.anio} · ${num(v.km)} km · ${euros(v.precio)}`),
+    h("button", { class: "mini", type: "button", onclick: () => abrirPaleta("coches") }, "Cambiar coche")));
+  const mini = $("miniElegido");
+  mini.hidden = false;
+  mini.replaceChildren(h("span", "mini-tit", "Coche elegido"), h("span", "placa", v.id), h("b", null, `${v.marca} ${v.modelo}`), h("span", null, euros(v.precio)));
+  document.querySelectorAll("[data-id-coche]").forEach((x) => x.classList.toggle("sel", x.dataset.idCoche === v.id));
+  if (cambia) ["resPrecio", "resAnuncio", "resRespuesta"].forEach((r) => $(r).replaceChildren());
+  if (actual === "cartel") pintarCartel();
+}
+$("miniElegido").addEventListener("click", () => elegido && abrirFicha(elegido));
+
+// ---------- Favoritos ----------
+function alternarFav(id) {
+  const marcar = !FAV.has(id);
+  if (marcar) FAV.add(id); else FAV.delete(id);
+  guardado.escribir("vo-favoritos", [...FAV]);
+  document.querySelectorAll(`[data-fav="${id}"]`).forEach((b) => b.setAttribute("aria-pressed", String(marcar)));
+  if (filtros.favoritos) pintarStock();
+  toast(marcar ? "Guardado en favoritos ♥" : "Quitado de favoritos");
+}
+function corazon(id) {
+  return h("button", {
+    class: "corazon", type: "button", "data-fav": id, "aria-pressed": String(FAV.has(id)), "aria-label": "Favorito", title: "Guardar en favoritos",
+    onclick: (e) => {
+      e.stopPropagation();
+      const b = e.currentTarget;
+      alternarFav(id);
+      b.classList.remove("late"); void b.offsetWidth; b.classList.add("late");
+    },
+  }, "♥");
 }
 
-// ---------- Stock y alertas ----------
-async function cargarStock() {
-  STOCK = await (await fetch("/stock")).json();
-  const t = $("tablaStock");
-  const cab = el("tr");
-  ["Ref.", "Coche", "Año", "Km", "Motor", "Etiqueta", "Precio", "Días"].forEach((h, i) => cab.append(el("th", h, i >= 6 ? "num" : "")));
-  t.replaceChildren(cab);
-  STOCK.forEach((v) => {
-    const tr = el("tr", undefined, "clic"); tr.dataset.id = v.id;
-    const ref = el("td"); ref.append(el("span", v.id, "placa")); tr.append(ref);
-    [`${v.marca} ${v.modelo} ${v.version ?? ""}`, v.anio, num(v.km), MOTOR[v.combustible],
-     v.etiqueta_dgt].forEach((x) => tr.append(el("td", x)));
-    tr.append(el("td", euros(v.precio), "num"), el("td", v.dias_en_stock, v.dias_en_stock >= 90 ? "num dias-largo" : "num"));
-    tr.addEventListener("click", () => { elegir(v); abrir("precio"); });
-    t.append(tr);
-  });
-  elegir(STOCK[0]);
-  const caja = $("listaCoste");
-  STOCK.forEach((v, i) => {
-    const l = el("label", undefined, "casilla");
-    const c = el("input"); c.type = "checkbox"; c.value = v.id; c.checked = ["VO-001", "VO-004", "VO-005", "VO-013"].includes(v.id);
-    l.append(c, document.createTextNode(`${v.id} · ${v.marca} ${v.modelo} (${MOTOR[v.combustible]}) · ${euros(v.precio)}`));
-    caja.append(l);
-  });
-  const a = await (await fetch("/alertas")).json();
-  const d = el("div", undefined, "tarjeta");
-  d.append(el("h3", a.length ? `Alertas de stock (${a.length})` : "Sin alertas: el stock está sano"));
-  a.forEach((x) => {
-    const p = el("p"); p.append(el("span", x.prioridad, `chip ${x.prioridad}`), el("strong", ` ${x.id} ${x.nombre}: `), document.createTextNode(`${x.motivo}. ${x.accion}.`));
-    d.append(p);
-  });
-  $("alertas").replaceChildren(d);
+// ---------- Carga ----------
+async function cargar() {
+  try {
+    STOCK = await api("/stock");
+  } catch (e) {
+    $("resumenHoy").textContent = `No se ha podido cargar el stock: ${e.message}`;
+    $("tablaStock").replaceChildren(h("tbody", null, h("tr", null, h("td", "vacio error", `Error: ${e.message}`))));
+    return;
+  }
+  POR_ID = Object.fromEntries(STOCK.map((v) => [v.id, v]));
+  [FAV, COMPARAR].forEach((s) => [...s].forEach((id) => { if (!POR_ID[id]) s.delete(id); }));
+  elegir(POR_ID[guardado.leer("vo-elegido", "")] || STOCK[0]);
+  prepararFiltros();
+  pintarStock(); pintarListaCoste(); rellenarListas(); pintarPanel();
+  try { ALERTAS = await api("/alertas"); } catch { ALERTAS = []; }
+  alertasListas = true;
+  ALERTA_POR_ID = Object.fromEntries(ALERTAS.map((a) => [a.id, a]));
+  pintarPanel(); pintarStock();
 }
+
+// ---------- Panel ----------
+function kpi(titulo, valor, fmt, sub, clase = "") {
+  const v = h("div", "kpi-valor");
+  contar(v, valor, fmt);
+  return h("div", `kpi ${clase}`, h("div", "kpi-tit", titulo), v, h("div", "kpi-sub", sub));
+}
+function barras(pares) {
+  const max = Math.max(1, ...pares.map((p) => p[1]));
+  return h("div", "barras", pares.map(([t, x]) =>
+    h("div", "barra-fila", h("span", null, t), h("div", "pista", h("div", { class: "relleno", style: `width:${(x / max) * 100}%` })), h("span", "num", x))));
+}
+function contarPor(clave) {
+  const c = {};
+  STOCK.forEach((v) => { c[v[clave]] = (c[v[clave]] || 0) + 1; });
+  return Object.entries(c).sort((a, b) => b[1] - a[1]);
+}
+function pintarPanel() {
+  if (!STOCK.length) return;
+  const hora = new Date().getHours();
+  $("saludo").textContent = hora >= 6 && hora < 14 ? "Buenos días" : hora >= 14 && hora < 21 ? "Buenas tardes" : "Buenas noches";
+  const valor = STOCK.reduce((s, v) => s + v.precio, 0);
+  const media = STOCK.reduce((s, v) => s + v.dias_en_stock, 0) / STOCK.length;
+  const altas = ALERTAS.filter((a) => a.prioridad === "alta").length;
+  const hoy = new Date().toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" });
+  $("resumenHoy").textContent = `Hoy es ${hoy}. Tienes ${STOCK.length} coches en la campa por valor de ${euros(valor)}.` +
+    (!alertasListas ? "" : ALERTAS.length ? ` ${ALERTAS.length} piden atención${altas ? `, ${altas} con urgencia` : ""}.` : " Todo el stock está sano.");
+  $("kpis").replaceChildren(
+    kpi("Coches en stock", STOCK.length, num, `${FAV.size} en tus favoritos`),
+    kpi("Valor del stock", valor, euros, `${euros(valor / STOCK.length)} de media por coche`, "amarillo"),
+    kpi("Media de días en stock", media, num, `${STOCK.filter((v) => v.dias_en_stock >= 60).length} coches llevan 60 días o más`),
+    kpi("Alertas", ALERTAS.length, num, alertasListas ? `${altas} urgentes` : "calculando…", altas ? "rojo" : ""));
+  $("panelMotores").replaceChildren(barras(contarPor("combustible").map(([k, x]) => [MOTOR[k] ?? k, x])));
+  $("panelEtiquetas").replaceChildren(barras(contarPor("etiqueta_dgt").map(([k, x]) => [etiqueta(k), x])));
+  const max = maxDias();
+  $("panelDias").replaceChildren(...[...STOCK].sort((a, b) => b.dias_en_stock - a.dias_en_stock).slice(0, 5).map((v) =>
+    h("button", { class: "fila-dias", type: "button", onclick: () => abrirFicha(v) }, h("span", "placa", v.id), " ", h("b", null, nombre(v)), barraDias(v, max))));
+  if (!alertasListas) return;
+  $("panelAtencion").replaceChildren(...(ALERTAS.length ? ALERTAS.map((a) => h("div", "fila-alerta",
+    h("span", { class: `chip ${a.prioridad}` }, a.prioridad),
+    h("div", null, h("b", null, `${a.id} · ${a.nombre}`), h("p", "muted", `${a.motivo}. ${a.accion}.`)),
+    h("button", { class: "mini", type: "button", onclick: () => { elegir(POR_ID[a.id]); ir("precio"); $("btnPrecio").click(); } }, "Ver precio")))
+    : [h("div", "ok", "Sin alertas: el stock está sano.")]));
+}
+
+// ---------- Stock ----------
+const filtros = { texto: "", motor: "", etiqueta: "", favoritos: false };
+let orden = guardado.leer("vo-orden", { campo: "id", asc: true });
+let vista = guardado.leer("vo-vista", matchMedia("(max-width: 860px)").matches ? "tarjetas" : "tabla");
+const COLUMNAS = [[null], ["Ref.", "id"], ["Coche", "nombre"], ["Año", "anio"], ["Km", "km"], ["Motor", "combustible"], ["Etiqueta", "etiqueta_dgt"], ["Precio", "precio", "num"], ["Días en stock", "dias_en_stock", "num"]];
+
+function prepararFiltros() {
+  const motores = [["", "Todos"], ...contarPor("combustible").map(([k]) => [k, MOTOR[k] ?? k])];
+  $("filtroMotor").replaceChildren(...motores.map(([k, t]) => h("button", {
+    type: "button", "aria-pressed": String(filtros.motor === k),
+    onclick: (e) => {
+      filtros.motor = k;
+      [...e.currentTarget.parentNode.children].forEach((b) => b.setAttribute("aria-pressed", String(b === e.currentTarget)));
+      pintarStock();
+    } }, t)));
+  contarPor("etiqueta_dgt").map(([k]) => k).sort().forEach((k) => $("filtroEtiqueta").append(h("option", { value: k }, `Etiqueta ${k}`)));
+}
+$("buscar").addEventListener("input", (e) => { filtros.texto = e.target.value; pintarStock(); });
+$("filtroEtiqueta").addEventListener("change", (e) => { filtros.etiqueta = e.target.value; pintarStock(); });
+$("soloFav").addEventListener("click", (e) => {
+  filtros.favoritos = !filtros.favoritos;
+  e.currentTarget.setAttribute("aria-pressed", String(filtros.favoritos));
+  pintarStock();
+});
+document.querySelectorAll("#vista button").forEach((b) => b.addEventListener("click", () => {
+  vista = b.dataset.vista; guardado.escribir("vo-vista", vista); pintarStock();
+}));
+
+function filtrados() {
+  const palabras = sinTildes(filtros.texto).split(/\s+/).filter(Boolean);
+  const valor = (v) => (orden.campo === "nombre" ? nombre(v) : v[orden.campo]);
+  return STOCK.filter((v) => {
+    const texto = sinTildes(`${v.id} ${nombre(v)} ${v.color ?? ""} ${MOTOR[v.combustible]} ${v.carroceria ?? ""} ${v.anio}`);
+    return palabras.every((p) => texto.includes(p)) &&
+      (!filtros.motor || v.combustible === filtros.motor) &&
+      (!filtros.etiqueta || v.etiqueta_dgt === filtros.etiqueta) &&
+      (!filtros.favoritos || FAV.has(v.id));
+  }).sort((a, b) => {
+    const x = valor(a), y = valor(b);
+    const c = typeof x === "number" ? x - y : String(x ?? "").localeCompare(String(y ?? ""), "es");
+    return orden.asc ? c : -c;
+  });
+}
+function pintarStock() {
+  if (!STOCK.length) return;
+  const coches = filtrados();
+  $("cuentaStock").textContent = coches.length === STOCK.length ? `${STOCK.length} coches en stock` : `Mostrando ${coches.length} de ${STOCK.length} coches`;
+  $("cajaTabla").hidden = vista !== "tabla";
+  $("cajaTarjetas").hidden = vista !== "tarjetas";
+  document.querySelectorAll("#vista button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.vista === vista)));
+  if (vista === "tabla") pintarTabla(coches); else pintarTarjetas(coches);
+}
+const alPulsar = (v) => ({
+  tabindex: "0", "data-id-coche": v.id, onclick: () => abrirFicha(v),
+  onkeydown: (e) => { if (e.key === "Enter") abrirFicha(v); },
+});
+function pintarTabla(coches) {
+  const cab = h("tr", null, COLUMNAS.map(([t, campo, clase]) => {
+    if (!campo) return h("th", { "aria-label": "Favorito" });
+    const activo = orden.campo === campo;
+    return h("th", {
+      class: `${clase ?? ""} ordenable${activo ? " activo" : ""}`, "aria-sort": activo ? (orden.asc ? "ascending" : "descending") : null,
+      onclick: () => {
+        orden = activo ? { campo, asc: !orden.asc } : { campo, asc: !["precio", "dias_en_stock", "anio"].includes(campo) };
+        guardado.escribir("vo-orden", orden);
+        pintarStock();
+      } }, t, h("span", "flecha", activo ? (orden.asc ? "↑" : "↓") : "↕"));
+  }));
+  const filas = coches.map((v) => {
+    const a = ALERTA_POR_ID[v.id];
+    return h("tr", { class: `clic${elegido?.id === v.id ? " sel" : ""}`, ...alPulsar(v) },
+      h("td", "td-fav", corazon(v.id)),
+      h("td", "td-ref", h("span", "placa", v.id), a && h("span", { class: `punto ${a.prioridad}`, title: `Alerta ${a.prioridad}: ${a.motivo}` })),
+      h("td", null, h("b", null, `${v.marca} ${v.modelo}`), " ", h("span", "muted", v.version ?? "")),
+      h("td", null, v.anio), h("td", null, num(v.km)), h("td", null, MOTOR[v.combustible]), h("td", null, etiqueta(v.etiqueta_dgt)),
+      h("td", "num", euros(v.precio)),
+      h("td", { class: `num${v.dias_en_stock >= 90 ? " dias-largo" : ""}`, title: `${v.dias_en_stock} días desde que entró en el concesionario` }, `${v.dias_en_stock} días`));
+  });
+  if (!filas.length) filas.push(h("tr", null, h("td", { colspan: "9", class: "vacio" }, "Ningún coche coincide con la búsqueda.")));
+  $("tablaStock").replaceChildren(h("thead", null, cab), h("tbody", null, filas));
+}
+function pintarTarjetas(coches) {
+  const max = maxDias();
+  $("cajaTarjetas").replaceChildren(...(coches.length ? coches.map((v) =>
+    h("article", { class: `coche-card${elegido?.id === v.id ? " sel" : ""}`, ...alPulsar(v) },
+      h("div", "card-cab", h("span", "placa", v.id), corazon(v.id)),
+      h("h4", null, `${v.marca} ${v.modelo}`), h("p", "muted", v.version ?? " "),
+      h("div", "card-chips", h("span", "chip", v.anio), h("span", "chip", `${num(v.km)} km`), h("span", "chip", MOTOR[v.combustible]), etiqueta(v.etiqueta_dgt)),
+      h("p", "card-precio", euros(v.precio)),
+      barraDias(v, max)))
+    : [h("p", "muted", "Ningún coche coincide con la búsqueda.")]));
+}
+
+// ---------- Ficha del coche ----------
+function accion(titulo, sub, alPulsar_) {
+  return h("button", { class: "accion", type: "button", onclick: alPulsar_ }, h("b", null, titulo), h("span", null, sub));
+}
+function abrirFicha(v) {
+  elegir(v);
+  const a = ALERTA_POR_ID[v.id];
+  const datos = [
+    ["Año", v.anio], ["Kilómetros", `${num(v.km)} km`], ["Motor", MOTOR[v.combustible]], ["Cambio", CAMBIO[v.cambio]],
+    ["Potencia", v.potencia_cv && `${v.potencia_cv} CV`], ["Plazas", v.plazas], ["Carrocería", v.carroceria], ["Color", v.color],
+    ["Etiqueta DGT", v.etiqueta_dgt], ["Consumo", v.consumo_l_100km && `${dec(v.consumo_l_100km, 1)} L/100 km`],
+    ["Consumo eléctrico", v.consumo_kwh_100km && `${dec(v.consumo_kwh_100km, 1)} kWh/100 km`],
+    ["Autonomía eléctrica", v.autonomia_electrica_km && `${v.autonomia_electrica_km} km`], ["Propietarios", v.propietarios],
+    ["Libro de revisiones", v.libro_revisiones === null ? null : v.libro_revisiones ? "sí" : "no"],
+    ["Garantía", v.garantia_meses && `${v.garantia_meses} meses`], ["ITV hasta", v.itv_hasta],
+  ].filter(([, x]) => x !== null && x !== undefined && x !== "" && x !== 0);
+  const enComparar = () => (COMPARAR.has(v.id) ? "Quitar de la comparación" : "Añadir a la comparación");
+  const botonComparar = accion(enComparar(), `${COMPARAR.size} de 4 coches elegidos`, () => {
+    alternarComparar(v.id);
+    botonComparar.replaceChildren(h("b", null, enComparar()), h("span", null, `${COMPARAR.size} de 4 coches elegidos`));
+  });
+  $("cajon").replaceChildren(
+    h("div", "cajon-cab", h("span", "placa", v.id), corazon(v.id), h("button", { class: "cerrar", type: "button", "aria-label": "Cerrar", onclick: cerrarFicha }, "×")),
+    h("h2", null, `${v.marca} ${v.modelo}`),
+    h("p", "sub", [v.version, v.carroceria, v.color].filter(Boolean).join(" · ")),
+    h("p", "grande", euros(v.precio)),
+    a && h("div", { class: `aviso-ficha ${a.prioridad}` }, h("b", null, `Alerta ${a.prioridad}: `), `${a.motivo}. ${a.accion}.`),
+    barraDias(v, maxDias()),
+    h("dl", "specs", datos.map(([k, x]) => h("div", null, h("dt", null, k), h("dd", null, x)))),
+    v.extras.length ? h("div", null, h("h3", null, "Extras"), v.extras.map((e) => h("span", "chip", e))) : null,
+    v.notas ? h("div", null, h("h3", null, "Notas internas"), h("p", "texto", v.notas)) : null,
+    h("h3", null, "¿Qué quieres hacer?"),
+    h("div", "acciones",
+      accion("Calcular precio", "Rango de mercado con machine learning", () => { ir("precio"); $("btnPrecio").click(); }),
+      accion("Escribir anuncio", "Web, portales e inglés", () => ir("anuncio")),
+      accion("Responder a un cliente", "Solo con datos de la ficha", () => { ir("cliente"); setTimeout(() => $("mensaje").focus(), 60); }),
+      accion("Imprimir cartel", "Pegatina para el parabrisas", () => ir("cartel")),
+      accion("Simular financiación", "Cuota con el precio del coche", () => { usarCocheEnFin(v); ir("financiacion"); }),
+      botonComparar));
+  $("cajon").classList.add("abierto");
+  $("cajon").setAttribute("aria-hidden", "false");
+  $("cajon").scrollTop = 0;
+  $("velo").hidden = false;
+  $("cajon").querySelector(".cerrar").focus();
+}
+function cerrarFicha() {
+  $("cajon").classList.remove("abierto");
+  $("cajon").setAttribute("aria-hidden", "true");
+  $("velo").hidden = true;
+}
+$("velo").addEventListener("click", cerrarFicha);
+
+// ---------- Buscador rápido (Ctrl + K) ----------
+const paleta = { items: [], activo: 0, modo: "" };
+function abrirPaleta(modo = "") {
+  paleta.modo = modo;
+  $("paleta").hidden = false;
+  $("paletaInput").value = "";
+  $("paletaInput").placeholder = modo === "coches" ? "Elige un coche: marca, modelo o referencia…" : "Busca un coche o una sección…";
+  filtrarPaleta();
+  $("paletaInput").focus();
+}
+function cerrarPaleta() { $("paleta").hidden = true; }
+function filtrarPaleta() {
+  const palabras = sinTildes($("paletaInput").value).split(/\s+/).filter(Boolean);
+  const coincide = (t) => palabras.every((p) => sinTildes(t).includes(p));
+  const modo = paleta.modo;
+  const secciones = modo === "coches" ? [] : PESTANAS.filter(([, nom]) => coincide(nom)).map(([id, nom]) =>
+    ({ secc: "Sección", tit: nom, accion: () => { cerrarPaleta(); ir(id); } }));
+  const coches = STOCK.filter((v) => coincide(`${v.id} ${nombre(v)} ${MOTOR[v.combustible]} ${v.anio} ${v.color ?? ""}`)).map((v) => ({
+    placa: v.id, tit: nombre(v), sub: `${v.anio} · ${num(v.km)} km · ${euros(v.precio)}`,
+    accion: () => {
+      cerrarPaleta();
+      if (modo === "coches") { elegir(v); toast(`Coche elegido: ${v.marca} ${v.modelo}`); } else abrirFicha(v);
+    },
+  }));
+  paleta.items = [...secciones, ...coches].slice(0, 14);
+  paleta.activo = 0;
+  pintarPaleta();
+}
+function pintarPaleta() {
+  const lista_ = $("paletaLista");
+  if (!paleta.items.length) { lista_.replaceChildren(h("li", "p-vacio", "Nada coincide.")); return; }
+  lista_.replaceChildren(...paleta.items.map((it, i) => h("li", null, h("button", {
+    class: `p-item${i === paleta.activo ? " activo" : ""}`, type: "button", tabindex: "-1",
+    onclick: it.accion, onmouseenter: () => { paleta.activo = i; marcarActivo(); } },
+    it.placa ? h("span", "placa", it.placa) : h("span", "p-secc", it.secc), h("span", null, it.tit), it.sub && h("small", null, it.sub)))));
+}
+function marcarActivo() {
+  [...$("paletaLista").querySelectorAll(".p-item")].forEach((b, i) => {
+    b.classList.toggle("activo", i === paleta.activo);
+    if (i === paleta.activo) b.scrollIntoView({ block: "nearest" });
+  });
+}
+$("paletaInput").addEventListener("input", filtrarPaleta);
+$("paletaInput").addEventListener("keydown", (e) => {
+  const total = paleta.items.length;
+  if (e.key === "ArrowDown" && total) { e.preventDefault(); paleta.activo = (paleta.activo + 1) % total; marcarActivo(); }
+  if (e.key === "ArrowUp" && total) { e.preventDefault(); paleta.activo = (paleta.activo - 1 + total) % total; marcarActivo(); }
+  if (e.key === "Enter" && total) { e.preventDefault(); paleta.items[paleta.activo].accion(); }
+});
+$("paleta").addEventListener("click", (e) => { if (e.target === $("paleta")) cerrarPaleta(); });
+$("abrirBuscador").addEventListener("click", () => abrirPaleta());
+
+document.addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); abrirPaleta(); return; }
+  if (e.key === "Escape") { cerrarPaleta(); cerrarFicha(); return; }
+  if (e.target.closest("input, textarea, select, [contenteditable]") || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (!$("paleta").hidden) return;
+  if (e.key === "/") { e.preventDefault(); ir("stock"); setTimeout(() => $("buscar").focus(), 60); return; }
+  const i = "1234567890".indexOf(e.key);
+  if (i >= 0 && PESTANAS[i]) ir(PESTANAS[i][0]);
+});
 
 // ---------- Precio ----------
-$("btnPrecio").addEventListener("click", () => llamar("btnPrecio", "resPrecio", `/precio/${elegido.id}`, undefined, (j) => {
-  const t = el("div", undefined, "tarjeta");
-  t.append(el("p", "Rango de mercado", "muted"), el("p", `${euros(j.rango_min)} – ${euros(j.rango_max)}`, "grande"),
-           el("p", `Precio central estimado: ${euros(j.precio_estimado)}`),
-           el("p", `Precio actual ${euros(elegido.precio)}: ${j.veredicto} (${j.desviacion_pct > 0 ? "+" : ""}${j.desviacion_pct} %)`));
-  return t;
-}));
-
-// ---------- Anuncio ----------
-$("btnAnuncio").addEventListener("click", () => llamar("btnAnuncio", "resAnuncio", "/anuncio", { id: elegido.id }, (j) => {
-  const t = el("div", undefined, "tarjeta"), a = j.anuncio;
-  const avisos = Object.entries(j.avisos).flatMap(([k, v]) => v.map((x) => `${k}: ${x}`));
-  t.append(semaforo(avisos, "Comprobado: todas las cifras y promesas están en la ficha."));
-  t.append(el("h3", a.titulo), el("p", "Texto para la web", "muted"), el("div", a.texto_web, "texto"),
-           el("p", "Texto corto para portales", "muted"), el("div", a.texto_corto, "texto"),
-           el("p", "En inglés", "muted"), el("div", a.texto_ingles, "texto"), lista("Destacados", a.destacados));
-  if (j.destacados_descartados.length) t.append(lista("Destacados descartados por no tener respaldo en la ficha", j.destacados_descartados));
-  t.append(uso(j.uso));
-  return t;
-}));
-
-// ---------- Cliente pregunta ----------
-$("btnRespuesta").addEventListener("click", () => llamar("btnRespuesta", "resRespuesta", "/respuesta", { id: elegido.id, mensaje: $("mensaje").value }, (j) => {
-  const t = el("div", undefined, "tarjeta");
-  t.append(semaforo(j.avisos, "Comprobado: no hay cifras ni promesas fuera de la ficha."), el("div", j.respuesta, "texto"));
-  t.append(lista("Pendiente de consultar (no está en la ficha)", j.pendiente_de_consultar));
-  if (j.campos_usados.length) { const c = el("p", "Datos usados: ", "muted"); j.campos_usados.forEach((x) => c.append(el("span", x, "chip"))); t.append(c); }
-  t.append(uso(j.uso));
-  return t;
-}));
-
-// ---------- Tasación ----------
-$("btnTasar").addEventListener("click", () => {
-  const coche = { marca: $("tMarca").value, modelo: $("tModelo").value, anio: Number($("tAnio").value), km: Number($("tKm").value),
-                  combustible: $("tComb").value, cambio: $("tCambio").value, potencia_cv: Number($("tCv").value) || null };
-  llamar("btnTasar", "resTasar", "/tasacion", { coche, notas: $("tNotas").value }, (j) => {
-    const t = el("div", undefined, "tarjeta");
-    t.append(el("p", "Oferta al cliente", "muted"), el("p", `${euros(j.oferta_inicial)} – ${euros(j.oferta_maxima)}`, "grande"),
-             el("p", "Empieza por la cifra baja y no pases de la alta.", "muted"),
-             el("p", `Precio de venta previsto: ${euros(j.precio_venta_estimado)} (mercado ${euros(j.rango_mercado[0])} – ${euros(j.rango_mercado[1])})`),
-             el("p", `Puesta a punto: ${euros(j.puesta_a_punto)} · Margen ${j.margen_pct} % · Gastos ${euros(j.gastos_fijos)}`));
-    t.append(lista("Desglose de la puesta a punto", j.desglose));
-    t.append(lista("De dónde sale cada daño (citas de tus notas)", j.citas.map((c) => `${c.campo}: «${c.texto}»`)));
-    if (j.descartados_sin_cita.length) t.append(lista("Descartados por no aparecer en las notas", j.descartados_sin_cita));
-    t.append(uso(j.uso));
-    return t;
-  });
+function termometro(j, precio) {
+  const lo = Math.min(j.rango_min, precio) * 0.94, hi = Math.max(j.rango_max, precio) * 1.06;
+  const pct = (x) => ((x - lo) / (hi - lo)) * 100;
+  return h("div", "gauge",
+    h("div", "gauge-pista"),
+    h("div", { class: "gauge-rango", style: `left:${pct(j.rango_min)}%;width:${pct(j.rango_max) - pct(j.rango_min)}%` }),
+    h("div", { class: "gauge-marca", style: `left:${pct(j.precio_estimado)}%` }, h("span", null, `Central ${euros(j.precio_estimado)}`)),
+    h("div", { class: "gauge-pin", style: `left:${pct(precio)}%` }, h("span", null, `Tu precio ${euros(precio)}`)));
+}
+$("btnPrecio").addEventListener("click", () => {
+  const v = elegido;
+  llamar("btnPrecio", "resPrecio", `/precio/${v.id}`, undefined, (j) => {
+    const clase = j.veredicto.includes("encima") ? "alta" : j.veredicto.includes("debajo") ? "media" : "baja";
+    const consejo = v.precio > j.rango_max
+      ? `Está caro para el mercado: bájalo al menos ${euros(v.precio - j.rango_max)} (hasta ${euros(j.rango_max)}) para entrar en el rango.`
+      : v.precio < j.rango_min
+        ? `Estás dejando margen sobre la mesa: podrías subirlo ${euros(j.rango_min - v.precio)} y seguiría en la parte baja del rango.`
+        : `Bien colocado. Hasta el techo del rango (${euros(j.rango_max)}) te quedan ${euros(j.rango_max - v.precio)}.`;
+    return h("div", "tarjeta",
+      h("p", "muted", "Rango de mercado"),
+      h("p", "grande", `${euros(j.rango_min)} – ${euros(j.rango_max)}`),
+      termometro(j, v.precio),
+      h("p", null, h("span", { class: `chip ${clase}` }, j.veredicto), "  ",
+        `Tu precio (${euros(v.precio)}) está un ${j.desviacion_pct > 0 ? "+" : ""}${dec(j.desviacion_pct, 1)} % frente al precio central estimado (${euros(j.precio_estimado)}).`),
+      h("p", "consejo", consejo),
+      h("div", "fila",
+        h("button", { class: "boton", type: "button", onclick: () => ir("cartel") }, "Hacer el cartel"),
+        h("button", { class: "boton", type: "button", onclick: () => { usarCocheEnFin(v); ir("financiacion"); } }, "Simular financiación")));
+  }, "Consultando el modelo de precios…");
 });
 
+// ---------- Anuncio ----------
+function bloque(titulo, texto, extra) {
+  return h("div", null,
+    h("div", "bloque-cab", h("span", "muted", titulo), h("span", "bloque-acc", extra, botonCopiar(texto))),
+    h("div", "texto", texto));
+}
+$("btnAnuncio").addEventListener("click", () => llamar("btnAnuncio", "resAnuncio", "/anuncio", { id: elegido.id }, (j) => {
+  const a = j.anuncio;
+  const avisos = Object.entries(j.avisos).flatMap(([k, v]) => v.map((x) => `${k}: ${x}`));
+  const todo = [a.titulo, "", a.texto_web, "", ...a.destacados.map((d) => `• ${d}`)].join("\n");
+  const largo = a.texto_corto.length;
+  return h("div", "tarjeta",
+    semaforo(avisos, "Comprobado: todas las cifras y promesas están en la ficha."),
+    h("div", "bloque-cab", h("h3", null, a.titulo), botonCopiar(todo, "Copiar todo")),
+    bloque("Texto para la web", a.texto_web),
+    bloque("Texto corto para portales", a.texto_corto, h("span", { class: `contador${largo > 300 ? " error" : ""}` }, `${largo} / 300`)),
+    bloque("En inglés", a.texto_ingles),
+    a.destacados.length ? h("div", null, h("h3", null, "Destacados"), a.destacados.map((d) => h("span", "chip chip-ok", `✓ ${d}`))) : null,
+    lista("Destacados descartados por no tener respaldo en la ficha", j.destacados_descartados),
+    uso(j.uso));
+}, "La IA está escribiendo el anuncio…"));
+
+// ---------- Cliente pregunta ----------
+const PREGUNTAS = ["¿Tiene libro de revisiones?", "¿Cuántos dueños ha tenido?", "¿Qué garantía tiene?", "¿Cuándo le toca la ITV?",
+  "¿Os quedáis mi coche como parte del pago?", "¿Me hacéis algo de descuento?", "¿Se puede financiar?"];
+const contarMensaje = () => { $("contMensaje").textContent = `${$("mensaje").value.length} / 2000`; };
+$("preguntas").append(...PREGUNTAS.map((p) => h("button", { class: "chip-rapido", type: "button", onclick: () => {
+  const m = $("mensaje");
+  m.value = `${m.value.trim() ? `${m.value.trim()} ` : ""}${p}`;
+  contarMensaje(); m.focus();
+} }, p)));
+$("mensaje").addEventListener("input", contarMensaje);
+$("btnRespuesta").addEventListener("click", () => {
+  const v = elegido;
+  llamar("btnRespuesta", "resRespuesta", "/respuesta", { id: v.id, mensaje: $("mensaje").value }, (j) => {
+    const texto = j.respuesta;
+    return h("div", "tarjeta",
+      semaforo(j.avisos, "Comprobado: no hay cifras ni promesas fuera de la ficha."),
+      h("div", "texto", texto),
+      h("div", "fila",
+        botonCopiar(texto, "Copiar respuesta"),
+        h("a", { class: "boton", href: `https://wa.me/?text=${encodeURIComponent(texto)}`, target: "_blank", rel: "noopener" }, "Enviar por WhatsApp"),
+        h("a", { class: "boton", href: `mailto:?subject=${encodeURIComponent(nombre(v))}&body=${encodeURIComponent(texto)}` }, "Enviar por email")),
+      j.pendiente_de_consultar.length ? h("div", null, h("h3", null, "Pendiente de consultar (no está en la ficha)"),
+        j.pendiente_de_consultar.map((p) => h("label", "casilla tarea", h("input", { type: "checkbox" }), h("span", null, p)))) : null,
+      j.campos_usados.length ? h("p", "muted", "Datos usados: ", j.campos_usados.map((x) => h("span", "chip", x))) : null,
+      uso(j.uso));
+  }, "La IA está preparando la respuesta…");
+});
+
+// ---------- Cartel ----------
+let cartelToken = 0;
+async function pintarCartel() {
+  const v = elegido;
+  if (!v) return;
+  const verCuota = $("kCuota").checked, verExtras = $("kExtras").checked, verSellos = $("kSellos").checked;
+  const entrada = Math.round((v.precio * (Number($("kEntrada").value) || 0)) / 100 / 100) * 100;
+  const cuota = h("b", null, "…");
+  const letra = h("p", "cartel-letra");
+  const sellos = verSellos ? [
+    v.garantia_meses && `${v.garantia_meses} meses de garantía`,
+    v.propietarios === 1 && "Un solo propietario",
+    v.libro_revisiones === true && "Libro de revisiones",
+  ].filter(Boolean) : [];
+  $("cartelHoja").replaceChildren(
+    h("div", "cartel-cab", h("span", "cartel-sello", "Ocasión"), h("span", "placa", v.id)),
+    h("p", "cartel-marca", v.marca),
+    h("p", "cartel-modelo", v.modelo, v.version && h("em", null, v.version)),
+    h("p", "cartel-datos", [v.anio, `${num(v.km)} km`, MOTOR[v.combustible], CAMBIO[v.cambio], v.potencia_cv && `${v.potencia_cv} CV`].filter(Boolean).join("  ·  ")),
+    verExtras && v.extras.length ? h("ul", "cartel-extras", v.extras.slice(0, 6).map((e) => h("li", null, e))) : null,
+    h("p", "cartel-precio", euros(v.precio)),
+    verCuota ? h("p", "cartel-cuota", "o desde ", cuota, " al mes*") : null,
+    h("div", "cartel-pie", etiqueta(v.etiqueta_dgt), sellos.map((s) => h("span", "cartel-sello-peq", s))),
+    verCuota ? letra : null);
+  if (!verCuota) return;
+  const t = ++cartelToken;
+  try {
+    const tin = Number($("kTin").value) || 0;
+    const j = await api("/financiacion", { precio: v.precio, entrada, meses: Number($("kMeses").value) || 60, tin, comision_apertura_pct: 0 });
+    if (t !== cartelToken) return;
+    cuota.textContent = `${dec2(j.cuota)} €`;
+    letra.textContent = `*Precio al contado ${euros(v.precio)}. Entrada ${euros(entrada)}, importe financiado ${euros(j.importe)}, ${j.meses} cuotas de ${dec2(j.cuota)} €. ` +
+      `TIN ${dec(tin, 2)} %, TAE ${dec(j.tae, 2)} %. Importe total adeudado ${euros(j.total_pagado)}. Simulación orientativa sujeta a la aprobación de la entidad financiera.`;
+  } catch (e) {
+    if (t !== cartelToken) return;
+    cuota.textContent = "—";
+    letra.textContent = `No se ha podido calcular la cuota: ${e.message}`;
+  }
+}
+["kCuota", "kExtras", "kSellos", "kEntrada", "kMeses", "kTin"].forEach((id) => $(id).addEventListener("input", pintarCartel));
+$("btnImprimir").addEventListener("click", () => window.print());
+
+// ---------- Recomendar ----------
+const EJEMPLOS = [
+  ["Familia viajera", "Somos cuatro, hago unos 25.000 km al año casi todo autopista, presupuesto hasta 25.000 €, vivo en Madrid y no tengo garaje."],
+  ["Ciudad con garaje", "Busco algo pequeño para moverme por la ciudad, unos 8.000 km al año, tengo garaje con enchufe y no quiero pasar de 18.000 €."],
+  ["SUV automático", "Quiero un SUV automático, somos cinco, unos 15.000 km al año mezclando ciudad y carretera, hasta 30.000 €."],
+];
+$("ejemplos").append(...EJEMPLOS.map(([t, texto]) => h("button", { class: "chip-rapido", type: "button", onclick: () => { $("necesidades").value = texto; } }, t)));
+$("btnRecomendar").addEventListener("click", () => llamar("btnRecomendar", "resRecomendar", "/recomendar", { texto: $("necesidades").value, provincia: $("rProv").value }, (j) => {
+  const entendido = Object.entries(j.necesidades).filter(([, v]) => v !== null);
+  const recos = j.recomendaciones;
+  const maxP = Math.max(1, ...recos.map((r) => r.puntos));
+  return h("div", "tarjeta",
+    h("p", "muted", "Lo que ha entendido: ", entendido.map(([k, v]) => h("span", "chip", `${k.replaceAll("_", " ")}: ${v === true ? "sí" : v === false ? "no" : v}`))),
+    !recos.length ? h("p", null, "Ningún coche del stock cumple esos requisitos.") : [
+      h("div", "recos", recos.map((r, i) => h("article", "reco",
+        h("div", "reco-rank", i + 1),
+        h("div", null,
+          h("h4", null, r.nombre),
+          h("p", "muted", `${r.anio} · ${num(r.km)} km · ${MOTOR[r.combustible]} · ${euros(r.precio)}`),
+          h("div", "puntos", h("div", "pista", h("div", { class: "relleno", style: `width:${(Math.max(r.puntos, 0) / maxP) * 100}%` })), h("span", "num", `${dec(r.puntos, 1)} puntos`)),
+          h("ul", null, r.razones.map((x) => h("li", null, x))),
+          h("div", "fila", h("button", { class: "mini", type: "button", onclick: () => abrirFicha(POR_ID[r.id]) }, "Ver ficha"), corazon(r.id)))))),
+      recos.length > 1 && h("button", { class: "boton", type: "button", onclick: () => {
+        COMPARAR.clear(); recos.forEach((r) => COMPARAR.add(r.id));
+        guardado.escribir("vo-comparar", [...COMPARAR]); pintarListaCoste();
+        ir("coste"); $("btnCoste").click();
+      } }, "Comparar lo que cuesta cada uno al año →"),
+    ],
+    j.mensaje_cliente && [
+      h("h3", null, "Mensaje para el cliente"),
+      semaforo(j.avisos, "Mensaje comprobado: sin cifras inventadas."),
+      h("div", "texto", j.mensaje_cliente),
+      h("div", "fila", botonCopiar(j.mensaje_cliente, "Copiar mensaje"),
+        h("a", { class: "boton", href: `https://wa.me/?text=${encodeURIComponent(j.mensaje_cliente)}`, target: "_blank", rel: "noopener" }, "Enviar por WhatsApp")),
+    ],
+    uso(j.uso));
+}, "La IA está leyendo lo que busca el cliente…"));
+
 // ---------- Coste por motor ----------
+function alternarComparar(id) {
+  if (COMPARAR.has(id)) COMPARAR.delete(id);
+  else if (COMPARAR.size >= 4) { toast("Ya hay 4 coches para comparar: quita alguno"); return; }
+  else COMPARAR.add(id);
+  guardado.escribir("vo-comparar", [...COMPARAR]);
+  pintarListaCoste();
+  toast(COMPARAR.has(id) ? "Añadido a la comparación" : "Quitado de la comparación");
+}
+function pintarListaCoste() {
+  $("cuentaComparar").textContent = `· ${COMPARAR.size} de 4`;
+  $("listaCoste").replaceChildren(...STOCK.map((v) => h("label", "casilla",
+    h("input", { type: "checkbox", value: v.id, checked: COMPARAR.has(v.id), onchange: (e) => {
+      if (e.target.checked && COMPARAR.size >= 4) { e.target.checked = false; toast("Máximo 4 coches: quita alguno antes"); return; }
+      if (e.target.checked) COMPARAR.add(v.id); else COMPARAR.delete(v.id);
+      guardado.escribir("vo-comparar", [...COMPARAR]);
+      $("cuentaComparar").textContent = `· ${COMPARAR.size} de 4`;
+    } }),
+    h("span", null, h("b", null, v.id), ` · ${v.marca} ${v.modelo} (${MOTOR[v.combustible]}) · ${euros(v.precio)}`))));
+}
+$("cFav").addEventListener("click", () => {
+  if (!FAV.size) { toast("Aún no tienes favoritos: márcalos con ♥ en el stock"); return; }
+  COMPARAR.clear(); [...FAV].slice(0, 4).forEach((id) => COMPARAR.add(id));
+  guardado.escribir("vo-comparar", [...COMPARAR]); pintarListaCoste();
+  toast(FAV.size > 4 ? "Elegidos tus 4 primeros favoritos" : "Elegidos tus favoritos");
+});
+$("cVaciar").addEventListener("click", () => { COMPARAR.clear(); guardado.escribir("vo-comparar", []); pintarListaCoste(); });
+$("cKm").addEventListener("input", () => { $("cKmR").value = $("cKm").value; });
+$("cKmR").addEventListener("input", () => { $("cKm").value = $("cKmR").value; });
+
+function precios(p) {
+  const o = p.origen || {};
+  return h("div", null, h("p", "muted", "Precios usados:"), h("ul", null,
+    [["Gasolina", p.precio_gasolina, "€/L", "precio_gasolina"], ["Diésel", p.precio_diesel, "€/L", "precio_diesel"],
+     ["Luz en casa", p.precio_kwh_casa, "€/kWh", "precio_kwh_casa"]].map(([nom, v, u, k]) =>
+      h("li", (o[k] ?? "").includes("RESERVA") ? "error" : null, `${nom}: ${dec(v, 3)} ${u} · ${o[k] ?? ""}`)),  // en rojo: no es el precio de hoy
+    h("li", null, `Carga pública: ${dec(p.precio_kwh_publico, 3)} €/kWh · media orientativa`)));
+}
 $("btnCoste").addEventListener("click", () => {
-  const ids = [...document.querySelectorAll("#listaCoste input:checked")].map((c) => c.value);
+  const ids = [...COMPARAR];
+  if (ids.length < 2) { toast("Elige al menos 2 coches para comparar"); return; }
   llamar("btnCoste", "resCoste", "/coste-anual", { ids, km_anuales: Number($("cKm").value), carga_en_casa: $("cCasa").checked, provincia: $("cProv").value,
       precio_gasolina: Number($("cGas").value) || null, precio_diesel: Number($("cDie").value) || null,
       precio_kwh_casa: Number($("cLuz").value) || null }, (j) => {
-    const t = el("div", undefined, "tarjeta tabla"), tabla = el("table"), cab = el("tr");
-    ["Coche", "Precio", "Energía", "Mant.", "Seguro", "Imp.", "Total / año", `Compra + ${j.anios} años`, "Compensa en"].forEach((h, i) => cab.append(el("th", h, i ? "num" : "")));
-    tabla.append(cab);
-    j.coches.forEach((c) => {
-      const tr = el("tr");
-      tr.append(el("td", `${c.nombre} (${MOTOR[c.combustible]})`));
-      [c.precio_compra, c.energia, c.mantenimiento, c.seguro, c.impuesto, c.total_anual, c[`total_${j.anios}_anios`]].forEach((x) => tr.append(el("td", euros(x), "num")));
-      tr.append(el("td", c.anios_para_compensar === null ? "—" : `${dec(c.anios_para_compensar, 1)} años`, "num"));
-      tabla.append(tr);
-    });
-    const p = j.precios_energia;
-    t.append(tabla, el("p", `«Compensa en»: años que tarda en recuperar lo que cuesta de más frente al más barato de comprar (${j.referencia}). «—»: no lo recupera.`, "muted"),
-             precios(p),
-             lista("Supuestos", j.coches[0].supuestos.slice(1)));
-    return t;
-  });
+    const clave = `total_${j.anios}_anios`;
+    const mejor = j.coches.reduce((m, c) => (c[clave] < m[clave] ? c : m));
+    const maxT = Math.max(...j.coches.map((c) => c[clave]));
+    const cab = h("tr", null, ["Coche", "Precio", "Energía", "Mant.", "Seguro", "Imp.", "Total / año", `Compra + ${j.anios} años`, "Compensa en"].map((t, i) => h("th", i ? "num" : null, t)));
+    const filas = j.coches.map((c) => h("tr", c === mejor ? "sel" : null,
+      h("td", null, h("b", null, c.nombre), ` (${MOTOR[c.combustible]})`),
+      [c.precio_compra, c.energia, c.mantenimiento, c.seguro, c.impuesto, c.total_anual, c[clave]].map((x) => h("td", "num", euros(x))),
+      h("td", "num", c.anios_para_compensar === null ? "—" : `${dec(c.anios_para_compensar, 1)} años`)));
+    return h("div", "tarjeta",
+      h("h3", null, `Lo que cuesta cada coche en ${j.anios} años`),
+      j.coches.map((c) => h("div", "apilada-fila",
+        h("span", null, h("b", null, c.nombre), c === mejor ? h("span", null, " ", h("span", "chip chip-ok", "El más barato a la larga")) : null),
+        h("div", "apilada",
+          h("div", { class: "seg-compra", style: `width:${(c.precio_compra / maxT) * 100}%`, title: `Compra: ${euros(c.precio_compra)}` }),
+          h("div", { class: "seg-uso", style: `width:${((c[clave] - c.precio_compra) / maxT) * 100}%`, title: `Uso: ${euros(c[clave] - c.precio_compra)}` })),
+        h("span", "num", euros(c[clave])))),
+      h("p", "leyenda", h("i", "l-compra"), "Precio de compra", h("i", "l-uso"), `Uso durante ${j.anios} años: energía, mantenimiento, seguro e impuesto`),
+      h("div", "tabla", h("table", null, h("thead", null, cab), h("tbody", null, filas))),
+      h("p", "muted", `«Compensa en»: años que tarda en recuperar lo que cuesta de más frente al más barato de comprar (${j.referencia}). «—»: no lo recupera.`),
+      precios(j.precios_energia),
+      lista("Supuestos", j.coches[0].supuestos.slice(1)));
+  }, "Buscando los precios de la energía de hoy…");
 });
 
-function precios(p) {
-  const d = el("div"), o = p.origen || {};
-  d.append(el("p", "Precios usados:", "muted"));
-  const ul = el("ul");
-  [["Gasolina", p.precio_gasolina, "€/L", "precio_gasolina"], ["Diésel", p.precio_diesel, "€/L", "precio_diesel"],
-   ["Luz en casa", p.precio_kwh_casa, "€/kWh", "precio_kwh_casa"]].forEach(([n, v, u, k]) => {
-    const li = el("li", `${n}: ${dec(v, 3)} ${u} · ${o[k] ?? ""}`);
-    if ((o[k] ?? "").includes("RESERVA")) li.className = "error";  // en rojo: no es el precio de hoy
-    ul.append(li);
-  });
-  ul.append(el("li", `Carga pública: ${dec(p.precio_kwh_publico, 3)} €/kWh · media orientativa`));
-  d.append(ul);
-  return d;
+// ---------- Financiación ----------
+const PLAZOS = [24, 36, 48, 60, 72, 84, 96];
+let finToken = 0, finTimer, cuotaAnterior = 0;
+const programarFin = () => { clearTimeout(finTimer); finTimer = setTimeout(calcularFin, 250); };
+function enlazar(numId, rangoId) {
+  $(numId).addEventListener("input", () => { $(rangoId).value = $(numId).value; programarFin(); });
+  $(rangoId).addEventListener("input", () => { $(numId).value = $(rangoId).value; programarFin(); });
+}
+enlazar("fEntrada", "fEntradaR"); enlazar("fMeses", "fMesesR"); enlazar("fTin", "fTinR");
+$("fPrecio").addEventListener("input", () => { $("fEntradaR").max = $("fPrecio").value || 0; programarFin(); });
+$("fCom").addEventListener("input", programarFin);
+$("fObjetivo").addEventListener("input", pintarObjetivo);
+$("btnFinanciar").addEventListener("click", calcularFin);
+$("finUsarCoche").addEventListener("click", () => { if (elegido) { usarCocheEnFin(elegido); toast(`Precio de ${elegido.marca} ${elegido.modelo}: ${euros(elegido.precio)}`); } });
+function usarCocheEnFin(v) {
+  const entrada = Math.round((v.precio * 0.2) / 500) * 500;
+  $("fPrecio").value = v.precio;
+  $("fEntradaR").max = v.precio;
+  $("fEntrada").value = entrada; $("fEntradaR").value = entrada;
+  calcularFin();
+}
+async function calcularFin() {
+  const t = ++finToken;
+  const base = { precio: Number($("fPrecio").value), entrada: Number($("fEntrada").value), meses: Number($("fMeses").value),
+    tin: Number($("fTin").value), comision_apertura_pct: Number($("fCom").value) };
+  const res = $("resFinanciar");
+  pintarObjetivo();
+  if (!(base.precio > 0) || base.entrada >= base.precio) { res.replaceChildren(h("p", "error", "La entrada tiene que ser menor que el precio.")); return; }
+  try {
+    const [j, ...plazos] = await Promise.all([api("/financiacion", base), ...PLAZOS.map((m) => api("/financiacion", { ...base, meses: m }))]);
+    if (t !== finToken) return;
+    res.replaceChildren(pintarFin(j, plazos));
+    cuotaAnterior = j.cuota;
+  } catch (e) {
+    if (t === finToken) res.replaceChildren(h("p", "error", `Error: ${e.message}`));
+  }
+}
+function pintarFin(j, plazos) {
+  const cuota = h("p", "grande");
+  contar(cuota, j.cuota, (x) => `${dec2(x)} €`, cuotaAnterior);
+  const pInt = j.total_pagado > 0 ? (j.intereses / j.total_pagado) * 100 : 0;
+  return h("div", "tarjeta",
+    h("p", "muted", "Cuota mensual"), cuota,
+    h("p", null, `${j.meses} cuotas · TAE ${dec(j.tae, 2)} % · Total a pagar `, h("b", null, euros(j.total_pagado))),
+    h("div", "reparto", h("div", { class: "seg-compra", style: `width:${100 - pInt}%` }), h("div", { class: "seg-uso", style: `width:${pInt}%` })),
+    h("p", "leyenda", h("i", "l-compra"), `Financiado ${euros(j.importe)}`, h("i", "l-uso"), `Intereses y comisión ${euros(j.intereses)}`),
+    h("h3", null, "Compara plazos"),
+    h("div", "tabla", h("table", null,
+      h("thead", null, h("tr", null, h("th", null, "Plazo"), h("th", "num", "Cuota"), h("th", "num", "Intereses"), h("th", "num", "TAE"))),
+      h("tbody", null, plazos.map((p) => h("tr", {
+        class: `clic${p.meses === j.meses ? " sel" : ""}`, title: "Usar este plazo",
+        onclick: () => { $("fMeses").value = p.meses; $("fMesesR").value = p.meses; calcularFin(); } },
+        h("td", null, `${p.meses} meses (${dec(p.meses / 12, 1)} años)`), h("td", "num", `${dec2(p.cuota)} €`), h("td", "num", euros(p.intereses)), h("td", "num", `${dec(p.tae, 2)} %`)))))),
+    h("p", "muted", "Simulación orientativa, sin valor contractual."));
+}
+function pintarObjetivo() {
+  const c = Number($("fObjetivo").value), precio = Number($("fPrecio").value), meses = Number($("fMeses").value), i = Number($("fTin").value) / 1200;
+  const out = $("resObjetivo");
+  if (!(c > 0) || !(precio > 0) || !(meses > 0)) { out.textContent = "Escribe la cuota que quiere pagar y te digo cuánta entrada necesita."; return; }
+  const financiable = i ? (c * (1 - (1 + i) ** -meses)) / i : c * meses;
+  const entrada = Math.ceil((precio - financiable) / 100) * 100;
+  if (entrada <= 0) { out.textContent = `Con ${dec2(c)} € al mes en ${meses} meses puede financiarlo entero: le llegaría hasta ${euros(financiable)}.`; return; }
+  if (entrada >= precio) { out.textContent = `Con ${dec2(c)} € al mes no le da: en ${meses} meses solo cubre ${euros(financiable)}.`; return; }
+  out.replaceChildren(`Con ${dec2(c)} € al mes en ${meses} meses necesita una entrada de `, h("b", null, euros(entrada)), ". ",
+    h("button", { class: "mini", type: "button", onclick: () => { $("fEntrada").value = entrada; $("fEntradaR").value = entrada; calcularFin(); } }, "Aplicar esta entrada"));
 }
 
-// ---------- Recomendar ----------
-$("btnRecomendar").addEventListener("click", () => llamar("btnRecomendar", "resRecomendar", "/recomendar", { texto: $("necesidades").value, provincia: $("rProv").value }, (j) => {
-  const t = el("div", undefined, "tarjeta");
-  const n = Object.entries(j.necesidades).filter(([, v]) => v !== null);
-  const c = el("p", "Lo que ha entendido: ", "muted"); n.forEach(([k, v]) => c.append(el("span", `${k.replaceAll("_", " ")}: ${v === true ? "sí" : v === false ? "no" : v}`, "chip"))); t.append(c);
-  if (!j.recomendaciones.length) { t.append(el("p", "Ningún coche del stock cumple esos requisitos.")); return t; }
-  j.recomendaciones.forEach((r, i) => {
-    t.append(el("h3", `${i + 1}. ${r.nombre} · ${r.anio} · ${num(r.km)} km · ${euros(r.precio)}`));
-    const ul = el("ul"); r.razones.forEach((x) => ul.append(el("li", x))); t.append(ul);
-  });
-  if (j.mensaje_cliente) t.append(semaforo(j.avisos, "Mensaje comprobado: sin cifras inventadas."), el("div", j.mensaje_cliente, "texto"));
-  t.append(uso(j.uso));
-  return t;
-}));
+// ---------- Tasación ----------
+const DANOS = ["Neumáticos a 2 mm", "Rayón en la puerta", "Golpe en el paragolpes", "Olor a tabaco", "Solo una llave", "ITV caducada", "Revisión pendiente"];
+$("danosRapidos").append(...DANOS.map((d) => h("button", { class: "chip-rapido", type: "button", onclick: () => {
+  const t = $("tNotas");
+  t.value = t.value.trim() ? `${t.value.trim().replace(/[.,]$/, "")}, ${d.toLowerCase()}.` : `${d}.`;
+} }, d)));
+function rellenarListas() {
+  const unicos = (f) => [...new Set(STOCK.map(f))].sort((a, b) => a.localeCompare(b, "es"));
+  $("listaMarcas").replaceChildren(...unicos((v) => v.marca).map((m) => h("option", { value: m })));
+  $("listaModelos").replaceChildren(...unicos((v) => v.modelo).map((m) => h("option", { value: m })));
+}
+function cascada(j) {
+  const pv = j.precio_venta_estimado, margen = (pv * j.margen_pct) / 100;
+  let resto = pv;
+  return h("div", "cascada", [
+    ["Precio de venta previsto", pv, "base"], [`Margen del ${dec(j.margen_pct, 1)} %`, margen, "resta"],
+    ["Puesta a punto", j.puesta_a_punto, "resta"], ["Gastos fijos", j.gastos_fijos, "resta"], ["Oferta máxima", j.oferta_maxima, "total"],
+  ].map(([t, x, tipo]) => {
+    let izq = 0, ancho = x / pv;
+    if (tipo === "resta") { izq = Math.max(0, resto - x) / pv; ancho = Math.min(x, Math.max(resto, 0)) / pv; resto -= x; }
+    return h("div", `cascada-fila ${tipo}`, h("span", null, t),
+      h("div", "pista", h("div", { class: "relleno", style: `left:${izq * 100}%;width:${Math.max(ancho * 100, 0.6)}%` })),
+      h("span", "num", tipo === "resta" ? `− ${euros(x)}` : euros(x)));
+  }));
+}
+$("btnTasar").addEventListener("click", () => {
+  const coche = { marca: $("tMarca").value, modelo: $("tModelo").value, anio: Number($("tAnio").value), km: Number($("tKm").value),
+                  combustible: $("tComb").value, cambio: $("tCambio").value, potencia_cv: Number($("tCv").value) || null };
+  llamar("btnTasar", "resTasar", "/tasacion", { coche, notas: $("tNotas").value }, (j) => h("div", "tarjeta",
+    h("p", "muted", "Oferta al cliente"),
+    h("p", "grande", `${euros(j.oferta_inicial)} – ${euros(j.oferta_maxima)}`),
+    h("p", "consejo", `Empieza por ${euros(j.oferta_inicial)} y no pases de ${euros(j.oferta_maxima)}.`),
+    h("h3", null, "De dónde sale la oferta máxima"),
+    cascada(j),
+    h("p", "muted", `Mercado: ${euros(j.rango_mercado[0])} – ${euros(j.rango_mercado[1])}. La oferta inicial sale del precio bajo del rango.`),
+    lista("Desglose de la puesta a punto", j.desglose),
+    lista("De dónde sale cada daño (citas de tus notas)", j.citas.map((c) => `${c.campo}: «${c.texto}»`)),
+    lista("Descartados por no aparecer en las notas", j.descartados_sin_cita),
+    uso(j.uso)), $("tNotas").value.trim() ? "La IA está leyendo tus notas…" : "Calculando…");
+});
 
-// ---------- Financiación ----------
-$("btnFinanciar").addEventListener("click", () => llamar("btnFinanciar", "resFinanciar", "/financiacion", {
-  precio: Number($("fPrecio").value), entrada: Number($("fEntrada").value), meses: Number($("fMeses").value),
-  tin: Number($("fTin").value), comision_apertura_pct: Number($("fCom").value) }, (j) => {
-  const t = el("div", undefined, "tarjeta");
-  t.append(el("p", "Cuota mensual", "muted"), el("p", `${j.cuota.toLocaleString("es-ES", { minimumFractionDigits: 2 })} €`, "grande"),
-           el("p", `${j.meses} cuotas · Financiado ${euros(j.importe)} · Total a pagar ${euros(j.total_pagado)} · Intereses y comisión ${euros(j.intereses)} · TAE ${j.tae} %`),
-           el("p", "Simulación orientativa, sin valor contractual.", "muted"));
-  return t;
-}));
-
-abrir("stock");
-cargarStock();
+// ---------- Arranque ----------
+contarMensaje();
+mostrar(location.hash.slice(1));
+window.addEventListener("load", () => window.scrollTo(0, 0));
+cargar();
 </script>
 </body>
 </html>

@@ -45,7 +45,12 @@ def comprobar_ia() -> str:
     proveedor = os.getenv("PROVEEDOR", "claude").strip().lower()
     clave = "GEMINI_API_KEY" if proveedor == "gemini" else "ANTHROPIC_API_KEY"
     if not os.getenv(clave):
-        sys.exit(f"Falta {clave} (PROVEEDOR={proveedor}). Ponla en .env para grabar con IA real.")
+        env = RAIZ / ".env"
+        if not env.exists():
+            motivo = f"No existe {env}. Créalo: cp .env.example .env y pon tu clave."
+        else:
+            motivo = f"{env} existe, pero no tiene la línea {clave}=... (o está vacía)."
+        sys.exit(f"Falta {clave} (PROVEEDOR={proveedor}). {motivo}")
     return proveedor
 
 

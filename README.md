@@ -47,6 +47,19 @@ uv run python scripts/entrenar_precio.py data/coches.csv
 uv run uvicorn copiloto.api:app --reload
 ```
 
+## Vídeo para LinkedIn
+
+`scripts/grabar_video.py` recorre la web (panel, precio, anuncio y respuesta con IA, coste por
+motor con los precios de hoy y financiación), la graba a 1080p, la acelera a 2× y le pone música
+generada en el propio script (sin derechos de autor). Antes de grabar comprueba que hay clave de
+la IA y que el Ministerio y Red Eléctrica dan el precio de hoy; si no, no graba.
+
+```bash
+uv run --with playwright playwright install chromium   # solo la primera vez (y ffmpeg instalado)
+uv run --with playwright python scripts/grabar_video.py  # -> video/copiloto-vo-linkedin.mp4
+uv run --with playwright python scripts/grabar_video.py --musica mi_tema.mp3  # tu propia música
+```
+
 ## Datos
 
 - Stock: **ficticio**, creado para la demo.

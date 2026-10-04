@@ -12,7 +12,9 @@ cliente = TestClient(api.app)
 def sin_red(monkeypatch, modelo_precio):
     """Modelo de precio de prueba, precios de energía fijos y contador de límite a cero."""
     monkeypatch.setattr(api, "modelo_precio", lambda: modelo_precio)
-    monkeypatch.setattr(api, "perfil_con_precios_reales", lambda km, casa, prov: Perfil(km, casa))
+    monkeypatch.setattr(
+        api, "perfil_con_precios_reales", lambda km, casa, prov, manuales=None: Perfil(km, casa)
+    )
     api._peticiones.clear()
 
 
@@ -63,3 +65,12 @@ def test_anuncio_y_limite(llm_falso, monkeypatch):
     monkeypatch.setattr(api, "LIMITE_POR_HORA", 2)
     codigos = [cliente.post("/anuncio", json={"id": "VO-007"}).status_code for _ in range(3)]
     assert codigos == [200, 200, 429]
+
+
+def test_si_la_ia_falla_se_explica(monkeypatch):
+    def falla(*a, **k):
+        raise api.llm.ErrorLLM("ClientError: 404 modelo no encontrado")
+
+    monkeypatch.setattr(api.llm, "parse", falla)
+    r = cliente.post("/anuncio", json={"id": "VO-023"})
+    assert r.status_code == 502 and "404 modelo no encontrado" in r.json()["detail"]

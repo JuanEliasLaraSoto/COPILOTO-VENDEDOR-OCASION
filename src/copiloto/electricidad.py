@@ -4,11 +4,16 @@ En casa: precio oficial PVPC del día, de la API pública de Red Eléctrica (RED
 Fuera de casa: precio orientativo de los cargadores públicos (no hay un dato oficial único).
 """
 
+import logging
 import time
 from datetime import date
 from statistics import median
 
 import httpx
+
+from copiloto import red
+
+log = logging.getLogger("copiloto.electricidad")
 
 URL_REE = "https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real"
 
@@ -20,16 +25,10 @@ CACHE_SEGUNDOS = 6 * 3600
 
 
 def descargar_precios(dia: date) -> dict:
-    respuesta = httpx.get(
+    respuesta = red.get(
         URL_REE,
-        params={
-            "start_date": f"{dia}T00:00",
-            "end_date": f"{dia}T23:59",
-            "time_trunc": "hour",
-        },
-        timeout=30,
+        params={"start_date": f"{dia}T00:00", "end_date": f"{dia}T23:59", "time_trunc": "hour"},
     )
-    respuesta.raise_for_status()
     return respuesta.json()
 
 
@@ -51,7 +50,8 @@ def precio_kwh_casa(dia: date | None = None) -> tuple[float, str]:
         return _CACHE[clave][1], "api"
     try:
         precio = pvpc_medio(descargar_precios(dia))
-    except (httpx.HTTPError, KeyError, ValueError):
+    except (httpx.HTTPError, KeyError, ValueError) as e:
+        log.warning("API de Red Eléctrica sin respuesta: %s: %s", type(e).__name__, e)
         precio = None
     if precio is None:
         return PRECIO_CASA_RESPALDO, "respaldo"

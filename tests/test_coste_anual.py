@@ -41,3 +41,16 @@ def test_comparar_ordena_por_coste_anual(stock):
     totales = [c["total_anual"] for c in r["coches"]]
     assert totales == sorted(totales)
     assert r["referencia"] == stock["VO-005"].nombre()  # el más barato de comprar
+
+
+def test_precios_escritos_por_el_vendedor_mandan(monkeypatch):
+    from copiloto import carburantes, electricidad
+    from copiloto.coste_anual import perfil_con_precios_reales
+
+    monkeypatch.setattr(carburantes, "precio_actual", lambda prov, comb: (1.55, "respaldo"))
+    monkeypatch.setattr(electricidad, "precio_kwh_casa", lambda: (0.13, "api"))
+    p = perfil_con_precios_reales(15_000, True, "Malaga", {"precio_gasolina": 1.99})
+    assert (p.precio_gasolina, p.precio_diesel, p.precio_kwh_casa) == (1.99, 1.55, 0.13)
+    assert p.origen["precio_gasolina"] == "escrito por el vendedor"
+    assert "RESERVA" in p.origen["precio_diesel"]
+    assert "hoy" in p.origen["precio_kwh_casa"]

@@ -37,6 +37,8 @@ class Perfil:
     precio_diesel: float = 1.45  # €/L
     precio_kwh_casa: float = 0.15
     precio_kwh_publico: float = 0.45
+    # De dónde sale cada precio: «hoy (Ministerio)», «reserva», «escrito por el vendedor»...
+    origen: dict = field(default_factory=dict)
 
 
 @dataclass
@@ -142,12 +144,35 @@ def comparar(vehiculos: list[Vehiculo], perfil: Perfil, anios: int = 5) -> dict:
     return {"referencia": mas_barato.nombre, "anios": anios, "coches": filas}
 
 
-def perfil_con_precios_reales(km_anuales: int, carga_en_casa: bool, provincia: str) -> Perfil:
-    """Perfil del cliente con los precios de hoy: carburantes del Ministerio y luz de REE."""
+ORIGEN = {
+    "api": "precio de hoy (API oficial)",
+    "respaldo": "precio de RESERVA: la API no respondió; escríbelo a mano",
+}
+
+
+def perfil_con_precios_reales(
+    km_anuales: int,
+    carga_en_casa: bool,
+    provincia: str,
+    manuales: dict[str, float | None] | None = None,
+) -> Perfil:
+    """Perfil del cliente con los precios de hoy: carburantes del Ministerio y luz de REE.
+
+    `manuales`: precios escritos por el vendedor; mandan sobre los de las APIs.
+    """
     from copiloto.carburantes import precio_actual
     from copiloto.electricidad import precio_kwh_casa
 
-    gasolina, _ = precio_actual(provincia, "gasolina")
-    diesel, _ = precio_actual(provincia, "diesel")
-    kwh, _ = precio_kwh_casa()
-    return Perfil(km_anuales, carga_en_casa, gasolina, diesel, kwh)
+    manuales = {k: v for k, v in (manuales or {}).items() if v}
+    precios, origen = {}, {}
+    for clave, buscar in [
+        ("precio_gasolina", lambda: precio_actual(provincia, "gasolina")),
+        ("precio_diesel", lambda: precio_actual(provincia, "diesel")),
+        ("precio_kwh_casa", precio_kwh_casa),
+    ]:
+        if clave in manuales:
+            precios[clave], origen[clave] = manuales[clave], "escrito por el vendedor"
+        else:
+            precio, de_donde = buscar()
+            precios[clave], origen[clave] = precio, ORIGEN[de_donde]
+    return Perfil(km_anuales, carga_en_casa, **precios, origen=origen)

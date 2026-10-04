@@ -8,10 +8,10 @@ from functools import cache
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, Field
 
-from copiloto import anuncio, financiacion, recomendador, respuestas, tasacion
+from copiloto import anuncio, financiacion, llm, recomendador, respuestas, tasacion
 from copiloto.coste_anual import comparar, perfil_con_precios_reales
 from copiloto.precio import ModeloPrecio
 from copiloto.valoracion import alertas_stock, precio_recomendado
@@ -23,6 +23,20 @@ app = FastAPI(title="Copiloto del vendedor de vehículos de ocasión")
 WEB = Path("web/index.html")  # rutas relativas a la raíz del proyecto
 LIMITE_POR_HORA = 20  # peticiones que usan el LLM, por IP y hora
 _peticiones: dict[str, deque] = defaultdict(deque)
+log = logging.getLogger("copiloto.api")
+
+
+@app.exception_handler(llm.ErrorLLM)
+def error_de_la_ia(request: Request, e: llm.ErrorLLM):
+    """Si la IA falla, la web enseña el motivo en vez de un «Internal Server Error»."""
+    return JSONResponse(status_code=502, content={"detail": f"La IA no ha respondido bien. {e}"})
+
+
+@app.exception_handler(Exception)
+def error_inesperado(request: Request, e: Exception):
+    log.exception("Error inesperado")  # el detalle completo sale en la terminal
+    detalle = f"Error interno ({type(e).__name__}). Mira la terminal donde corre el servidor."
+    return JSONResponse(status_code=500, content={"detail": detalle})
 
 
 @cache
@@ -84,6 +98,10 @@ class PeticionCoste(BaseModel):
     km_anuales: int = Field(15_000, ge=1_000, le=100_000)
     carga_en_casa: bool = True
     provincia: str = "Malaga"
+    # Opcionales: si el vendedor los escribe, mandan sobre los de las APIs.
+    precio_gasolina: float | None = Field(None, gt=0.5, lt=5)
+    precio_diesel: float | None = Field(None, gt=0.5, lt=5)
+    precio_kwh_casa: float | None = Field(None, gt=0.01, lt=2)
 
 
 class PeticionRecomendar(BaseModel):
@@ -161,7 +179,12 @@ def tasar(p: PeticionTasacion, request: Request):
 
 @app.post("/coste-anual")
 def coste(p: PeticionCoste):
-    perfil = perfil_con_precios_reales(p.km_anuales, p.carga_en_casa, p.provincia)
+    manuales = {
+        "precio_gasolina": p.precio_gasolina,
+        "precio_diesel": p.precio_diesel,
+        "precio_kwh_casa": p.precio_kwh_casa,
+    }
+    perfil = perfil_con_precios_reales(p.km_anuales, p.carga_en_casa, p.provincia, manuales)
     resultado = comparar([vehiculo(i) for i in p.ids], perfil)
     return {**resultado, "precios_energia": asdict(perfil)}
 

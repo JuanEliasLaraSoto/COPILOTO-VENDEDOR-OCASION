@@ -58,6 +58,10 @@ def cliente_gemini():
     return _cliente_gemini
 
 
+class ErrorLLM(Exception):
+    """La IA no ha respondido bien (clave, límite, modelo, respuesta cortada...)."""
+
+
 @dataclass
 class Llamada:
     tarea: str
@@ -114,12 +118,17 @@ def _parse_gemini(modelo, system, contenido, formato, max_tokens):
         contents=_contenido_gemini(contenido),
         config=types.GenerateContentConfig(
             system_instruction=system,
-            max_output_tokens=max_tokens,
+            # Los modelos Gemini «piensan» antes de responder y ese razonamiento gasta del
+            # mismo límite de tokens: damos margen para que la respuesta no salga cortada.
+            max_output_tokens=max_tokens + 6000,
             response_mime_type="application/json",  # que responda solo JSON...
             response_schema=formato,  # ...con la forma exacta de nuestro modelo Pydantic
             automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
         ),
     )
+    if not respuesta.text:
+        motivo = respuesta.candidates[0].finish_reason if respuesta.candidates else "desconocido"
+        raise ErrorLLM(f"Gemini no ha devuelto texto (motivo: {motivo}).")
     # Validamos nosotros con Pydantic: si el JSON no encaja, salta un error claro.
     objeto = formato.model_validate_json(respuesta.text)
     uso = respuesta.usage_metadata
@@ -137,7 +146,13 @@ def parse(
     """
     inicio = time.perf_counter()
     llamar = _parse_gemini if PROVEEDOR == "gemini" else _parse_claude
-    objeto, nombre, entrada, salida = llamar(modelo, system, contenido, formato, max_tokens)
+    try:
+        objeto, nombre, entrada, salida = llamar(modelo, system, contenido, formato, max_tokens)
+    except ErrorLLM:
+        raise
+    except Exception as e:  # clave mal, sin saldo, límite por minuto, modelo que no existe...
+        log.exception("Fallo al llamar a la IA")
+        raise ErrorLLM(f"{type(e).__name__}: {str(e)[:300]}") from e
     llamada = Llamada(tarea, nombre, entrada, salida, round(time.perf_counter() - inicio, 2))
     log.info(json.dumps({**asdict(llamada), "coste_usd": round(llamada.coste_usd, 6)}))
     return objeto, llamada

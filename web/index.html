@@ -106,6 +106,11 @@
       <label>Km al año <input id="cKm" type="number" value="15000" step="1000"></label>
       <label>Provincia <input id="cProv" value="Málaga"></label>
       <label class="casilla"><input type="checkbox" id="cCasa" checked> Puede cargar en casa</label>
+    </div>
+    <div class="fila">
+      <label>Gasolina €/L (opcional) <input id="cGas" type="number" step="0.001" placeholder="automático"></label>
+      <label>Diésel €/L (opcional) <input id="cDie" type="number" step="0.001" placeholder="automático"></label>
+      <label>Luz en casa €/kWh (opcional) <input id="cLuz" type="number" step="0.001" placeholder="automático"></label>
       <button class="principal" id="btnCoste">Comparar</button>
     </div>
     <div id="resCoste"></div>
@@ -174,7 +179,9 @@ async function llamar(boton, destino, url, cuerpo, pintar) {
   try {
     const r = await fetch(url, cuerpo === undefined ? {} : {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
-    const j = await r.json();
+    const texto = await r.text();
+    let j;
+    try { j = JSON.parse(texto); } catch { throw new Error(`el servidor ha fallado (código ${r.status}). Mira la terminal.`); }
     if (!r.ok) throw new Error(typeof j.detail === "string" ? j.detail : "Revisa los datos introducidos.");
     res.replaceChildren(pintar(j));
   } catch (e) {
@@ -288,7 +295,9 @@ $("btnTasar").addEventListener("click", () => {
 // ---------- Coste por motor ----------
 $("btnCoste").addEventListener("click", () => {
   const ids = [...document.querySelectorAll("#listaCoste input:checked")].map((c) => c.value);
-  llamar("btnCoste", "resCoste", "/coste-anual", { ids, km_anuales: Number($("cKm").value), carga_en_casa: $("cCasa").checked, provincia: $("cProv").value }, (j) => {
+  llamar("btnCoste", "resCoste", "/coste-anual", { ids, km_anuales: Number($("cKm").value), carga_en_casa: $("cCasa").checked, provincia: $("cProv").value,
+      precio_gasolina: Number($("cGas").value) || null, precio_diesel: Number($("cDie").value) || null,
+      precio_kwh_casa: Number($("cLuz").value) || null }, (j) => {
     const t = el("div", undefined, "tarjeta tabla"), tabla = el("table"), cab = el("tr");
     ["Coche", "Precio", "Energía", "Mant.", "Seguro", "Imp.", "Total / año", `Compra + ${j.anios} años`, "Compensa en"].forEach((h, i) => cab.append(el("th", h, i ? "num" : "")));
     tabla.append(cab);
@@ -301,11 +310,26 @@ $("btnCoste").addEventListener("click", () => {
     });
     const p = j.precios_energia;
     t.append(tabla, el("p", `«Compensa en»: años que tarda en recuperar lo que cuesta de más frente al más barato de comprar (${j.referencia}). «—»: no lo recupera.`, "muted"),
-             el("p", `Precios usados: gasolina ${dec(p.precio_gasolina, 3)} €/L · diésel ${dec(p.precio_diesel, 3)} €/L · luz en casa ${dec(p.precio_kwh_casa, 3)} €/kWh · carga pública ${dec(p.precio_kwh_publico, 3)} €/kWh`, "muted"),
+             precios(p),
              lista("Supuestos", j.coches[0].supuestos.slice(1)));
     return t;
   });
 });
+
+function precios(p) {
+  const d = el("div"), o = p.origen || {};
+  d.append(el("p", "Precios usados:", "muted"));
+  const ul = el("ul");
+  [["Gasolina", p.precio_gasolina, "€/L", "precio_gasolina"], ["Diésel", p.precio_diesel, "€/L", "precio_diesel"],
+   ["Luz en casa", p.precio_kwh_casa, "€/kWh", "precio_kwh_casa"]].forEach(([n, v, u, k]) => {
+    const li = el("li", `${n}: ${dec(v, 3)} ${u} · ${o[k] ?? ""}`);
+    if ((o[k] ?? "").includes("RESERVA")) li.className = "error";  // en rojo: no es el precio de hoy
+    ul.append(li);
+  });
+  ul.append(el("li", `Carga pública: ${dec(p.precio_kwh_publico, 3)} €/kWh · media orientativa`));
+  d.append(ul);
+  return d;
+}
 
 // ---------- Recomendar ----------
 $("btnRecomendar").addEventListener("click", () => llamar("btnRecomendar", "resRecomendar", "/recomendar", { texto: $("necesidades").value, provincia: $("rProv").value }, (j) => {

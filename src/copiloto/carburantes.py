@@ -4,12 +4,16 @@ Fuente: datos abiertos del Ministerio, «Precios de carburantes en las gasoliner
 (datos.gob.es). Al reutilizarlos hay que citar la fuente.
 """
 
+import logging
 import time
 from statistics import median
 
 import httpx
 
+from copiloto import red
 from copiloto.texto import normalizar
+
+log = logging.getLogger("copiloto.carburantes")
 
 URL_PROVINCIA = (
     "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/"
@@ -93,8 +97,7 @@ def descargar_provincia(id_provincia: str) -> list[dict]:
     ahora = time.time()
     if id_provincia in _CACHE and ahora - _CACHE[id_provincia][0] < CACHE_SEGUNDOS:
         return _CACHE[id_provincia][1]
-    respuesta = httpx.get(URL_PROVINCIA.format(id=id_provincia), timeout=30)
-    respuesta.raise_for_status()
+    respuesta = red.get(URL_PROVINCIA.format(id=id_provincia))
     estaciones = respuesta.json()["ListaEESSPrecio"]
     _CACHE[id_provincia] = (ahora, estaciones)
     return estaciones
@@ -115,7 +118,8 @@ def precio_actual(provincia: str, combustible: str) -> tuple[float, str]:
         return PRECIO_RESPALDO[combustible], "respaldo"
     try:
         precio = precio_mediano(descargar_provincia(id_prov), combustible)
-    except (httpx.HTTPError, KeyError, ValueError):
+    except (httpx.HTTPError, KeyError, ValueError) as e:
+        log.warning("API de carburantes sin respuesta: %s: %s", type(e).__name__, e)
         precio = None
     if precio is None:
         return PRECIO_RESPALDO[combustible], "respaldo"

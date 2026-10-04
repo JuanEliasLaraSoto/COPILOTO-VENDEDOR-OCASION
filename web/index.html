@@ -4,50 +4,164 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Copiloto VO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,300..900;1,62..125,300..900&family=Gloock&display=swap" rel="stylesheet">
 <style>
-  :root { --tinta:#17202a; --suave:#5b6573; --acento:#1f4e79; --acento-2:#e8eff7; --fondo:#f4f6f8;
-          --linea:#d8dee5; --bien:#2e7d32; --bien-2:#e8f5e9; --mal:#b3261e; --mal-2:#fdecea; --aviso:#8a5a00; --aviso-2:#fff4dc; }
+  :root {
+    --papel:#efeae0; --papel-2:#e6dfd1; --hoja:#fbf8f2; --tinta:#16140f; --suave:#6d6658; --linea:#d6cdbc;
+    --pegatina:#ffcc00; --pegatina-2:#fff3b8; --asfalto:#1c1b18; --asfalto-2:#2a2824;
+    --bien:#1f6b3a; --bien-2:#e1efdf; --mal:#b42a12; --mal-2:#f8e0d8; --aviso:#8a5800; --aviso-2:#fbeec8;
+    --ancho: "wdth" 100;
+  }
   * { box-sizing:border-box; }
-  body { margin:0; font-family:system-ui, -apple-system, "Segoe UI", sans-serif; color:var(--tinta); background:var(--fondo); }
-  header { background:var(--acento); color:#fff; padding:18px 16px; }
-  header h1 { margin:0; font-size:1.35rem; } header p { margin:4px 0 0; opacity:.85; font-size:.9rem; }
-  nav { display:flex; gap:4px; overflow-x:auto; background:#fff; border-bottom:1px solid var(--linea); padding:0 12px; position:sticky; top:0; z-index:2; }
-  nav button { background:none; border:0; border-bottom:3px solid transparent; padding:12px 10px; font:inherit; font-size:.92rem; color:var(--suave); cursor:pointer; white-space:nowrap; }
-  nav button.activa { color:var(--acento); border-bottom-color:var(--acento); font-weight:600; }
-  main { max-width:980px; margin:0 auto; padding:20px 16px 60px; }
-  section { display:none; } section.activa { display:block; }
-  h2 { font-size:1.15rem; margin:0 0 4px; } .sub { color:var(--suave); margin:0 0 16px; font-size:.92rem; }
-  .tarjeta { background:#fff; border:1px solid var(--linea); border-radius:10px; padding:16px; margin-top:14px; }
-  .fila { display:flex; gap:12px; flex-wrap:wrap; margin:10px 0; align-items:flex-end; }
-  label { font-size:.85rem; color:var(--suave); display:flex; flex-direction:column; gap:4px; }
-  label.casilla { flex-direction:row; align-items:center; gap:8px; }
-  input, select, textarea { padding:8px; border:1px solid var(--linea); border-radius:6px; font:inherit; color:var(--tinta); background:#fff; }
-  textarea { width:100%; min-height:110px; }
-  button.principal { background:var(--acento); color:#fff; border:0; border-radius:8px; padding:10px 16px; font:inherit; cursor:pointer; }
-  button.principal:disabled { opacity:.6; cursor:wait; }
-  table { width:100%; border-collapse:collapse; font-size:.88rem; }
-  th, td { text-align:left; padding:8px 6px; border-bottom:1px solid var(--linea); vertical-align:top; }
-  th { color:var(--suave); font-weight:600; } td.num, th.num { text-align:right; white-space:nowrap; }
-  tr.clic { cursor:pointer; } tr.clic:hover { background:var(--acento-2); }
-  .tabla { overflow-x:auto; }
-  .chip { display:inline-block; padding:2px 8px; border-radius:6px; font-size:.8rem; background:var(--acento-2); margin:2px 4px 2px 0; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; font-family:"Archivo", "Helvetica Neue", Arial, sans-serif; font-size:15px; line-height:1.5; color:var(--tinta);
+         background:var(--papel); font-feature-settings:"tnum" 1, "ss01" 1; -webkit-font-smoothing:antialiased; }
+  ::selection { background:var(--pegatina); color:var(--tinta); }
+
+  /* ---------- Estructura ---------- */
+  .marco { display:grid; grid-template-columns:268px 1fr; min-height:100vh; }
+  .lateral { background:var(--asfalto); color:#f3efe6; position:sticky; top:0; height:100vh; display:flex; flex-direction:column;
+             padding:26px 18px 22px; overflow-y:auto; }
+  .marca { padding:0 8px 26px; border-bottom:1px solid #3a372f; }
+  .marca .logo { display:flex; align-items:baseline; gap:6px; font-weight:900; font-stretch:125%; font-size:1.55rem; letter-spacing:-.01em; line-height:1; text-transform:uppercase; }
+  .marca .logo b { background:var(--pegatina); color:var(--tinta); padding:3px 7px 2px; border-radius:3px; font-size:1.1rem; transform:rotate(-4deg); display:inline-block; }
+  .marca p { margin:12px 0 0; font-size:.8rem; color:#a8a193; line-height:1.45; }
+  .marca p em { font-family:"Gloock", Georgia, serif; font-style:normal; color:#f3efe6; font-size:.92rem; }
+
+  nav { display:flex; flex-direction:column; gap:2px; padding:20px 0; flex:1; }
+  nav button { display:flex; align-items:center; gap:12px; width:100%; text-align:left; background:none; border:0; border-radius:6px;
+               padding:10px 10px; font:inherit; font-size:.92rem; color:#c9c2b3; cursor:pointer; white-space:nowrap; transition:background .15s, color .15s; }
+  nav button .n { font-size:.7rem; font-weight:700; font-stretch:125%; color:#6f6a5e; width:22px; transition:color .15s; }
+  nav button:hover { background:var(--asfalto-2); color:#fff; }
+  nav button.activa { background:var(--pegatina); color:var(--tinta); font-weight:700; }
+  nav button.activa .n { color:var(--tinta); }
+  nav button:focus-visible { outline:2px solid var(--pegatina); outline-offset:2px; }
+  .lateral footer { font-size:.72rem; color:#827b6d; line-height:1.5; padding:16px 8px 0; border-top:1px solid #3a372f; }
+
+  main { padding:44px clamp(16px, 5vw, 64px) 80px; max-width:1120px; width:100%; min-width:0; }
+  section { display:none; } section.activa { display:block; animation:entra .35s ease-out; }
+  @keyframes entra { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+
+  /* ---------- Cabeceras de sección ---------- */
+  .ceja { display:inline-flex; align-items:center; gap:8px; font-size:.72rem; font-weight:700; font-stretch:125%; letter-spacing:.14em;
+          text-transform:uppercase; color:var(--suave); margin-bottom:10px; }
+  .ceja::before { content:""; width:22px; height:2px; background:var(--tinta); }
+  h2 { font-family:"Gloock", Georgia, serif; font-weight:400; font-size:clamp(2rem, 4.2vw, 3rem); line-height:1.02; letter-spacing:-.015em; margin:0 0 10px; }
+  .sub { color:var(--suave); margin:0 0 26px; font-size:1rem; max-width:62ch; }
+  h3 { font-size:.78rem; font-weight:800; font-stretch:115%; letter-spacing:.1em; text-transform:uppercase; margin:20px 0 8px; color:var(--tinta); }
+  .tarjeta h3:first-child { margin-top:0; }
+
+  /* ---------- Coche elegido ---------- */
+  .elegido { display:inline-flex; align-items:center; gap:10px; background:var(--hoja); border:1px solid var(--linea); border-left:5px solid var(--pegatina);
+             border-radius:6px; padding:10px 14px; font-size:.9rem; font-weight:500; margin:0 0 18px; }
+  .elegido:empty { display:none; }
+
+  /* ---------- Tarjetas ---------- */
+  .tarjeta { background:var(--hoja); border:1px solid var(--linea); border-radius:10px; padding:22px; margin-top:18px;
+             box-shadow:0 1px 0 rgba(22,20,15,.04), 0 12px 28px -18px rgba(22,20,15,.25); }
+  .tarjeta > p { margin:6px 0; }
+
+  /* ---------- Formularios ---------- */
+  .fila { display:flex; gap:14px; flex-wrap:wrap; margin:14px 0; align-items:flex-end; }
+  label { font-size:.7rem; font-weight:700; font-stretch:112%; letter-spacing:.08em; text-transform:uppercase; color:var(--suave);
+          display:flex; flex-direction:column; gap:6px; }
+  label.casilla { flex-direction:row; align-items:center; gap:10px; text-transform:none; letter-spacing:0; font-stretch:100%; font-size:.9rem; font-weight:500; color:var(--tinta); }
+  input, select, textarea { padding:10px 12px; border:1px solid var(--linea); border-radius:6px; font:inherit; font-size:.95rem; font-weight:500;
+                            text-transform:none; letter-spacing:0; color:var(--tinta); background:var(--hoja); transition:border-color .15s, box-shadow .15s; }
+  input:hover, select:hover, textarea:hover { border-color:#bdb3a0; }
+  input:focus, select:focus, textarea:focus { outline:none; border-color:var(--tinta); box-shadow:0 0 0 3px var(--pegatina); }
+  input[type=number] { width:130px; }
+  input[type=checkbox] { width:18px; height:18px; accent-color:var(--tinta); margin:0; }
+  textarea { width:100%; min-height:120px; resize:vertical; line-height:1.5; }
+  label:has(textarea) { width:100%; }
+
+  button.principal { position:relative; background:var(--tinta); color:#fff; border:0; border-radius:6px; padding:12px 22px; font:inherit;
+                     font-weight:700; font-stretch:112%; letter-spacing:.04em; text-transform:uppercase; font-size:.82rem; cursor:pointer;
+                     box-shadow:4px 4px 0 var(--pegatina); transition:transform .12s, box-shadow .12s; }
+  button.principal:hover { transform:translate(-1px, -1px); box-shadow:5px 5px 0 var(--pegatina); }
+  button.principal:active { transform:translate(3px, 3px); box-shadow:1px 1px 0 var(--pegatina); }
+  button.principal:focus-visible { outline:2px solid var(--tinta); outline-offset:3px; }
+  button.principal:disabled { opacity:.55; cursor:wait; transform:none; }
+
+  /* ---------- Tablas ---------- */
+  .tabla { overflow-x:auto; padding:6px 0; }
+  .tabla.tarjeta { padding:6px 0; }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; }
+  th, td { text-align:left; padding:12px 14px; border-bottom:1px solid var(--papel-2); vertical-align:middle; }
+  th { color:var(--suave); font-size:.68rem; font-weight:700; font-stretch:115%; letter-spacing:.1em; text-transform:uppercase; border-bottom:1px solid var(--linea); }
+  tr:last-child td { border-bottom:0; }
+  td.num, th.num { text-align:right; white-space:nowrap; }
+  td.num { font-weight:600; }
+  tr.clic { cursor:pointer; transition:background .12s; }
+  tr.clic:hover { background:var(--pegatina-2); }
+  tr.sel { background:var(--pegatina-2); box-shadow:inset 4px 0 0 var(--pegatina); }
+  .placa { display:inline-block; font-weight:800; font-stretch:80%; letter-spacing:.06em; font-size:.82rem; padding:2px 7px 2px 16px; border:1.5px solid var(--tinta);
+           border-radius:4px; background:#fff linear-gradient(90deg, #1d3f94 0 10px, transparent 10px); white-space:nowrap; }
+  .dias-largo { color:var(--mal); }
+
+  /* ---------- Chips y avisos ---------- */
+  .chip { display:inline-block; padding:3px 9px; border-radius:999px; font-size:.78rem; font-weight:600; background:var(--papel-2); margin:3px 6px 3px 0; }
+  .chip.alta, .chip.media, .chip.baja { text-transform:uppercase; font-size:.66rem; font-weight:800; font-stretch:115%; letter-spacing:.08em; }
   .alta { background:var(--mal-2); color:var(--mal); } .media { background:var(--aviso-2); color:var(--aviso); } .baja { background:var(--bien-2); color:var(--bien); }
-  .ok { background:var(--bien-2); border-left:4px solid var(--bien); padding:10px 12px; border-radius:6px; margin:10px 0; }
-  .ko { background:var(--mal-2); border-left:4px solid var(--mal); padding:10px 12px; border-radius:6px; margin:10px 0; }
-  .grande { font-size:1.6rem; font-weight:700; margin:4px 0; }
-  .uso, .muted { color:var(--suave); font-size:.82rem; }
-  .error { color:var(--mal); }
-  .texto { white-space:pre-wrap; background:var(--fondo); border-radius:6px; padding:10px; margin:6px 0 12px; }
-  .elegido { color:var(--suave); font-size:.9rem; margin:0 0 10px; }
-  footer { color:var(--suave); font-size:.78rem; max-width:980px; margin:0 auto; padding:0 16px 32px; }
+  #alertas .tarjeta p { padding:10px 0; margin:0; border-bottom:1px dashed var(--linea); }
+  #alertas .tarjeta p:last-child { border-bottom:0; }
+  .ok { background:var(--bien-2); color:var(--bien); border-radius:6px; padding:12px 14px; margin:0 0 16px; font-weight:600; font-size:.9rem; }
+  .ok::before { content:"✓  "; font-weight:900; }
+  .ko { background:var(--mal-2); color:var(--mal); border-radius:6px; padding:12px 14px; margin:0 0 16px; font-size:.9rem; }
+  .ko ul { margin:6px 0 0; padding-left:18px; }
+
+  /* ---------- Cifras grandes ---------- */
+  .grande { display:inline-block; font-weight:900; font-stretch:122%; font-size:clamp(1.9rem, 4.5vw, 2.8rem); letter-spacing:-.02em; line-height:1.05; margin:4px 0 10px; -webkit-box-decoration-break:clone; box-decoration-break:clone;
+            background:linear-gradient(transparent 62%, var(--pegatina) 62%, var(--pegatina) 92%, transparent 92%); padding:0 4px; }
+  .uso, .muted { color:var(--suave); font-size:.84rem; }
+  .tarjeta > p.muted:first-child { font-size:.7rem; font-weight:700; font-stretch:115%; letter-spacing:.12em; text-transform:uppercase; }
+  .uso { margin-top:18px; padding-top:12px; border-top:1px dashed var(--linea); font-size:.76rem; }
+  .error { color:var(--mal); font-weight:600; }
+  .cargando { display:flex; align-items:center; gap:10px; margin-top:18px; }
+  .cargando::before { content:""; width:14px; height:14px; border:2px solid var(--linea); border-top-color:var(--tinta); border-radius:50%; animation:gira .7s linear infinite; }
+  @keyframes gira { to { transform:rotate(360deg); } }
+  .texto { white-space:pre-wrap; background:var(--papel); border-radius:6px; padding:14px 16px; margin:6px 0 16px; line-height:1.6; }
+  ul { padding-left:20px; margin:6px 0; } li { margin:4px 0; } li::marker { color:var(--suave); }
+
+  /* ---------- Selección de coches para comparar ---------- */
+  #listaCoste { display:grid; grid-template-columns:repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap:8px; margin-top:10px; }
+  #listaCoste label { border:1px solid var(--linea); border-radius:6px; padding:10px 12px; background:#fff; cursor:pointer; font-size:.86rem; transition:border-color .12s, background .12s; }
+  #listaCoste label:hover { border-color:var(--tinta); }
+  #listaCoste label:has(input:checked) { background:var(--pegatina-2); border-color:var(--tinta); }
+
+  .pie-movil { display:none; color:var(--suave); font-size:.74rem; padding:0 16px 32px; }
+
+  /* ---------- Móvil ---------- */
+  @media (max-width: 860px) {
+    .marco { grid-template-columns:minmax(0, 1fr); align-content:start; }
+    .grande { font-size:1.6rem; }
+    .lateral { position:sticky; height:auto; padding:14px 0 0; z-index:5; overflow:visible; }
+    .marca { padding:0 16px 12px; border:0; }
+    .marca p, .lateral footer { display:none; }
+    .marca .logo { font-size:1.2rem; }
+    nav { flex-direction:row; flex:none; align-items:center; overflow-x:auto; padding:0 12px 12px; gap:4px; scrollbar-width:none; }
+    nav::-webkit-scrollbar { display:none; }
+    nav button { width:auto; padding:8px 12px; }
+    nav button .n { display:none; }
+    main { padding-top:28px; }
+    .lateral { top:0; }
+    .elegido { display:flex; flex-wrap:wrap; }
+    .pie-movil { display:block; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <h1>Copiloto del vendedor de vehículos de ocasión</h1>
-  <p>Precio, anuncios, clientes, tasaciones y costes: la IA redacta, el código comprueba.</p>
-</header>
-<nav id="pestanas"></nav>
+<div class="marco">
+<aside class="lateral">
+  <div class="marca">
+    <div class="logo">Copiloto <b>VO</b></div>
+    <p><em>La IA redacta, el código comprueba.</em><br>Precio, anuncios, clientes, tasaciones y costes para el vendedor de coches de ocasión.</p>
+  </div>
+  <nav id="pestanas"></nav>
+  <footer>Proyecto personal de portfolio, no oficial. Stock ficticio. Resultados orientativos. Precios de energía: datos abiertos del Ministerio y de Red Eléctrica.</footer>
+</aside>
 <main>
   <section id="stock">
     <h2>Stock y alertas</h2>
@@ -60,7 +174,7 @@
     <h2>Precio recomendado</h2>
     <p class="sub">Rango de mercado estimado por el modelo de machine learning.</p>
     <p class="elegido" data-elegido></p>
-    <button class="principal" id="btnPrecio">Calcular precio</button>
+    <div><button class="principal" id="btnPrecio">Calcular precio</button></div>
     <div id="resPrecio"></div>
   </section>
 
@@ -68,7 +182,7 @@
     <h2>Anuncio automático</h2>
     <p class="sub">Se escribe con IA y se comprueba con código: ninguna cifra ni promesa fuera de la ficha.</p>
     <p class="elegido" data-elegido></p>
-    <button class="principal" id="btnAnuncio">Escribir anuncio</button>
+    <div><button class="principal" id="btnAnuncio">Escribir anuncio</button></div>
     <div id="resAnuncio"></div>
   </section>
 
@@ -101,7 +215,7 @@
   <section id="coste">
     <h2>Coste al año por tipo de motor</h2>
     <p class="sub">Consumo oficial de la ficha (WLTP) y precios de hoy: carburantes del Ministerio y luz de Red Eléctrica.</p>
-    <div class="tarjeta"><p class="muted">Elige de 2 a 4 coches:</p><div id="listaCoste"></div></div>
+    <div class="tarjeta"><h3>Elige de 2 a 4 coches</h3><div id="listaCoste"></div></div>
     <div class="fila">
       <label>Km al año <input id="cKm" type="number" value="15000" step="1000"></label>
       <label>Provincia <input id="cProv" value="Málaga"></label>
@@ -138,7 +252,8 @@
     <div id="resFinanciar"></div>
   </section>
 </main>
-<footer>Proyecto personal de portfolio, no oficial. Stock ficticio. Resultados orientativos. Precios de energía: datos abiertos del Ministerio y de Red Eléctrica.</footer>
+</div>
+<p class="pie-movil">Proyecto personal de portfolio, no oficial. Stock ficticio. Resultados orientativos. Precios de energía: datos abiertos del Ministerio y de Red Eléctrica.</p>
 
 <script>
 const $ = (id) => document.getElementById(id);
@@ -174,7 +289,7 @@ function semaforo(avisos, okTexto) {
 }
 async function llamar(boton, destino, url, cuerpo, pintar) {
   const res = $(destino);
-  res.replaceChildren(el("p", "Trabajando…", "muted"));
+  res.replaceChildren(el("p", "Trabajando…", "muted cargando"));
   $(boton).disabled = true;
   try {
     const r = await fetch(url, cuerpo === undefined ? {} : {
@@ -198,15 +313,19 @@ function abrir(id) {
   document.querySelectorAll("section").forEach((s) => s.classList.toggle("activa", s.id === id));
   document.querySelectorAll("nav button").forEach((b) => b.classList.toggle("activa", b.dataset.id === id));
 }
-PESTANAS.forEach(([id, nombre]) => {
-  const b = el("button", nombre); b.dataset.id = id; b.addEventListener("click", () => abrir(id)); $("pestanas").append(b);
+PESTANAS.forEach(([id, nombre], i) => {
+  const n = String(i + 1).padStart(2, "0");
+  const b = el("button"); b.dataset.id = id; b.append(el("span", n, "n"), el("span", nombre));
+  b.addEventListener("click", () => { abrir(id); window.scrollTo({ top: 0 }); }); $("pestanas").append(b);
+  $(id).prepend(el("div", `${n} — ${nombre}`, "ceja"));
 });
 
 function elegir(v) {
   elegido = v;
   document.querySelectorAll("[data-elegido]").forEach((p) => {
-    p.textContent = `Coche elegido: ${v.id} · ${v.marca} ${v.modelo} ${v.version ?? ""} · ${v.anio} · ${num(v.km)} km · ${euros(v.precio)}`;
+    p.replaceChildren(el("span", v.id, "placa"), `${v.marca} ${v.modelo} ${v.version ?? ""} · ${v.anio} · ${num(v.km)} km · ${euros(v.precio)}`);
   });
+  document.querySelectorAll("#tablaStock tr[data-id]").forEach((tr) => tr.classList.toggle("sel", tr.dataset.id === v.id));
 }
 
 // ---------- Stock y alertas ----------
@@ -217,10 +336,11 @@ async function cargarStock() {
   ["Ref.", "Coche", "Año", "Km", "Motor", "Etiqueta", "Precio", "Días"].forEach((h, i) => cab.append(el("th", h, i >= 6 ? "num" : "")));
   t.replaceChildren(cab);
   STOCK.forEach((v) => {
-    const tr = el("tr", undefined, "clic");
-    [v.id, `${v.marca} ${v.modelo} ${v.version ?? ""}`, v.anio, num(v.km), MOTOR[v.combustible],
+    const tr = el("tr", undefined, "clic"); tr.dataset.id = v.id;
+    const ref = el("td"); ref.append(el("span", v.id, "placa")); tr.append(ref);
+    [`${v.marca} ${v.modelo} ${v.version ?? ""}`, v.anio, num(v.km), MOTOR[v.combustible],
      v.etiqueta_dgt].forEach((x) => tr.append(el("td", x)));
-    tr.append(el("td", euros(v.precio), "num"), el("td", v.dias_en_stock, "num"));
+    tr.append(el("td", euros(v.precio), "num"), el("td", v.dias_en_stock, v.dias_en_stock >= 90 ? "num dias-largo" : "num"));
     tr.addEventListener("click", () => { elegir(v); abrir("precio"); });
     t.append(tr);
   });

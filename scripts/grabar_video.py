@@ -26,7 +26,7 @@ from pathlib import Path
 
 import httpx
 import numpy as np
-from dotenv import load_dotenv
+from dotenv import dotenv_values, find_dotenv, load_dotenv
 
 RAIZ = Path(__file__).resolve().parent.parent
 PUERTO = 8765
@@ -40,17 +40,36 @@ ENLACE = "github.com/JuanEliasLaraSoto/COPILOTO-VENDEDOR-OCASION"
 
 
 # ---------- Comprobaciones antes de grabar ----------
+def archivos_env() -> list[Path]:
+    """Los .env que puede leer la web: el de la raíz y los que encuentra subiendo carpetas."""
+    candidatos = [RAIZ / ".env", find_dotenv(usecwd=True), find_dotenv()]
+    candidatos += [str(c / ".env") for c in (RAIZ / "src" / "copiloto").parents]
+    vistos = []
+    for c in candidatos:
+        if c and Path(c).is_file() and Path(c).resolve() not in vistos:
+            vistos.append(Path(c).resolve())
+    return vistos
+
+
+def diagnostico_env() -> str:
+    """Qué .env se han leído y qué variables tienen (solo los nombres, nunca los valores)."""
+    archivos = archivos_env()
+    if not archivos:
+        return f"No hay ningún .env. Créalo en {RAIZ}: cp .env.example .env y pon tu clave."
+    lineas = []
+    for a in archivos:
+        valores = dotenv_values(a)
+        nombres = [f"{k}{'' if v else ' (vacía)'}" for k, v in valores.items()]
+        lineas.append(f"  {a}: {', '.join(nombres) or 'sin variables'}")
+    return "He leído estos .env (solo nombres de variables):\n" + "\n".join(lineas)
+
+
 def comprobar_ia() -> str:
     """Devuelve el proveedor si hay clave; si no, para."""
     proveedor = os.getenv("PROVEEDOR", "claude").strip().lower()
     clave = "GEMINI_API_KEY" if proveedor == "gemini" else "ANTHROPIC_API_KEY"
     if not os.getenv(clave):
-        env = RAIZ / ".env"
-        if not env.exists():
-            motivo = f"No existe {env}. Créalo: cp .env.example .env y pon tu clave."
-        else:
-            motivo = f"{env} existe, pero no tiene la línea {clave}=... (o está vacía)."
-        sys.exit(f"Falta {clave} (PROVEEDOR={proveedor}). {motivo}")
+        sys.exit(f"Falta {clave} (PROVEEDOR={proveedor}).\n{diagnostico_env()}")
     return proveedor
 
 
@@ -481,7 +500,8 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    load_dotenv(RAIZ / ".env")
+    for archivo in archivos_env():  # el primero manda: load_dotenv no pisa lo ya cargado
+        load_dotenv(archivo)
     sys.path.insert(0, str(RAIZ / "src"))
     if not shutil.which("ffmpeg"):
         sys.exit("Falta ffmpeg. Instálalo (apt install ffmpeg / brew install ffmpeg).")

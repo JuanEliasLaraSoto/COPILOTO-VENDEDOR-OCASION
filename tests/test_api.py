@@ -81,3 +81,14 @@ def test_si_la_ia_falla_se_explica(monkeypatch):
     monkeypatch.setattr(api.llm, "parse", falla)
     r = cliente.post("/anuncio", json={"id": "VO-023"})
     assert r.status_code == 502 and "404 modelo no encontrado" in r.json()["detail"]
+
+
+def test_presupuesto_agotado_y_uso_ia(monkeypatch):
+    def agotado(*a, **k):
+        raise api.llm.PresupuestoAgotado("Presupuesto diario de IA agotado (1.0 $).")
+
+    monkeypatch.setattr(api.llm, "parse", agotado)
+    r = cliente.post("/anuncio", json={"id": "VO-023"})
+    assert r.status_code == 503 and "agotado" in r.json()["detail"]
+    u = cliente.get("/uso-ia").json()
+    assert {"tokens_entrada", "coste_usd", "gasto_hoy_usd", "por_tarea"} <= u.keys()

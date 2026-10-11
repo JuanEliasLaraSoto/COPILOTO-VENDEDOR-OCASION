@@ -48,3 +48,41 @@ def test_json_roto_da_un_error_claro(gemini):
     gemini('{"titulo": "sin cerrar')
     with pytest.raises(llm.ErrorLLM, match="ValidationError"):
         llm.parse("anuncio", llm.HAIKU, "s", "ficha", Anuncio)
+
+
+@pytest.fixture
+def registro_limpio(monkeypatch):
+    monkeypatch.setattr(llm, "_historial", llm.deque(maxlen=1000))
+    monkeypatch.setattr(llm, "_errores", {})
+    monkeypatch.setattr(llm, "_gasto", {"dia": llm.date.today(), "usd": 0.0})
+
+
+def test_estadisticas_de_tokens_latencia_y_coste(gemini, registro_limpio, monkeypatch):
+    monkeypatch.setitem(llm.PRECIOS, llm.GEMINI[llm.HAIKU], (1.0, 5.0))  # como en plan de pago
+    gemini(ANUNCIO_JSON)
+    for _ in range(2):
+        llm.parse("anuncio", llm.HAIKU, "s", "ficha", Anuncio)
+    gemini(None, motivo="MAX_TOKENS")
+    with pytest.raises(llm.ErrorLLM):
+        llm.parse("anuncio", llm.HAIKU, "s", "ficha", Anuncio)
+
+    e = llm.estadisticas()
+    fila = e["por_tarea"][0]
+    assert e["llamadas"] == 2 and e["errores"] == {"ErrorLLM": 1}
+    assert fila["tokens_entrada"] == 1800 and fila["tokens_salida"] == 6200
+    assert fila["coste_usd"] == pytest.approx(2 * (900 * 1 + 3100 * 5) / 1e6)
+    assert e["gasto_hoy_usd"] == fila["coste_usd"] and "segundos_p95" in fila
+
+
+def test_presupuesto_diario_corta_las_llamadas(gemini, registro_limpio, monkeypatch):
+    monkeypatch.setattr(llm, "PRESUPUESTO_DIARIO_USD", 0.01)
+    monkeypatch.setitem(llm.PRECIOS, llm.GEMINI[llm.HAIKU], (1.0, 5.0))
+    gemini(ANUNCIO_JSON)
+    llm.parse("anuncio", llm.HAIKU, "s", "ficha", Anuncio)  # 0,0164 $: pasa del tope
+    with pytest.raises(llm.PresupuestoAgotado):
+        llm.parse("anuncio", llm.HAIKU, "s", "ficha", Anuncio)
+
+
+def test_el_gasto_se_reinicia_cada_dia(registro_limpio, monkeypatch):
+    monkeypatch.setattr(llm, "_gasto", {"dia": llm.date(2000, 1, 1), "usd": 5.0})
+    assert llm.gasto_hoy() == 0.0

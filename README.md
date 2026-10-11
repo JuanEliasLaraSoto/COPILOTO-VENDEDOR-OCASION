@@ -27,6 +27,19 @@ y financiación. **La IA redacta; el código comprueba.**
 Principio de diseño: **el LLM entiende y redacta; el ML estima; el código calcula y verifica.**
 Funciona con Claude o con Gemini cambiando una variable (`PROVEEDOR`).
 
+### Tokens, latencia y coste de la IA
+
+Todas las llamadas pasan por `copiloto/llm.py`, que mide y controla:
+
+- **Tokens**: entrada y salida de cada llamada (con Gemini, el razonamiento cuenta como salida).
+- **Latencia**: segundos por llamada, `LLM_TIMEOUT_S` como tope y `LLM_REINTENTOS` ante errores pasajeros.
+- **Coste**: dólares por llamada según el precio del modelo; router que usa el modelo rápido salvo en
+  preguntas complejas; `PRESUPUESTO_DIARIO_USD` corta las llamadas al llegar al tope (HTTP 503) y
+  20 usos por IP y hora protegen el saldo.
+- **Observabilidad**: cada llamada sale en el log como JSON y `GET /uso-ia` da el resumen por tarea
+  y modelo (tokens, latencia media y p95, coste medio, errores y gasto de hoy frente al presupuesto).
+  La web enseña tokens, segundos y coste debajo de cada resultado.
+
 ## Resultados
 
 _(Rellena con tus números de `scripts/entrenar_precio.py` y `evals/evaluar.py`.)_

@@ -897,7 +897,7 @@ function lista(titulo, items) {
 }
 function uso(u) {
   if (!u || !u.modelos.length) return h("p", "uso", "Sin IA: cálculo hecho con código.");
-  return h("p", "uso", `${u.modelos.join(" + ")} · ${u.segundos} s · ${(u.coste_usd * 100).toFixed(3)} céntimos de dólar`);
+  return h("p", "uso", `${u.modelos.join(" + ")} · ${(u.tokens_entrada ?? 0) + (u.tokens_salida ?? 0)} tokens · ${u.segundos} s · ${(u.coste_usd * 100).toFixed(3)} céntimos de dólar`);
 }
 function semaforo(avisos, okTexto) {
   if (!avisos || !avisos.length) return h("div", "ok", okTexto);

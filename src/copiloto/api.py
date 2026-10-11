@@ -34,6 +34,11 @@ def error_de_la_ia(request: Request, e: llm.ErrorLLM):
     return JSONResponse(status_code=502, content={"detail": f"La IA no ha respondido bien. {e}"})
 
 
+@app.exception_handler(llm.PresupuestoAgotado)
+def presupuesto_agotado(request: Request, e: llm.PresupuestoAgotado):
+    return JSONResponse(status_code=503, content={"detail": str(e)})
+
+
 @app.exception_handler(Exception)
 def error_inesperado(request: Request, e: Exception):
     log.exception("Error inesperado")  # el detalle completo sale en la terminal
@@ -69,10 +74,12 @@ def comprobar_limite(request: Request) -> None:
 
 
 def uso(*llamadas) -> dict:
-    """Modelo, segundos y coste de las llamadas al LLM (se enseña en la web)."""
+    """Modelo, tokens, segundos y coste de las llamadas al LLM (se enseña en la web)."""
     ll = [x for x in llamadas if x]
     return {
         "modelos": sorted({x.modelo for x in ll}),
+        "tokens_entrada": sum(x.tokens_entrada for x in ll),
+        "tokens_salida": sum(x.tokens_salida for x in ll),
         "segundos": round(sum(x.segundos for x in ll), 2),
         "coste_usd": round(sum(x.coste_usd for x in ll), 5),
     }
@@ -148,6 +155,12 @@ def metricas_modelo():
     if not METRICAS.exists():
         raise HTTPException(404, "Aún no hay métricas: ejecuta scripts/entrenar_precio.py.")
     return json.loads(METRICAS.read_text(encoding="utf-8"))
+
+
+@app.get("/uso-ia")
+def uso_ia():
+    """Tokens, latencia (media y p95), coste por tarea y gasto de hoy frente al presupuesto."""
+    return llm.estadisticas()
 
 
 @app.get("/alertas")
